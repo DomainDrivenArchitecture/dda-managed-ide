@@ -1,8 +1,9 @@
 # dda-managed-ide
-## without encryption
+## configure your aws credentials
 Define your credentials in your users home:
-
 ~/.pallet/config.clj
+
+```
 (defpallet
   :services
     {:aws
@@ -10,12 +11,19 @@ Define your credentials in your users home:
        :secret "-your unencrypted secret-"}
     }
 )
+```
 
+If you want to use encrypted credentials instead, you will find described here https://www.domaindrivenarchitecture.org/blog-lang/-/blogs/dda-pallet-uses-gnupg-protected-credenti-34 how to encrypt them.
 
+## start your repl
+lein repl
+(use 'org.domaindrivenarchitecture.pallet.crate.managed-ide.instantiate-aws-init)
+
+; apply configuration without encryption
 (do-sth)
-
-## with encryption
+; apply configuration with encryption
 (do-sth "26E90AA6AA3ACBFE" "test1234")
+
 
 ## compatability
 This crate is working with:
