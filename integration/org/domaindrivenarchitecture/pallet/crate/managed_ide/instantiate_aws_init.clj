@@ -110,7 +110,7 @@
               init/with-init 
               managed-vm/with-dda-vm]
     :node-spec (aws-node-spec)
-    :count 0))
+    :count 1))
 
 (defn inspect-phase-plan []
   (session-tools/inspect-mock-server-spec
