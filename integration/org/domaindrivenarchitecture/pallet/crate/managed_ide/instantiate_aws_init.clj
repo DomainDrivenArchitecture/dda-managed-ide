@@ -87,7 +87,17 @@
                                                   :associate-public-ip-address true
                                                   :delete-on-termination true}]}}))
 
-(defn aws-provider [key-id key-passphrase]
+(defn aws-provider 
+  ([]
+  (let 
+    [aws-decrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])]
+    (compute/instantiate-provider
+     :pallet-ec2
+     :identity (get-in aws-decrypted-credentials [:account])
+     :credential (get-in aws-decrypted-credentials [:secret])
+     :endpoint "eu-central-1"
+     :subnet-ids ["subnet-f929df91"])))
+  ([key-id key-passphrase]
   (let 
     [aws-encrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])
      aws-decrypted-credentials (crypto/decrypt
@@ -101,7 +111,7 @@
      :identity (get-in aws-decrypted-credentials [:account])
      :credential (get-in aws-decrypted-credentials [:secret])
      :endpoint "eu-central-1"
-     :subnet-ids ["subnet-f929df91"])))
+     :subnet-ids ["subnet-f929df91"]))))
 
 (defn managed-ide-group []
   (api/group-spec
@@ -110,15 +120,23 @@
               init/with-init 
               managed-vm/with-dda-vm]
     :node-spec (aws-node-spec)
-    :count 1))
+    :count 0))
 
 (defn inspect-phase-plan []
   (session-tools/inspect-mock-server-spec
      init/with-init :init))
  
-(defn do-sth [key-id key-passphrase] 
-      (api/converge
-        (managed-ide-group)
-        :compute (aws-provider key-id key-passphrase)
-        :phase '(:settings :init)
-        :user (api/make-user "ubuntu")))
+(defn do-sth 
+  ([] 
+    (api/converge
+      (managed-ide-group)
+      :compute (aws-provider)
+      :phase '(:settings :init)
+      :user (api/make-user "ubuntu")))
+  ([key-id key-passphrase] 
+    (api/converge
+      (managed-ide-group)
+      :compute (aws-provider key-id key-passphrase)
+      :phase '(:settings :init)
+      :user (api/make-user "ubuntu")))
+)
