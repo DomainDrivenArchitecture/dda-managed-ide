@@ -16,14 +16,18 @@ Define your credentials in your users home:
 If you want to use encrypted credentials instead, you will find described here https://www.domaindrivenarchitecture.org/blog-lang/-/blogs/dda-pallet-uses-gnupg-protected-credenti-34 how to encrypt them.
 
 ## start your repl
+```
 lein repl
+```
+
+```
 (use 'org.domaindrivenarchitecture.pallet.crate.managed-ide.instantiate-aws-init)
 
 ; apply configuration without encryption
 (do-sth)
 ; apply configuration with encryption
-(do-sth "26E90AA6AA3ACBFE" "test1234")
-
+(do-sth "-your gnupg key id-" "-your gnupg key passphrase-")
+```
 
 ## compatability
 This crate is working with:
