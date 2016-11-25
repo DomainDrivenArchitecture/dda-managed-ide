@@ -13,3 +13,5 @@ pom.xml.asc
 /.classpath
 /.project
 /bin/
+/.settings/
+/logs/

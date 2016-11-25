@@ -7,7 +7,9 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [com.palletops/pallet "0.8.12"]
                  [com.palletops/stevedore "0.8.0-beta.7"]
-                 [org.domaindrivenarchitecture/dda-pallet-commons "0.2.2-SNAPSHOT"]]
+                 [org.domaindrivenarchitecture/dda-pallet-commons "0.2.2-SNAPSHOT"]
+                 [org.domaindrivenarchitecture/dda-pallet "0.2.0"]
+                 [org.domaindrivenarchitecture/dda-managed-vm "0.1.1"]]
   :profiles {:dev
              {:source-paths ["integration"]
               :dependencies
