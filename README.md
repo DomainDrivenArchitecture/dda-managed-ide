@@ -37,4 +37,5 @@ This crate is working with:
  
 # License
 Published under Apache2.0 License.
+
 Copyright by meissa GmbH 2016

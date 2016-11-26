@@ -16,6 +16,7 @@
 (ns org.domaindrivenarchitecture.pallet.crate.managed-ide.instantiate-aws-init
   (:require
     [clojure.java.io :as io]
+    [clojure.inspector :as inspector]
     [pallet.api :as api]      
     [pallet.compute :as compute]
     [pallet.compute.node-list :as node-list]
@@ -63,7 +64,7 @@
 (def config
   {:ssh-keys ssh-keys
    :os-user os-user
-   :node-specific-config {:meissa-vm meissa-vm}
+   :group-specific-config {:managed-ide-group meissa-vm}
    })
 
 (defn aws-node-spec []
@@ -73,11 +74,11 @@
                ;:location-id "us-east-1a"
                }
     :image {:os-family :ubuntu 
-            ;eu-central-1 
-            :image-id "ami-87564feb"
-            ;us-east-1 :image-id "ami-2d39803a"
-            ;eu-west1 :image-id "ami-f95ef58a"
-            :os-version "14.04"
+            ;eu-central-1 16-04 LTS hvm 
+            :image-id "ami-82cf0aed"
+            ;eu-west1 16-04 LTS hvm :image-id "ami-07174474"
+            ;us-east-1 16-04 LTS hvm :image-id "ami-45b69e52"
+            :os-version "16.04"
             :login-user "ubuntu"}
     :hardware {:hardware-id "t2.micro"}
     :provider {:pallet-ec2 {:key-name "jem"               
@@ -115,16 +116,16 @@
 
 (defn managed-ide-group []
   (api/group-spec
-    "managed-vm-group"
+    "managed-ide-group"
     :extends [(config/with-config config) 
               init/with-init 
               managed-vm/with-dda-vm]
     :node-spec (aws-node-spec)
-    :count 0))
+    :count 1))
 
 (defn inspect-phase-plan []
   (session-tools/inspect-mock-server-spec
-     init/with-init :init))
+     managed-ide-group '(:settings :install)))
  
 (defn do-sth 
   ([] 
@@ -133,10 +134,11 @@
       :compute (aws-provider)
       :phase '(:settings :init)
       :user (api/make-user "ubuntu")))
-  ([key-id key-passphrase] 
-    (api/converge
-      (managed-ide-group)
-      :compute (aws-provider key-id key-passphrase)
-      :phase '(:settings :init)
-      :user (api/make-user "ubuntu")))
+  ([key-id key-passphrase]
+    (inspector/inspect-tree
+      (api/converge
+        (managed-ide-group)
+        :compute (aws-provider key-id key-passphrase)
+        :phase '(:settings :init :install :configure)
+        :user (api/make-user "ubuntu"))))
 )

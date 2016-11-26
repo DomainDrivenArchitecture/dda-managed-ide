@@ -8,10 +8,11 @@
                  [com.palletops/pallet "0.8.12"]
                  [com.palletops/stevedore "0.8.0-beta.7"]
                  [org.domaindrivenarchitecture/dda-pallet-commons "0.2.2-SNAPSHOT"]
-                 [org.domaindrivenarchitecture/dda-pallet "0.2.0"]
+                 [org.domaindrivenarchitecture/dda-pallet "0.2.1-SNAPSHOT"]
                  [org.domaindrivenarchitecture/dda-managed-vm "0.1.2-SNAPSHOT"]]
   :profiles {:dev
              {:source-paths ["integration"]
+              :resource-paths ["dev-resources"]
               :dependencies
               [[com.palletops/pallet "0.8.12" :classifier "tests"]
                [org.domaindrivenarchitecture/dda-pallet-commons "0.2.2-SNAPSHOT" :classifier "tests"]
@@ -30,4 +31,4 @@
    :deploy-repositories [["snapshots" :clojars]
                          ["releases" :clojars]]
    :classifiers {:tests {:source-paths ^:replace ["test" "integration"]
-                         :resource-paths ^:replace []}})
+                         :resource-paths ^:replace ["dev-resources"]}})

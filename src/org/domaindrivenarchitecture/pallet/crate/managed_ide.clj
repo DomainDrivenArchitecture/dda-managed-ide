@@ -20,10 +20,10 @@
   )
 
 ; as user
-; sudo apt-get update
-; sudo apt-get install ubuntu-desktop
-; sudo apt-get install tightvncserver 
+; sudo apt install xfce4 xfce4-goodies tightvncserver
 ; vncserver :1 
-; vi .vnc/xstartup
-; sudo reboot now
-; add a new inbound TCP rule for port 590
+; vncserver -kill :1
+; printf '%s\n' '#!/bin/bash' 'xrdb $HOME/.Xresources' 'startxfce4 &' > .vnc/xstartup
+; vncserver
+; ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -L 5901:127.0.0.1:5901 ubuntu@35.156.99.16
+; gtkvncviewer
