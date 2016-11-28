@@ -59,7 +59,8 @@
     :domain-name "meissa-gmbh.de"
     :additional-config 
     {:dda-managed-vm
-     {:ide-user :vmuser}})
+     {:provider "aws"
+      :ide-user :vmuser}})
   )
 
 (def config

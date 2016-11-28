@@ -13,7 +13,8 @@
 (def DdaIdeConfig
   "The configuration for managed ide crate." 
   {
-   ;(s/optional-key provider) aws | virtualbox
+   :provider s/Str   
+   ;aws | virtualbox
    })
 
 (defn default-ide-config
@@ -22,7 +23,8 @@
   )
 
 ; as user
-; sudo apt install xfce4 xfce4-goodies tightvncserver
+; sudo apt install xfce4 xfce4-goodies
+; sudo apt install tightvncserver
 ; vncserver :1 
 ; vncserver -kill :1
 ; printf '%s\n' '#!/bin/bash' 'xrdb $HOME/.Xresources' 'startxfce4 &' > .vnc/xstartup
