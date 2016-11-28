@@ -59,8 +59,9 @@
     :domain-name "meissa-gmbh.de"
     :additional-config 
     {:dda-managed-vm
-     {:provider "aws"
-      :ide-user :vmuser}})
+     {:ide-user :vmuser}
+     :dda-managed-ide 
+     {:provider "aws"}})
   )
 
 (def config
@@ -123,7 +124,7 @@
               init/with-init 
               managed-vm/with-dda-vm]
     :node-spec (aws-node-spec)
-    :count 1))
+    :count 0))
 
 (defn inspect-phase-plan []
   (session-tools/inspect-mock-server-spec
