@@ -12,7 +12,9 @@
     
 (def DdaIdeConfig
   "The configuration for managed ide crate." 
-  {})
+  {
+   ;(s/optional-key provider) aws | virtualbox
+   })
 
 (defn default-ide-config
   "Managed ide crate default configuration"
