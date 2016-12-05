@@ -21,9 +21,10 @@
     [schema.core :as s]
     [org.domaindrivenarchitecture.pallet.crate.managed-ide :as sut]))
 
-(deftest plan-def
+(deftest test-schema
   (testing 
-    "test plan-def" 
-    (is (s/validate sut/DdaIdeConfig {:provider "aws"}))
+    "test the ide schema" 
+    (is (s/validate sut/DdaIdeConfig {:provider :aws}))
+    (is (thrown? Exception (s/validate sut/DdaIdeConfig {:provider :not-supported-provider})))
     (is (thrown? Exception (s/validate sut/DdaIdeConfig {:provider 1})))
     ))

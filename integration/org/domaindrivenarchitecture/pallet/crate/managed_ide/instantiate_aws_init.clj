@@ -138,10 +138,15 @@
       :phase '(:settings :init)
       :user (api/make-user "ubuntu")))
   ([key-id key-passphrase]
-    (inspector/inspect-tree
-      (api/converge
-        (managed-ide-group)
-        :compute (aws-provider key-id key-passphrase)
-        :phase '(:settings :init :install :configure)
-        :user (api/make-user "ubuntu"))))
-)
+    (let [session
+          (api/converge
+            (managed-ide-group)
+            :compute (aws-provider key-id key-passphrase)
+            :phase '(:settings :init :install :configure)
+            :user (api/make-user "ubuntu"))
+          ]
+      (session-tools/emit-xml-to-file 
+        "./session.xml"
+        (session-tools/explain-session-xml session))
+      (inspector/inspect-tree session)
+      )))
