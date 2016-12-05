@@ -3,8 +3,11 @@
 
 (ns org.domaindrivenarchitecture.pallet.crate.managed-ide
   (:require
-    [pallet.api :as api]
     [schema.core :as s]
+    [pallet.api :as api]
+    [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
+    [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-res]
+    [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]
     [org.domaindrivenarchitecture.pallet.crate.managed-ide.base :as base]
     [org.domaindrivenarchitecture.pallet.crate.managed-ide.provider :as provider]))
   
@@ -24,13 +27,13 @@
 
 (s/defn install-system
   "install common used packages for ide"
-  [config :- DdaVmConfig]
+  [config :- DdaIdeConfig]
   (pallet.action/with-action-options 
     {:sudo-user "root"
      :script-dir "/root/"
      :script-env {:HOME (str "/root")}}
     (base/install-xfce-desktop)
-    (provider/install-specific-driver)
+    (provider/install-specific-driver config)
     ))
 
 (s/defmethod dda-crate/dda-install facility 
@@ -46,6 +49,7 @@
   (let [config (dda-crate/merge-config dda-crate partial-effective-config)]
     (package-res/define-resources-packages)
     (package-test/test-installed? "xfce4")
+    (package-test/test-installed? "tightvncserver")
     ))
 
 (def dda-ide-crate

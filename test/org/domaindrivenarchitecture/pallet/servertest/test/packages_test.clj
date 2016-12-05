@@ -24,20 +24,27 @@
     ))
 
 (def packages-resource
-  ["abiword						deinstall"
-   "app-install-data				deinstall"
-   "apt-xapian-index				deinstall"
-   "gnumeric					deinstall"
-   "libabiword-3.0:amd64				deinstall"])
+  ["Desired=Unknown/Install/Remove/Purge/Hold"
+   "| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend"
+   "|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)"
+   "||/ Name                                  Version                                  Architecture Description"
+   "+++-=====================================-========================================-============-==============================================================================="
+   "ii  accountsservice                       0.6.40-2ubuntu11.3                       amd64        query and manipulate user account information"
+   "ii  acl                                   2.2.52-3                                 amd64        Access control list utilities"
+   "ii  acpid                                 1:2.0.26-1ubuntu2                        amd64        Advanced Configuration and Power Interface event daemon"
+   "ii  adduser                               3.113+nmu3ubuntu4                        all          add and remove users and groups"])
 
 (def named-packages-line
-  {:package "abiword"
-   :avail-operation "deinstall"})
+  {:state "ii"
+   :package "accountsservice"
+   :version "0.6.40-2ubuntu11.3"
+   :arch "amd64"
+   :desc "query and manipulate user account information"})
 
 (deftest test-parse
   (testing 
     "test parsing packages-output" 
-      (is (= "abiword"
+      (is (= "accountsservice"
              (:package
                (first (sut/parse-packages packages-resource)))))
       ))
@@ -45,12 +52,12 @@
 (deftest test-filter-installed
   (testing 
     "test for installed in one single line" 
-      (is (sut/filter-installed-package "abiword" named-packages-line))
-      (is (not (sut/filter-installed-package "gnumeric" named-packages-line)))
+      (is (sut/filter-installed-package "accountsservice" named-packages-line))
+      (is (not (sut/filter-installed-package "adduser" named-packages-line)))
       ))
 
 (deftest test-installed
   (testing 
     "test for installed packages" 
-      (is (sut/installed? "gnumeric" packages-resource))
+      (is (sut/installed? "adduser" packages-resource))
       ))

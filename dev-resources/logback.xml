@@ -85,7 +85,7 @@
     <appender-ref ref="CONSOLE" />
   </root>
 
-  <logger name="clj-ssh.ssh" level="ERROR"/>
+  <logger name="clj-ssh.ssh" level="DEBUG"/>
   <logger name="pallet.actions" level="DEBUG"/>
   <logger name="pallet.action-plan" level="DEBUG"/>
   <logger name="pallet.algo.fsm" level="WARN"/>
@@ -98,7 +98,7 @@
   <logger name="pallet.execute" level="DEBUG"/>
   <logger name="pallet.executors" level="INFO"/>
   <logger name="pallet.project" level="INFO"/>
-  <logger name="pallet.stevedore" level="INFO"/>
+  <logger name="pallet.stevedore" level="DEBUG"/>
   <logger name="pallet.ssh.execute" level="DEBUG"/>
   <logger name="pallet.transport" level="DEBUG"/>
 

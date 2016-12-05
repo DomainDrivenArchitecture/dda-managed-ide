@@ -13,19 +13,19 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-
 (ns org.domaindrivenarchitecture.pallet.servertest.test.packages
   (:require
     [schema.core :as s]
     [org.domaindrivenarchitecture.pallet.servertest.tests :as tests]
-    [org.domaindrivenarchitecture.pallet.servertest.facts.packages :as packages-res]
+    [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as packages-res]
     [org.domaindrivenarchitecture.pallet.servertest.scripts.core :refer :all]))
 
 (defn parse-packages
   [packages-resource]
-  (map #(zipmap [:package :avail-operation]
+  (map #(zipmap [:state :package :version :arch :desc]
               (clojure.string/split % #"\s+|/"))
-     packages-resource))
+     (rest (rest (rest (rest (rest packages-resource))))))
+  )
 
 (defn filter-installed-package
   "filter for installed packages."

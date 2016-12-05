@@ -27,6 +27,7 @@
     [org.domaindrivenarchitecture.pallet.crate.config :as config]
     [org.domaindrivenarchitecture.pallet.crate.init :as init]
     [org.domaindrivenarchitecture.pallet.crate.managed-vm :as managed-vm]
+    [org.domaindrivenarchitecture.pallet.crate.managed-ide :as managed-ide]
     [org.domaindrivenarchitecture.pallet.core.cli-helper :as cli-helper])
   (:gen-class :main true))
  
@@ -61,7 +62,7 @@
     {:dda-managed-vm
      {:ide-user :vmuser}
      :dda-managed-ide 
-     {:provider "aws"}})
+     {:provider :aws}})
   )
 
 (def config
@@ -122,7 +123,8 @@
     "managed-ide-group"
     :extends [(config/with-config config) 
               init/with-init 
-              managed-vm/with-dda-vm]
+              managed-vm/with-dda-vm
+              managed-ide/with-dda-ide]
     :node-spec (aws-node-spec)
     :count 0))
 
@@ -142,7 +144,7 @@
           (api/converge
             (managed-ide-group)
             :compute (aws-provider key-id key-passphrase)
-            :phase '(:settings :init :install :configure)
+            :phase '(:settings :init :install :configure :test)
             :user (api/make-user "ubuntu"))
           ]
       (session-tools/emit-xml-to-file 
