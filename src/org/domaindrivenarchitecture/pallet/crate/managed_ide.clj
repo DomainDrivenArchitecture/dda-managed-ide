@@ -1,24 +1,36 @@
-; Copyright (c) meissa GmbH. All rights reserved.
-; You must not remove this notice, or any other, from this software.
-
+; Licensed to the Apache Software Foundation (ASF) under one
+; or more contributor license agreements. See the NOTICE file
+; distributed with this work for additional information
+; regarding copyright ownership. The ASF licenses this file
+; to you under the Apache License, Version 2.0 (the
+; "License"); you may not use this file except in compliance
+; with the License. You may obtain a copy of the License at
+;
+; http://www.apache.org/licenses/LICENSE-2.0
+;
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
 (ns org.domaindrivenarchitecture.pallet.crate.managed-ide
   (:require
+    [clojure.tools.logging :as logging]
     [schema.core :as s]
     [pallet.api :as api]
+    [pallet.actions :as actions]
+    [pallet.crate :as crate]
     [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
-    [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-res]
-    [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide.base :as base]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide.provider :as provider]))
+    [org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure :as clojure]))
   
 (def facility :dda-managed-ide)
 (def version  [0 1 0])
     
 (def DdaIdeConfig
   "The configuration for managed ide crate." 
-  {
-   :provider (s/enum :aws :virtualbox)
-   })
+  {:ide-user s/Keyword
+   (s/optional-key :clojure) clojure/LeiningenUserProfileConfig}
+  )
 
 (defn default-ide-config
   "Managed ide crate default configuration"
@@ -32,24 +44,37 @@
     {:sudo-user "root"
      :script-dir "/root/"
      :script-env {:HOME (str "/root")}}
-    (base/install-xfce-desktop)
-    (provider/install-specific-driver config)
+    (clojure/install-leiningen)
     ))
 
+(s/defn install-user
+  "install common used packages for ide"
+  [config :- DdaIdeConfig]
+  (let [os-user-name (name (-> config :ide-user))]
+    (pallet.action/with-action-options 
+      {:sudo-user os-user-name
+       :script-dir (str "/home/" os-user-name "/")
+       :script-env {:HOME (str "/home/" os-user-name "/")}}
+      (when (contains? config :clojure)
+        (clojure/configure-user-leiningen (-> config :clojure)))
+    )))
+
 (s/defmethod dda-crate/dda-install facility 
-  [dda-crate partial-effective-config]
+  [dda-crate config]
   "dda managed vm: install routine"
-  (let [config (dda-crate/merge-config dda-crate partial-effective-config)
-        ]
-    (install-system config)
+  (println config)
+  (install-system config)
+  (install-user config)
+  )
+
+(s/defmethod dda-crate/dda-settings facility   
+  [dda-crate partial-effective-config]
+  (let [config (dda-crate/merge-config dda-crate partial-effective-config)]
     ))
 
 (s/defmethod dda-crate/dda-test facility   
   [dda-crate partial-effective-config]
   (let [config (dda-crate/merge-config dda-crate partial-effective-config)]
-    (package-res/define-resources-packages)
-    (package-test/test-installed? "xfce4")
-    (package-test/test-installed? "tightvncserver")
     ))
 
 (def dda-ide-crate
@@ -61,12 +86,5 @@
   (dda-crate/create-server-spec dda-ide-crate))
 
 
-; as user
-; sudo apt install xfce4 xfce4-goodies
-; sudo apt install tightvncserver
-; vncserver :1 
-; vncserver -kill :1
-; printf '%s\n' '#!/bin/bash' 'xrdb $HOME/.Xresources' 'startxfce4 &' > .vnc/xstartup
-; vncserver
 ; ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -L 5901:127.0.0.1:5901 ubuntu@35.156.99.16
 ; gtkvncviewer
