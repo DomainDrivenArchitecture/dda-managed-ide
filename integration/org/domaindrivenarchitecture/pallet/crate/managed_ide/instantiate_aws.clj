@@ -22,6 +22,7 @@
     [org.domaindrivenarchitecture.pallet.commons.encrypted-credentials :as crypto]
     [org.domaindrivenarchitecture.pallet.commons.session-tools :as session-tools]
     [org.domaindrivenarchitecture.pallet.commons.pallet-schema :as ps]
+    [org.domaindrivenarchitecture.cm.config :as ide-config]
     [org.domaindrivenarchitecture.cm.group :as group]
     [org.domaindrivenarchitecture.cm.operation :as operation]))
  
@@ -74,15 +75,15 @@
  
 (defn converge-install
   ([count]
-    (operation/do-converge-install (aws-provider) (group/managed-ide-group count (aws-node-spec))))
+    (operation/do-converge-install (aws-provider) (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
   ([key-id key-passphrase count]
-    (operation/do-converge-install (aws-provider key-id key-passphrase) (group/managed-ide-group count (aws-node-spec))))
+    (operation/do-converge-install (aws-provider key-id key-passphrase) (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
   )
 
 (defn server-test
   ([] 
-    (operation/do-server-test (aws-provider) (group/managed-ide-group "ubuntu")))
+    (operation/do-server-test (aws-provider) (group/managed-ide-group ide-config/aws-managed-ide-config "vmuser")))
   ([key-id key-passphrase]
-    (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group "ubuntu")))
+    (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group ide-config/aws-managed-ide-config "vmuser")))
   )
  

@@ -40,24 +40,44 @@
    })
 
 (def os-user
-  {:root   {:authorized-keys [:my-key :matts-key]}
-   :pallet {:authorized-keys [:my-key :matts-key]}
+  {:root   {:authorized-keys [:my-key 
+                              ;:matts-key
+                              ]}
+   :pallet {:authorized-keys [:my-key 
+                              ;:matts-key
+                              ]}
    :vmuser {:encrypted-password "TMctxnmttcODk" ; pw=test
-            :authorized-keys [:my-key :matts-key]}
+              :authorized-keys [:my-key 
+                                ;:matts-key
+                                ]}
+   :fienchen {:encrypted-password "TMctxnmttcODk" ; pw=test
+              :authorized-keys [:my-key]}
    })
 
-(def group-config
-  (node-record/new-node 
-    :host-name "my-vm" 
-    :domain-name "meissa-gmbh.de"
-    :additional-config (convention/ide-convention {:ide-user :vmuser
-                                                   :vm-platform :aws
-                                                   :dev-platform :clojure}))
+(defn aws-group-config [vm-paltform]
   )
 
-(def managed-ide-config
+(def vbox-managed-ide-config
+  {:ssh-keys ssh-keys
+   :os-user os-user   
+   :group-specific-config {:managed-ide-group 
+                           (node-record/new-node 
+                             :host-name "my-vm" 
+                             :domain-name "meissa-gmbh.de"
+                             :additional-config (convention/ide-convention {:ide-user :finchen
+                                                                            :vm-platform :virtualbox
+                                                                            :dev-platform :clojure}))}
+   })
+
+(def aws-managed-ide-config
   {:ssh-keys ssh-keys
    :os-user os-user
-   :group-specific-config {:managed-ide-group group-config}
+   :group-specific-config {:managed-ide-group 
+                           (node-record/new-node 
+                             :host-name "my-vm" 
+                             :domain-name "meissa-gmbh.de"
+                             :additional-config (convention/ide-convention {:ide-user :vmuser
+                                                                            :vm-platform :aws
+                                                                            :dev-platform :clojure}))}
    })
  

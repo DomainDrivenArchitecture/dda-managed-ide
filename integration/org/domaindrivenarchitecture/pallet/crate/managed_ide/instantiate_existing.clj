@@ -21,6 +21,7 @@
     [pallet.compute.node-list :as node-list]
     [org.domaindrivenarchitecture.pallet.commons.session-tools :as session-tools]
     [org.domaindrivenarchitecture.pallet.commons.pallet-schema :as ps]
+    [org.domaindrivenarchitecture.cm.config :as ide-config]
     [org.domaindrivenarchitecture.cm.group :as group]
     [org.domaindrivenarchitecture.cm.operation :as operation]))
 
@@ -28,7 +29,7 @@
   (node-list/make-node 
     "mmanaged-ide" 
     "managed-ide-group" 
-    "35.156.245.56"
+    "192.168.56.102"
     :ubuntu
     :id :meissa-ide))
 
@@ -37,12 +38,13 @@
     "node-list"
     :node-list [remote-node]))
 
-(defn install
+(defn apply-install
   ([]
-    (operation/do-apply-install provider (group/managed-ide-group "ubuntu")))
+    (operation/do-apply-install provider (group/managed-ide-group ide-config/vbox-managed-ide-config {:login "initial"
+                                                                                                      :password "test1234"})))
   )
 
-(defn vm-test
+(defn server-test
   ([] 
-    (operation/do-server-test provider (group/managed-ide-group "ubuntu")))
+    (operation/do-server-test provider (group/managed-ide-group ide-config/vbox-managed-ide-config "fienchen")))
   )

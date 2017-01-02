@@ -20,25 +20,24 @@
     [org.domaindrivenarchitecture.pallet.crate.config :as config]
     [org.domaindrivenarchitecture.pallet.crate.managed-vm :as managed-vm]
     [org.domaindrivenarchitecture.pallet.crate.managed-ide :as managed-ide]
-    [org.domaindrivenarchitecture.pallet.crate.backup :as backup]
-    [org.domaindrivenarchitecture.cm.config :as ide-config]))
+    [org.domaindrivenarchitecture.pallet.crate.backup :as backup]))
  
 (defn managed-ide-group 
-  ([login-user]
+  ([config provision-user]
     (api/group-spec
       "managed-ide-group"
-      :extends [(config/with-config ide-config/managed-ide-config) 
+      :extends [(config/with-config config) 
                 init/with-init 
                 managed-vm/with-dda-vm
                 managed-ide/with-dda-ide
                 ;backup/with-backup
                 ]
-      :node-spec {:image {:login-user login-user}}
+      :node-spec {:image {:login-user provision-user}}
       ))
-  ([count node-spec]
+  ([count config node-spec]
     (api/group-spec
       "managed-ide-group"
-      :extends [(config/with-config ide-config/managed-ide-config) 
+      :extends [(config/with-config config) 
                 init/with-init 
                 managed-vm/with-dda-vm
                 managed-ide/with-dda-ide
