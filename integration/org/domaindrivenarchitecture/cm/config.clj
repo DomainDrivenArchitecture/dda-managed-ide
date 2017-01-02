@@ -40,18 +40,10 @@
    })
 
 (def os-user
-  {:root   {:authorized-keys [:my-key 
-                              ;:matts-key
-                              ]}
-   :pallet {:authorized-keys [:my-key 
-                              ;:matts-key
-                              ]}
+  {:root   {:authorized-keys [:my-key :matts-key]}
+   :pallet {:authorized-keys [:my-key :matts-key]}
    :vmuser {:encrypted-password "TMctxnmttcODk" ; pw=test
-              :authorized-keys [:my-key 
-                                ;:matts-key
-                                ]}
-   :fienchen {:encrypted-password "TMctxnmttcODk" ; pw=test
-              :authorized-keys [:my-key]}
+              :authorized-keys [:my-key :matts-key]}
    })
 
 (defn aws-group-config [vm-paltform]
@@ -64,7 +56,7 @@
                            (node-record/new-node 
                              :host-name "my-vm" 
                              :domain-name "meissa-gmbh.de"
-                             :additional-config (convention/ide-convention {:ide-user :finchen
+                             :additional-config (convention/ide-convention {:ide-user :vmuser
                                                                             :vm-platform :virtualbox
                                                                             :dev-platform :clojure}))}
    })
