@@ -24,7 +24,12 @@
 (deftest test-schema
   (testing 
     "test the ide schema" 
-    (is (s/validate sut/DdaIdeConfig {:provider :aws}))
-    (is (thrown? Exception (s/validate sut/DdaIdeConfig {:provider :not-supported-provider})))
-    (is (thrown? Exception (s/validate sut/DdaIdeConfig {:provider 1})))
+    (is (s/validate sut/DdaIdeConfig {:ide-user :some-user}))
+    (is (thrown? Exception (s/validate sut/DdaIdeConfig {:unsuported-key :unsupported-value})))
+    ))
+
+(deftest plan-def
+  (testing 
+    "test plan-def" 
+    (is sut/with-dda-ide)
     ))

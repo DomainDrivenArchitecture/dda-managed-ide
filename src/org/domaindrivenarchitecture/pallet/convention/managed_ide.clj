@@ -6,7 +6,7 @@
     [schema.core :as s]
     [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
     [org.domaindrivenarchitecture.pallet.crate.managed-ide :as crate]
-    [org.domaindrivenarchitecture.pallet.convention.managed-vm :as vm-crate]
+    [org.domaindrivenarchitecture.pallet.crate.managed-vm :as vm-crate]
     [org.domaindrivenarchitecture.pallet.crate.backup :as backup-crate]
     [org.domaindrivenarchitecture.pallet.convention.managed-vm :as vm-convention]))
 
@@ -16,12 +16,12 @@
    :vm-platform (s/enum :virtualbox :aws :other)
    :dev-platform (s/enum :clojure)})
 
-(s/defn default-ide-backup-config
+(s/defn default-ide-backup-config :- backup-crate/BackupConfig
   "Managed vm crate default configuration"
   [user-key :- s/Keyword]
   (vm-convention/default-vm-backup-config user-key))
 
-(defn default-ide-config
+(s/defn default-ide-config :- crate/DdaIdeConfig
   "Managed vm crate default configuration"
   [user-name dev-platform]
   (map-utils/deep-merge 
@@ -31,7 +31,7 @@
     ))
 
 (s/defn ide-convention :- {:dda-managed-ide crate/DdaIdeConfig
-                           :dda-managed-vm vm-crate/DdaVmConventionConfig
+                           :dda-managed-vm vm-crate/DdaVmConfig
                            :dda-backup backup-crate/BackupConfig}
   [convention-config :- DdaIdeConventionConfig]
   (let [user-key (:ide-user convention-config)
