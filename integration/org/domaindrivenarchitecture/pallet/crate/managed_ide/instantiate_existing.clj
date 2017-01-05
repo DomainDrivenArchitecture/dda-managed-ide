@@ -29,7 +29,7 @@
   (node-list/make-node 
     "mmanaged-ide" 
     "managed-ide-group" 
-    "192.168.56.102"
+    "192.168.56.105"
     :ubuntu
     :id :meissa-ide))
 
