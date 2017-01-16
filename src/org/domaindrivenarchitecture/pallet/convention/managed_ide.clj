@@ -11,10 +11,10 @@
     [org.domaindrivenarchitecture.pallet.convention.managed-vm :as vm-convention]))
 
 (def DdaIdeConventionConfig
-  "The convention configuration for managed vms crate." 
-  {:ide-user s/Keyword
-   :vm-platform (s/enum :virtualbox :aws :other)
-   :dev-platform (s/enum :clojure)})
+  "The convention configuration for managed vms crate."
+  (merge
+    vm-convention/DdaVmConventionConfig
+    {:dev-platform (s/enum :clojure)}))
 
 (s/defn default-ide-backup-config :- backup-crate/BackupConfig
   "Managed vm crate default configuration"

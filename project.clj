@@ -24,8 +24,7 @@
                [ch.qos.logback/logback-classic "1.1.8"]
                [org.slf4j/jcl-over-slf4j "1.7.22"]]
               :plugins
-              [[com.palletops/pallet-lein "0.8.0-alpha.1"]
-               [lein-sub "0.3.0"]]}
+              [[lein-sub "0.3.0"]]}
               :leiningen/reply
                {:dependencies [[org.slf4j/jcl-over-slf4j "1.7.22"]]
                 :exclusions [commons-logging]}}
