@@ -77,7 +77,7 @@
 
 (s/defmethod dda-crate/dda-settings facility   
   [dda-crate partial-effective-config]
-  (package-fact/collect-packages-fact)
+  ;(package-fact/collect-packages-fact)
   )
 
 (s/defmethod dda-crate/dda-test facility   
@@ -92,7 +92,3 @@
 
 (def with-dda-ide
   (dda-crate/create-server-spec dda-ide-crate))
-
-
-; ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -L 5901:127.0.0.1:5901 ubuntu@35.156.99.16
-; gtkvncviewer
