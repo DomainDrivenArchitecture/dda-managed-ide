@@ -21,7 +21,10 @@
     [pallet.actions :as actions]
     [pallet.crate :as crate]
     [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure :as clojure]))
+    [org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure :as clojure]
+    [org.domaindrivenarchitecture.pallet.crate.managed-ide.atom :as atom]
+    [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-fact]
+    [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]))
   
 (def facility :dda-managed-ide)
 (def version  [0 1 0])
@@ -29,7 +32,8 @@
 (def DdaIdeConfig
   "The configuration for managed ide crate." 
   {:ide-user s/Keyword
-   (s/optional-key :clojure) clojure/LeiningenUserProfileConfig}
+   (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
+   (s/optional-key :settings) (hash-set (s/enum :install-atom))}
   )
 
 (defn default-ide-config
@@ -40,12 +44,16 @@
 (s/defn install-system
   "install common used packages for ide"
   [config :- DdaIdeConfig]
-  (pallet.action/with-action-options 
-    {:sudo-user "root"
-     :script-dir "/root/"
-     :script-env {:HOME (str "/root")}}
-    (clojure/install-leiningen)
-    ))
+  (let [settings (-> config :settings)]
+    (pallet.action/with-action-options 
+      {:sudo-user "root"
+       :script-dir "/root/"
+       :script-env {:HOME (str "/root")}}
+      (when (contains? config :clojure)
+        (clojure/install-leiningen))
+      (when (contains? settings :install-atom)
+        (atom/install))
+      )))
 
 (s/defn install-user
   "install common used packages for ide"
@@ -69,13 +77,13 @@
 
 (s/defmethod dda-crate/dda-settings facility   
   [dda-crate partial-effective-config]
-  (let [config (dda-crate/merge-config dda-crate partial-effective-config)]
-    ))
+  (package-fact/collect-packages-fact)
+  )
 
 (s/defmethod dda-crate/dda-test facility   
   [dda-crate partial-effective-config]
-  (let [config (dda-crate/merge-config dda-crate partial-effective-config)]
-    ))
+  (package-test/test-installed? "xxxx")
+  )
 
 (def dda-ide-crate
   (dda-crate/make-dda-crate

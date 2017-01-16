@@ -82,8 +82,8 @@
 
 (defn server-test
   ([] 
-    (operation/do-server-test (aws-provider) (group/managed-ide-group ide-config/aws-managed-ide-config "vmuser")))
+    (operation/do-server-test (aws-provider) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
   ([key-id key-passphrase]
-    (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group ide-config/aws-managed-ide-config "vmuser")))
+    (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
   )
  

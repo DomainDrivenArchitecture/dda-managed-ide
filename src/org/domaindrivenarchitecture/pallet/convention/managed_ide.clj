@@ -27,7 +27,8 @@
   (map-utils/deep-merge 
     {:ide-user user-name}
     (cond 
-      (= dev-platform :clojure) {:clojure {:os-user-name user-name}})        
+      (= dev-platform :clojure) {:clojure {:os-user-name user-name}
+                                 :settings #{:install-atom}})        
     ))
 
 (s/defn ide-convention :- {:dda-managed-ide crate/DdaIdeConfig
