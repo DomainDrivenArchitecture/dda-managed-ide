@@ -36,11 +36,6 @@
    (s/optional-key :settings) (hash-set (s/enum :install-atom))}
   )
 
-(defn default-ide-config
-  "Managed ide crate default configuration"
-  []
-  )
-
 (s/defn install-system
   "install common used packages for ide"
   [config :- DdaIdeConfig]
