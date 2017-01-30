@@ -21,7 +21,10 @@
     [pallet.actions :as actions]
     [pallet.crate :as crate]
     [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure :as clojure]))
+    [org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure :as clojure]
+    [org.domaindrivenarchitecture.pallet.crate.managed-ide.atom :as atom]
+    [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-fact]
+    [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]))
   
 (def facility :dda-managed-ide)
 (def version  [0 1 0])
@@ -29,12 +32,9 @@
 (def DdaIdeConfig
   "The configuration for managed ide crate." 
   {:ide-user s/Keyword
-   (s/optional-key :clojure) clojure/LeiningenUserProfileConfig}
-  )
-
-(defn default-ide-config
-  "Managed ide crate default configuration"
-  []
+   (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
+   (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))}
+  }
   )
 
 (s/defn install-system
@@ -44,7 +44,10 @@
     {:sudo-user "root"
      :script-dir "/root/"
      :script-env {:HOME (str "/root")}}
-    (clojure/install-leiningen)
+    (when (contains? config :clojure)
+      (clojure/install-leiningen))
+    (when (contains? config :atom)
+      (atom/install config))
     ))
 
 (s/defn install-user
@@ -69,13 +72,13 @@
 
 (s/defmethod dda-crate/dda-settings facility   
   [dda-crate partial-effective-config]
-  (let [config (dda-crate/merge-config dda-crate partial-effective-config)]
-    ))
+  ;(package-fact/collect-packages-fact)
+  )
 
 (s/defmethod dda-crate/dda-test facility   
   [dda-crate partial-effective-config]
-  (let [config (dda-crate/merge-config dda-crate partial-effective-config)]
-    ))
+  (package-test/test-installed? "atom")
+  )
 
 (def dda-ide-crate
   (dda-crate/make-dda-crate
@@ -84,7 +87,3 @@
 
 (def with-dda-ide
   (dda-crate/create-server-spec dda-ide-crate))
-
-
-; ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -L 5901:127.0.0.1:5901 ubuntu@35.156.99.16
-; gtkvncviewer

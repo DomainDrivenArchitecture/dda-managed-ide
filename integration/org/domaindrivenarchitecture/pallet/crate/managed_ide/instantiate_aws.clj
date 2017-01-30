@@ -77,13 +77,15 @@
   ([count]
     (operation/do-converge-install (aws-provider) (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
   ([key-id key-passphrase count]
-    (operation/do-converge-install (aws-provider key-id key-passphrase) (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
+    (operation/do-converge-install 
+      (aws-provider key-id key-passphrase) 
+      (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
   )
 
 (defn server-test
   ([] 
-    (operation/do-server-test (aws-provider) (group/managed-ide-group ide-config/aws-managed-ide-config "vmuser")))
+    (operation/do-server-test (aws-provider) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
   ([key-id key-passphrase]
-    (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group ide-config/aws-managed-ide-config "vmuser")))
+    (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
   )
  
