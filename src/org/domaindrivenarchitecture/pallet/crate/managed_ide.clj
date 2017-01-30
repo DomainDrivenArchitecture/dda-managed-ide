@@ -33,22 +33,22 @@
   "The configuration for managed ide crate." 
   {:ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
-   (s/optional-key :settings) (hash-set (s/enum :install-atom))}
+   (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))}
+  }
   )
 
 (s/defn install-system
   "install common used packages for ide"
   [config :- DdaIdeConfig]
-  (let [settings (-> config :settings)]
-    (pallet.action/with-action-options 
-      {:sudo-user "root"
-       :script-dir "/root/"
-       :script-env {:HOME (str "/root")}}
-      (when (contains? config :clojure)
-        (clojure/install-leiningen))
-      (when (contains? settings :install-atom)
-        (atom/install))
-      )))
+  (pallet.action/with-action-options 
+    {:sudo-user "root"
+     :script-dir "/root/"
+     :script-env {:HOME (str "/root")}}
+    (when (contains? config :clojure)
+      (clojure/install-leiningen))
+    (when (contains? config :atom)
+      (atom/install config))
+    ))
 
 (s/defn install-user
   "install common used packages for ide"
@@ -77,7 +77,7 @@
 
 (s/defmethod dda-crate/dda-test facility   
   [dda-crate partial-effective-config]
-  (package-test/test-installed? "xxxx")
+  (package-test/test-installed? "atom")
   )
 
 (def dda-ide-crate

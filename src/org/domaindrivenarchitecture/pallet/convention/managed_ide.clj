@@ -23,12 +23,15 @@
 
 (s/defn default-ide-config :- crate/DdaIdeConfig
   "Managed vm crate default configuration"
-  [user-name dev-platform]
+  [user-name dev-platform vm-platform]
   (map-utils/deep-merge 
     {:ide-user user-name}
     (cond 
       (= dev-platform :clojure) {:clojure {:os-user-name user-name}
-                                 :settings #{:install-atom}})        
+                                 :atom {:settings (if (= vm-platform :aws) 
+                                                    #{:install-aws-workaround}
+                                                    #{})}
+                                 })        
     ))
 
 (s/defn ide-convention :- {:dda-managed-ide crate/DdaIdeConfig
@@ -39,7 +42,7 @@
         user-name (name user-key)
         vm-platform (:vm-platform convention-config)
         dev-platform (:dev-platform convention-config)]  
-    {:dda-managed-ide (default-ide-config user-name dev-platform)
+    {:dda-managed-ide (default-ide-config user-name dev-platform vm-platform)
      :dda-managed-vm (vm-convention/default-vm-config user-key vm-platform)
      :dda-backup (default-ide-backup-config user-key)}
   ))

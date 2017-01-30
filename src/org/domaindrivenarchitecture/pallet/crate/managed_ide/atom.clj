@@ -21,17 +21,22 @@
     [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
     [org.domaindrivenarchitecture.pallet.crate.util :as util]))
 
-(defn install [] 
-  (actions/package "python")
-  (actions/package "gvfs-bin")
-  (actions/remote-file 
-    "/tmp/atom.deb" 
-    :owner "root" 
-    :group "users"
-    :mode "600"
-    :url "https://atom.io/download/deb")
-  ;dpgk -i /tmp/atom.deb
-  ;cp /usr/lib/x86_64-linux-gnu/libxcb.so.1 /usr/share/atom/
-  ;cd /usr/share/atom/
-  ;sed -i 's/BIG-REQUESTS/_IG-REQUESTS/' libxcb.so.1
+(defn install [config]
+  (let [settings (-> config :atom :settings)]
+    (actions/package "python")
+    (actions/package "gvfs-bin")
+    (actions/remote-file 
+      "/tmp/atom.deb" 
+      :owner "root" 
+      :group "users"
+      :mode "600"
+      :url "https://atom.io/download/deb")
+    (actions/exec-script ("dpkg" "-i" "/tmp/atom.deb"))
+    (when (contains? settings :install-aws-workaround)
+      (actions/exec-checked-script 
+        "aws-atom-workaround"
+        ("cp" "/usr/lib/x86_64-linux-gnu/libxcb.so.1" "/usr/share/atom/")
+        ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1"))
+      )
+    )
   )

@@ -101,5 +101,6 @@
   <logger name="pallet.stevedore" level="DEBUG"/>
   <logger name="pallet.ssh.execute" level="DEBUG"/>
   <logger name="pallet.transport" level="DEBUG"/>
+  <logger name="org.domaindrivenarchitecture.pallet" level="DEBUG"/>
 
 </configuration>
