@@ -12,7 +12,7 @@
 
 (def ^:dynamic dda-projects
   {:dda-pallet
-    ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
+   ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
     "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
     "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
     "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
@@ -48,7 +48,8 @@
   (map-utils/deep-merge 
     {:ide-user user-name}
     (cond 
-      (= dev-platform :clojure) {:clojure {:os-user-name user-name}
+      (= dev-platform :clojure) {:project-config dda-projects
+                                 :clojure {:os-user-name user-name}
                                  :atom {:settings (if (= vm-platform :aws) 
                                                     #{:install-aws-workaround}
                                                     #{})}
