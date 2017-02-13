@@ -31,8 +31,8 @@
 (def version  [0 1 0])
     
 (def GitProjectConfig
-"Configuration of projects clone location"
-{s/Keyword [s/Str]})
+  "Configuration of projects clone location"
+  {s/Keyword [s/Str]})
 
 (def DdaIdeConfig
   "The configuration for managed ide crate." 
@@ -40,7 +40,7 @@
    :ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))}
-  }
+   }
   )
 
 (s/defn install-system
@@ -69,8 +69,9 @@
       (when (contains? config :clojure)
         (clojure/configure-user-leiningen (-> config :clojure)))
       (when (contains? config :project-config)
-      (dev-repos/clone-projects os-user-name git-user-name :project-config project-config)
-    ))))
+        (dev-repos/clone-projects os-user-name git-user-name :project-config project-config))
+      ))
+  )
 
 (s/defmethod dda-crate/dda-install facility 
   [dda-crate config]
