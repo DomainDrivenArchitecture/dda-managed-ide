@@ -10,6 +10,27 @@
     [org.domaindrivenarchitecture.pallet.crate.backup :as backup-crate]
     [org.domaindrivenarchitecture.pallet.convention.managed-vm :as vm-convention]))
 
+(def ^:dynamic dda-projects
+  {:dda-pallet
+    ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
+    "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
+    "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
+    "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-iptables-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-provider-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-init-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-mysql-crate.git"
+    "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-linkeddata-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
+    "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
+    "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"]})
+
 (def DdaIdeConventionConfig
   "The convention configuration for managed vms crate."
   (merge
@@ -24,11 +45,12 @@
 (s/defn default-ide-config :- crate/DdaIdeConfig
   "Managed vm crate default configuration"
   [user-name dev-platform]
-  (map-utils/deep-merge 
+  (map-utils/deep-merge
     {:ide-user user-name}
-    (cond 
+    (cond
       (= dev-platform :clojure) {:clojure {:os-user-name user-name}
-                                 :settings #{:install-atom}})        
+                                 :settings #{:install-atom}})
+    {:project-config dda-projects}
     ))
 
 (s/defn ide-convention :- {:dda-managed-ide crate/DdaIdeConfig
@@ -38,7 +60,7 @@
   (let [user-key (:ide-user convention-config)
         user-name (name user-key)
         vm-platform (:vm-platform convention-config)
-        dev-platform (:dev-platform convention-config)]  
+        dev-platform (:dev-platform convention-config)]
     {:dda-managed-ide (default-ide-config user-name dev-platform)
      :dda-managed-vm (vm-convention/default-vm-config user-key vm-platform)
      :dda-backup (default-ide-backup-config user-key)}

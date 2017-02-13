@@ -16,7 +16,7 @@
 (ns org.domaindrivenarchitecture.pallet.crate.managed-ide.instantiate-existing
   (:require
     [clojure.inspector :as inspector]
-    [pallet.api :as api]      
+    [pallet.api :as api]
     [pallet.compute :as compute]
     [pallet.compute.node-list :as node-list]
     [org.domaindrivenarchitecture.pallet.commons.session-tools :as session-tools]
@@ -26,10 +26,10 @@
     [org.domaindrivenarchitecture.cm.operation :as operation]))
 
 (def remote-node
-  (node-list/make-node 
-    "mmanaged-ide" 
-    "managed-ide-group" 
-    "192.168.56.105"
+  (node-list/make-node
+    "managed-ide"
+    "managed-ide-group"
+    "192.168.56.101"
     :ubuntu
     :id :meissa-ide))
 
@@ -45,6 +45,6 @@
   )
 
 (defn server-test
-  ([] 
+  ([]
     (operation/do-server-test provider (group/managed-ide-group ide-config/vbox-managed-ide-config "fienchen")))
   )
