@@ -23,19 +23,19 @@
     [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
     [org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure :as clojure]
     [org.domaindrivenarchitecture.pallet.crate.managed-ide.atom :as atom]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide.dev-repos :as dev-repos]
+    [org.domaindrivenarchitecture.pallet.crate.managed-ide.repos :as repos]
     [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-fact]
     [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]))
-  
+
 (def facility :dda-managed-ide)
 (def version  [0 1 0])
-    
+
 (def GitProjectConfig
   "Configuration of projects clone location"
   {s/Keyword [s/Str]})
 
 (def DdaIdeConfig
-  "The configuration for managed ide crate." 
+  "The configuration for managed ide crate."
   {:project-config GitProjectConfig
    :ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
@@ -46,7 +46,7 @@
 (s/defn install-system
   "install common used packages for ide"
   [config :- DdaIdeConfig]
-  (pallet.action/with-action-options 
+  (pallet.action/with-action-options
     {:sudo-user "root"
      :script-dir "/root/"
      :script-env {:HOME (str "/root")}}
@@ -62,18 +62,18 @@
   (let [os-user-name (name (-> config :ide-user))
   git-user-name (:git-user-name config)
   project-config (:project-config config)]
-    (pallet.action/with-action-options 
+    (pallet.action/with-action-options
       {:sudo-user os-user-name
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
       (when (contains? config :clojure)
         (clojure/configure-user-leiningen (-> config :clojure)))
       (when (contains? config :project-config)
-        (dev-repos/clone-projects os-user-name git-user-name :project-config project-config))
+        (repos/clone-projects os-user-name git-user-name :project-config project-config))
       ))
   )
 
-(s/defmethod dda-crate/dda-install facility 
+(s/defmethod dda-crate/dda-install facility
   [dda-crate config]
   "dda managed vm: install routine"
   (println config)
@@ -81,12 +81,12 @@
   (install-user config)
   )
 
-(s/defmethod dda-crate/dda-settings facility   
+(s/defmethod dda-crate/dda-settings facility
   [dda-crate partial-effective-config]
   ;(package-fact/collect-packages-fact)
   )
 
-(s/defmethod dda-crate/dda-test facility   
+(s/defmethod dda-crate/dda-test facility
   [dda-crate partial-effective-config]
   (package-test/test-installed? "atom")
   )

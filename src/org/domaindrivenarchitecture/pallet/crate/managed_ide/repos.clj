@@ -61,3 +61,22 @@
             (str "ssh://" git-user-name "@" url))  ; ... else add git-user-name
           :checkout-dir current-repo-path))
       )))
+
+(defn clone-project-repositories
+  "clone repositories of one given project"
+  [os-user-name git-user-name project-key project-repositories
+   & {:keys [project-parent-path]
+      :or {project-parent-path "/code/"}}]
+  (clone-repos
+    :project-name (name project-key)
+    :os-user-name os-user-name
+    :project-parent-path project-parent-path
+    :git-user-name git-user-name
+    :ssh-repo-urls project-repositories))
+
+(defn clone-projects
+  "clone all projects repositories to ~/code"
+  [os-user-name git-user-name
+   & {:keys [project-config]}]
+  (doseq [[project-key project-repositories] project-config]
+    (clone-project-repositories os-user-name git-user-name project-key project-repositories)))
