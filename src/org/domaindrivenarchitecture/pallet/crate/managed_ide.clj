@@ -23,15 +23,21 @@
     [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
     [org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure :as clojure]
     [org.domaindrivenarchitecture.pallet.crate.managed-ide.atom :as atom]
+    [org.domaindrivenarchitecture.pallet.crate.managed-ide.dev-repos :as dev-repos]
     [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-fact]
     [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]))
   
 (def facility :dda-managed-ide)
 (def version  [0 1 0])
     
+(def GitProjectConfig
+"Configuration of projects clone location"
+{s/Keyword [s/Str]})
+
 (def DdaIdeConfig
   "The configuration for managed ide crate." 
-  {:ide-user s/Keyword
+  {:project-config GitProjectConfig
+   :ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))}
   }
@@ -53,14 +59,18 @@
 (s/defn install-user
   "install common used packages for ide"
   [config :- DdaIdeConfig]
-  (let [os-user-name (name (-> config :ide-user))]
+  (let [os-user-name (name (-> config :ide-user))
+  git-user-name (:git-user-name config)
+  project-config (:project-config config)]
     (pallet.action/with-action-options 
       {:sudo-user os-user-name
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
       (when (contains? config :clojure)
         (clojure/configure-user-leiningen (-> config :clojure)))
-    )))
+      (when (contains? config :project-config)
+      (dev-repos/clone-projects os-user-name git-user-name :project-config project-config)
+    ))))
 
 (s/defmethod dda-crate/dda-install facility 
   [dda-crate config]

@@ -10,6 +10,27 @@
     [org.domaindrivenarchitecture.pallet.crate.backup :as backup-crate]
     [org.domaindrivenarchitecture.pallet.convention.managed-vm :as vm-convention]))
 
+(def ^:dynamic dda-projects
+  {:dda-pallet
+    ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
+    "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
+    "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
+    "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-iptables-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-provider-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-init-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-mysql-crate.git"
+    "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-linkeddata-crate.git"
+    "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
+    "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
+    "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"]})
+
 (def DdaIdeConventionConfig
   "The convention configuration for managed vms crate."
   (merge
