@@ -39,7 +39,8 @@
   {:project-config GitProjectConfig
    :ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
-   (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))}
+   (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
+                           :plugins [s/Str]}
    }
   )
 
