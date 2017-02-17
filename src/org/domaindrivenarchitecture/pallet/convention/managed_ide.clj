@@ -53,7 +53,7 @@
                                  :atom {:settings (if (= vm-platform :aws) 
                                                     #{:install-aws-workaround}
                                                     #{})
-                                        :plugins ["proto-repl"]}
+                                        :plugins ["proto-repl" "ink"]}
                                  })        
     ))
 
