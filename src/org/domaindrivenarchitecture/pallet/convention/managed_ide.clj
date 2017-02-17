@@ -52,7 +52,8 @@
                                  :clojure {:os-user-name user-name}
                                  :atom {:settings (if (= vm-platform :aws) 
                                                     #{:install-aws-workaround}
-                                                    #{})}
+                                                    #{})
+                                        :plugins ["proto-repl"]}
                                  })        
     ))
 
