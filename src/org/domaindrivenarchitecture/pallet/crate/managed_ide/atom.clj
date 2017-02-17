@@ -39,8 +39,8 @@
         ("cp" "/usr/lib/x86_64-linux-gnu/libxcb.so.1" "/usr/share/atom/")
         ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1"))
       )
-    (when (or true (contains? atom-config :plugins))
-      (let [plugins ["proto-repl"]]
+    (when (contains? atom-config :plugins)
+      (let [plugins (-> atom-config :plugins)]
         (doseq [plugin plugins]
           (actions/exec-checked-script
             (str "install-apm-plugin" plugin)
