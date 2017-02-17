@@ -22,7 +22,8 @@
     [org.domaindrivenarchitecture.pallet.crate.util :as util]))
 
 (defn install [config]
-  (let [settings (-> config :atom :settings)]
+  (let [atom-config (-> config :atom)
+        settings (-> atom-config :settings)]
     (actions/package "python")
     (actions/package "gvfs-bin")
     (actions/remote-file 
@@ -38,5 +39,11 @@
         ("cp" "/usr/lib/x86_64-linux-gnu/libxcb.so.1" "/usr/share/atom/")
         ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1"))
       )
+    (when (or true (contains? atom-config :plugins))
+      (let [plugins ["proto-repl"]]
+        (doseq [plugin plugins]
+          (actions/exec-checked-script
+            (str "install-apm-plugin" plugin)
+            ("apm install" ~plugin)))))
     )
   )
