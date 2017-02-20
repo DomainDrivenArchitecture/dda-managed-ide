@@ -16,13 +16,15 @@
 
 (ns org.domaindrivenarchitecture.pallet.crate.managed-ide.atom
   (:require
-    [schema.core :as s]
-    [pallet.actions :as actions]
+    [schema.core :as s]    
+    [clojure.tools.logging :as logging]
+    [pallet.actions :as actions]    
     [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
     [org.domaindrivenarchitecture.pallet.crate.util :as util]))
 
 (defn install [config]
-  (let [settings (-> config :atom :settings)]
+  (let [atom-config (-> config :atom)
+        settings (-> atom-config :settings)]
     (actions/package "python")
     (actions/package "gvfs-bin")
     (actions/remote-file 
@@ -37,6 +39,18 @@
         "aws-atom-workaround"
         ("cp" "/usr/lib/x86_64-linux-gnu/libxcb.so.1" "/usr/share/atom/")
         ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1"))
+      )
+    )
+  )
+
+(defn install-user-plugins [config]
+  (let [atom-config (-> config :atom)]
+    (when (contains? atom-config :plugins)
+      (let [plugins (-> atom-config :plugins)]
+        (doseq [plugin plugins]
+          (actions/exec-checked-script
+            (str "install-apm-plugin-" plugin)
+            ("apm install" ~plugin))))
       )
     )
   )
