@@ -71,6 +71,8 @@
         (clojure/configure-user-leiningen (-> config :clojure)))
       (when (contains? config :project-config)
         (repos/clone-projects os-user-name git-user-name :project-config project-config))
+      (when (contains? config :atom)
+        (atom/install-user-plugins config))
       ))
   )
 
