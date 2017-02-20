@@ -46,7 +46,8 @@
   "Managed vm crate default configuration"
   [user-key dev-platform vm-platform]
   (map-utils/deep-merge 
-    {:ide-user user-key}
+    {:ide-user user-key
+     :project-config dda-projects}
     (cond 
       (= dev-platform :clojure) {:clojure {:os-user-name (name user-key)}
                                  :atom {:settings (if (= vm-platform :aws) 
