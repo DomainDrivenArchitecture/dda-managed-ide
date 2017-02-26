@@ -1,4 +1,4 @@
-# dda-kkknaged-ide
+# dda-managed-ide
 dda-pallet is a DevOps System combining the great framework pallet from Hugo Duncan and principles of Domain Driven Design (overview can be found here: https://domaindrivenarchitecture.org/pages/dda-pallet/ ).
 
 The Module dda-managed-ide is able to automate the setup of your personal ide in a repeatable manner.
@@ -38,7 +38,7 @@ This crate is working with:
  * clojure 1.7
  * pallet 0.8
  * ubuntu 14.04
- 
+
 # License
 Published under Apache2.0 License.
 
