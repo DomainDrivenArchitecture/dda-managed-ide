@@ -7,7 +7,7 @@ The Module dda-managed-ide is able to automate the setup of your personal ide in
 Define your credentials in your users home:
 ~/.pallet/config.clj
 
-```
+```clojure
 (defpallet
   :services
     {:aws
