@@ -41,6 +41,7 @@
        ['lein-cloverage "1.0.6"]
        ['jonase/eastwood "0.2.3"]
        ['lein-kibit "0.1.2"]
+       ['nightlight/lein-nightlight "1.6.1"]
        ['lein-ancient "0.6.10"]]
       :dependencies [['pjstadig/humane-test-output "0.7.1"]]
       :injections ['(require 'pjstadig.humane-test-output)

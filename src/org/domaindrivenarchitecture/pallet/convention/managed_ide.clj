@@ -35,7 +35,8 @@
   "The convention configuration for managed vms crate."
   {:ide-user s/Keyword
    :vm-platform (s/enum :virtualbox :aws)
-   :dev-platform (s/enum :clojure)})
+   :dev-platform (s/enum :clojure-atom :clojure-nightlight)
+   })
 
 (s/defn default-ide-backup-config :- backup-crate/BackupConfig
   "Managed vm crate default configuration"
@@ -49,18 +50,19 @@
     {:ide-user user-key
      :project-config dda-projects}
     (cond 
-      (= dev-platform :clojure) {:clojure {:os-user-name (name user-key)}
-                                 :atom {:settings (if (= vm-platform :aws) 
-                                                    #{:install-aws-workaround}
-                                                    #{})
-                                        :plugins ["ink" "proto-repl"]}
-                                 })        
+      (= dev-platform :clojure-atom) {:clojure {:os-user-name (name user-key)}
+                                      :atom {:settings (if (= vm-platform :aws) 
+                                                         #{:install-aws-workaround}
+                                                         #{})
+                                             :plugins ["ink" "proto-repl"]}
+                                      })        
     ))
 
-(s/defn ^:always-validate 
-        ide-convention :- {:dda-managed-ide crate/DdaIdeConfig
-                           :dda-managed-vm vm-crate/DdaVmConfig
-                           :dda-backup backup-crate/BackupConfig}
+(s/defn 
+  ^:always-validate 
+  ide-convention :- {:dda-managed-ide crate/DdaIdeConfig
+                     :dda-managed-vm vm-crate/DdaVmConfig
+                     :dda-backup backup-crate/BackupConfig}
   [convention-config :- DdaIdeConventionConfig]
   (let [user-key (:ide-user convention-config)
         vm-platform (:vm-platform convention-config)
