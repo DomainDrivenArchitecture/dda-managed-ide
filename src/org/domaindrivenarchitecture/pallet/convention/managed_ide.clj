@@ -55,19 +55,29 @@
                                                          #{:install-aws-workaround}
                                                          #{})
                                              :plugins ["ink" "proto-repl"]}
-                                      })        
+                                      }
+      (= dev-platform :clojure-nightlight) {:clojure {:os-user-name (name user-key)
+                                                      :settings #{:install-nightlight}}
+                                            }
+      :default {})        
     ))
 
-(s/defn 
-  ^:always-validate 
-  ide-convention :- {:dda-managed-ide crate/DdaIdeConfig
-                     :dda-managed-vm vm-crate/DdaVmConfig
-                     :dda-backup backup-crate/BackupConfig}
+(s/defn ide-vm-config :- vm-crate/DdaVmConfig
+  [user-key dev-platform vm-platform]
+  (cond 
+    (= dev-platform :clojure-atom) (vm-convention/default-vm-config user-key vm-platform)
+    (= dev-platform :clojure-nightlight) {:vm-user user-key
+                                          :settings #{:install-open-jdk-8 :install-linus-basics :install-git}})        
+  )
+
+(s/defn ^:always-validate ide-convention :- {:dda-managed-ide crate/DdaIdeConfig
+                                             :dda-managed-vm vm-crate/DdaVmConfig
+                                             :dda-backup backup-crate/BackupConfig}
   [convention-config :- DdaIdeConventionConfig]
   (let [user-key (:ide-user convention-config)
         vm-platform (:vm-platform convention-config)
         dev-platform (:dev-platform convention-config)]  
     {:dda-managed-ide (default-ide-config user-key dev-platform vm-platform)
-     :dda-managed-vm (vm-convention/default-vm-config user-key vm-platform)
+     :dda-managed-vm (ide-vm-config user-key dev-platform vm-platform)
      :dda-backup (default-ide-backup-config user-key)}
   ))
