@@ -13,7 +13,7 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns org.domaindrivenarchitecture.pallet.crate.managed-ide.instantiate-existing
+(ns dda.pallet.crate.managed-ide.instantiate-existing
   (:require
     [clojure.inspector :as inspector]
     [pallet.api :as api]
@@ -21,8 +21,8 @@
     [pallet.compute.node-list :as node-list]
     [org.domaindrivenarchitecture.pallet.commons.session-tools :as session-tools]
     [org.domaindrivenarchitecture.pallet.commons.pallet-schema :as ps]
-    [org.domaindrivenarchitecture.cm.config :as ide-config]
-    [org.domaindrivenarchitecture.cm.group :as group]
+    [dda.pallet.domain.managed-ide.config :as ide-config]
+    [dda.pallet.domain.managed-ide.group :as group]
     [org.domaindrivenarchitecture.cm.operation :as operation]))
 
 (def remote-node

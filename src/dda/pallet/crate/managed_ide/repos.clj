@@ -1,7 +1,7 @@
 ; Copyright (c) meissa GmbH. All rights reserved.
 ; You must not remove this notice, or any other, from this software.
 
-(ns  org.domaindrivenarchitecture.pallet.crate.managed-ide.repos
+(ns  dda.pallet.crate.managed-ide.repos
   (:require
     [pallet.actions :as actions]
     [pallet.stevedore :as stevedore]

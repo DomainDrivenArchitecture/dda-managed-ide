@@ -14,7 +14,7 @@
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
 
-(ns org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure
+(ns dda.pallet.crate.managed-ide.clojure
   (:require
     [schema.core :as s]
     [pallet.actions :as actions]

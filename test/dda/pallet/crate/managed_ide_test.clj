@@ -15,11 +15,11 @@
 ; limitations under the License.
 
 
-(ns org.domaindrivenarchitecture.pallet.crate.managed-ide-test
+(ns dda.pallet.crate.managed-ide-test
   (:require
     [clojure.test :refer :all]
     [schema.core :as s]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide :as sut]))
+    [dda.pallet.crate.managed-ide :as sut]))
 
 (def basic-config
   {:project-config {:test-location ["test-repo"]}
