@@ -13,7 +13,7 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns org.domaindrivenarchitecture.pallet.crate.managed-ide
+(ns dda.pallet.crate.managed-ide
   (:require
     [clojure.tools.logging :as logging]
     [schema.core :as s]
@@ -21,9 +21,9 @@
     [pallet.actions :as actions]
     [pallet.crate :as crate]
     [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure :as clojure]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide.atom :as atom]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide.repos :as repos]
+    [dda.pallet.crate.managed-ide.clojure :as clojure]
+    [dda.pallet.crate.managed-ide.atom :as atom]
+    [dda.pallet.crate.managed-ide.repos :as repos]
     [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-fact]
     [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]))
 

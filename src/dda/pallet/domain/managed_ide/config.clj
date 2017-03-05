@@ -14,14 +14,14 @@
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
 
-(ns org.domaindrivenarchitecture.cm.config
+(ns dda.pallet.domain.managed-ide.config
   (:require
     [clojure.java.io :as io]
     [schema.core :as s]
     [org.domaindrivenarchitecture.pallet.crate.config.node :as node-record]
     [org.domaindrivenarchitecture.pallet.crate.user.ssh-key :as ssh-key-record]
     [org.domaindrivenarchitecture.pallet.crate.config :as config]    
-    [org.domaindrivenarchitecture.pallet.convention.managed-ide :as convention]))
+    [dda.pallet.domain.managed-ide :as convention]))
 
 (defn dda-read-file 
   "reads a file if it exists"

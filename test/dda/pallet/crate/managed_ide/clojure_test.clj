@@ -15,11 +15,11 @@
 ; limitations under the License.
 
 
-(ns org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure-test
+(ns dda.pallet.crate.managed-ide.clojure-test
   (:require
     [clojure.test :refer :all]
     [schema.core :as s]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide.clojure :as sut]))
+    [dda.pallet.crate.managed-ide.clojure :as sut]))
 
 
 (deftest lein-user-profile-test

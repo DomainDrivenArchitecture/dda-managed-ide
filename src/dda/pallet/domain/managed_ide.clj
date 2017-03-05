@@ -1,14 +1,14 @@
 ; Copyright (c) meissa GmbH. All rights reserved.
 ; You must not remove this notice, or any other, from this software.
 
-(ns org.domaindrivenarchitecture.pallet.convention.managed-ide
+(ns dda.pallet.domain.managed-ide
   (:require
     [schema.core :as s]
     [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
-    [org.domaindrivenarchitecture.pallet.crate.managed-ide :as crate]
-    [org.domaindrivenarchitecture.pallet.crate.managed-vm :as vm-crate]
+    [dda.pallet.crate.managed-ide :as crate]
+    [dda.pallet.crate.managed-vm :as vm-crate]
     [org.domaindrivenarchitecture.pallet.crate.backup :as backup-crate]
-    [org.domaindrivenarchitecture.pallet.convention.managed-vm :as vm-convention]))
+    [dda.pallet.domain.managed-vm :as vm-convention]))
 
 (def ^:dynamic dda-projects
   {:dda-pallet

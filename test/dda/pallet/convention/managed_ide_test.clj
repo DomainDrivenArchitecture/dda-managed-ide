@@ -15,11 +15,11 @@
 ; limitations under the License.
 
 
-(ns org.domaindrivenarchitecture.pallet.convention.managed-ide-test
+(ns dda.pallet.domain.managed-ide-test
   (:require
     [clojure.test :refer :all]
     [schema.core :as s]
-    [org.domaindrivenarchitecture.pallet.convention.managed-ide :as sut]))
+    [dda.pallet.domain.managed-ide :as sut]))
 
 (def domain-input
   {:ide-user :test
