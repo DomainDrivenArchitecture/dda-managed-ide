@@ -28,34 +28,40 @@
 (def LeiningenUserProfileConfig
   {:os-user-name s/Str
    (s/optional-key :signing-gpg-key) s/Str
-   (s/optional-key :auth-clojars) Auth})
+   (s/optional-key :auth-clojars) Auth
+   (s/optional-key :settings) (hash-set (s/enum :install-nightlight))})
 
 (s/defn lein-user-profile
   "generates a valid lein profile config."
   [lein-config :- LeiningenUserProfileConfig]
-  (map-utils/deep-merge
-    {:user 
-     {:plugins 
-      [['lein-release "1.0.5"]
-       ['slamhound "1.5.5"]
-       ['lein-cloverage "1.0.6"]
-       ['jonase/eastwood "0.2.3"]
-       ['lein-kibit "0.1.2"]
-       ['lein-ancient "0.6.10"]]
-      :dependencies [['pjstadig/humane-test-output "0.7.1"]]
-      :injections ['(require 'pjstadig.humane-test-output)
-                   '(pjstadig.humane-test-output/activate!)]}}
-    (if (contains? lein-config :signing-gpg-key)
-      {:user
-       {:signing {:gpg-key (get-in lein-config [:signing-gpg-key])}}}
-      {})
-    (if (contains? lein-config :auth-clojars)
-      {:auth
-       {:repository-auth
-        {#"clojars"
-         (get-in lein-config [:auth-clojars])}}}
-      {})
-    ))
+  (let [settings (-> lein-config :settings)]
+    (map-utils/deep-merge
+      {:user 
+       {:plugins 
+        (into 
+          [['lein-release "1.0.5"]
+           ['slamhound "1.5.5"]
+           ['lein-cloverage "1.0.6"]
+           ['jonase/eastwood "0.2.3"]
+           ['lein-kibit "0.1.2"]
+           ['lein-ancient "0.6.10"]]
+          (if (contains? settings :install-nightlight)
+            [['nightlight/lein-nightlight "1.6.1"]]
+            []))
+        :dependencies [['pjstadig/humane-test-output "0.7.1"]]
+        :injections ['(require 'pjstadig.humane-test-output)
+                     '(pjstadig.humane-test-output/activate!)]}}
+      (if (contains? lein-config :signing-gpg-key)
+        {:user
+         {:signing {:gpg-key (get-in lein-config [:signing-gpg-key])}}}
+        {})
+      (if (contains? lein-config :auth-clojars)
+        {:auth
+         {:repository-auth
+          {#"clojars"
+           (get-in lein-config [:auth-clojars])}}}
+        {})
+      )))
 
 (defn install-leiningen 
   []

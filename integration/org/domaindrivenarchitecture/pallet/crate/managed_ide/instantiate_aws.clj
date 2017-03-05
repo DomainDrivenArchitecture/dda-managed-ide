@@ -17,7 +17,7 @@
   (:require
     [clojure.inspector :as inspector]
     [schema.core :as s]
-    [pallet.api :as api]      
+    [pallet.api :as api]
     [pallet.compute :as compute]
     [org.domaindrivenarchitecture.pallet.commons.encrypted-credentials :as crypto]
     [org.domaindrivenarchitecture.pallet.commons.session-tools :as session-tools]
@@ -25,31 +25,31 @@
     [org.domaindrivenarchitecture.cm.config :as ide-config]
     [org.domaindrivenarchitecture.cm.group :as group]
     [org.domaindrivenarchitecture.cm.operation :as operation]))
- 
+
 (defn aws-node-spec []
   (api/node-spec
     :location {:location-id "eu-central-1a"
                ;:location-id "eu-west-1b"
                ;:location-id "us-east-1a"
                }
-    :image {:os-family :ubuntu 
-            ;eu-central-1 16-04 LTS hvm 
+    :image {:os-family :ubuntu
+            ;eu-central-1 16-04 LTS hvm
             :image-id "ami-82cf0aed"
             ;eu-west1 16-04 LTS hvm :image-id "ami-07174474"
             ;us-east-1 16-04 LTS hvm :image-id "ami-45b69e52"
             :os-version "16.04"
             :login-user "ubuntu"}
     :hardware {:hardware-id "t2.micro"}
-    :provider {:pallet-ec2 {:key-name "jem"               
+    :provider {:pallet-ec2 {:key-name "jem"
                             :network-interfaces [{:device-index 0
                                                   :groups ["sg-0606b16e"]
                                                   :subnet-id "subnet-f929df91"
                                                   :associate-public-ip-address true
                                                   :delete-on-termination true}]}}))
 
-(defn aws-provider 
+(defn aws-provider
   ([]
-  (let 
+  (let
     [aws-decrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])]
     (compute/instantiate-provider
      :pallet-ec2
@@ -58,7 +58,7 @@
      :endpoint "eu-central-1"
      :subnet-ids ["subnet-f929df91"])))
   ([key-id key-passphrase]
-  (let 
+  (let
     [aws-encrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])
      aws-decrypted-credentials (crypto/decrypt
                                  (crypto/get-secret-key
@@ -72,20 +72,19 @@
      :credential (get-in aws-decrypted-credentials [:secret])
      :endpoint "eu-central-1"
      :subnet-ids ["subnet-f929df91"]))))
- 
+
 (defn converge-install
   ([count]
     (operation/do-converge-install (aws-provider) (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
   ([key-id key-passphrase count]
-    (operation/do-converge-install 
-      (aws-provider key-id key-passphrase) 
+    (operation/do-converge-install
+      (aws-provider key-id key-passphrase)
       (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
   )
 
 (defn server-test
-  ([] 
+  ([]
     (operation/do-server-test (aws-provider) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
   ([key-id key-passphrase]
     (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
   )
- 

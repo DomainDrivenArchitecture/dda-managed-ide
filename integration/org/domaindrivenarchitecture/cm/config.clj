@@ -58,7 +58,7 @@
                              :domain-name "meissa-gmbh.de"
                              :additional-config (convention/ide-convention {:ide-user :ideuser
                                                                             :vm-platform :virtualbox
-                                                                            :dev-platform :clojure}))}
+                                                                            :dev-platform :clojure-atom}))}
    })
 
 (def aws-managed-ide-config
@@ -70,6 +70,6 @@
                              :domain-name "meissa-gmbh.de"
                              :additional-config (convention/ide-convention {:ide-user :ideuser
                                                                             :vm-platform :aws
-                                                                            :dev-platform :clojure}))}
+                                                                            :dev-platform :clojure-nightlight}))}
    })
  
