@@ -57,7 +57,7 @@
       (atom/install config))
     ))
 
-(s/defn install-user
+(s/defn configure-user
   "install common used packages for ide"
   [config :- DdaIdeConfig]
   (let [os-user-name (name (-> config :ide-user))
@@ -76,12 +76,16 @@
       ))
   )
 
+(s/defmethod dda-crate/dda-configure facility
+  [dda-crate config]
+  "dda managed vm: install configure"
+  (configure-user config)
+  )
+
 (s/defmethod dda-crate/dda-install facility
   [dda-crate config]
   "dda managed vm: install routine"
-  (println config)
   (install-system config)
-  (install-user config)
   )
 
 (s/defmethod dda-crate/dda-settings facility
