@@ -52,8 +52,12 @@
      :script-dir "/root/"
      :script-env {:HOME (str "/root")}}
     (when (contains? config :clojure)
+      (actions/as-action
+          (logging/info (str facility "-install system: clojure")))
       (clojure/install-leiningen))
     (when (contains? config :atom)
+      (actions/as-action
+          (logging/info (str facility "-install system: atom")))
       (atom/install config))
     ))
 
@@ -68,10 +72,16 @@
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
       (when (contains? config :clojure)
+        (actions/as-action
+          (logging/info (str facility "-configure user: clojure")))
         (clojure/configure-user-leiningen (-> config :clojure)))
       (when (contains? config :project-config)
+        (actions/as-action
+          (logging/info (str facility "-configure user: repos")))
         (repos/clone-projects os-user-name git-user-name :project-config project-config))
       (when (contains? config :atom)
+        (actions/as-action
+          (logging/info (str facility "-configure user: atom")))
         (atom/install-user-plugins config))
       ))
   )
