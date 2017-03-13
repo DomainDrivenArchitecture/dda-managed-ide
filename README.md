@@ -33,6 +33,11 @@ lein repl
 (do-sth "-your gnupg key id-" "-your gnupg key passphrase-")
 ```
 
+## start included nightlight ide
+```
+lein nightlight --port 8080
+```
+
 ## compatability
 This crate is working with:
  * clojure 1.7
