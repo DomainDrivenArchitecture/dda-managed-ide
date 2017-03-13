@@ -27,6 +27,7 @@
     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
     "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
     "https://github.com/DomainDrivenArchitecture/dda-linkeddata-crate.git"
+    "https://github.com:DomainDrivenArchitecture/dda-git-crate.git"
     "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
     "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
     "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"]})
