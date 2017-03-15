@@ -1,5 +1,19 @@
-; Copyright (c) meissa GmbH. All rights reserved.
-; You must not remove this notice, or any other, from this software.
+; Licensed to the Apache Software Foundation (ASF) under one
+; or more contributor license agreements. See the NOTICE file
+; distributed with this work for additional information
+; regarding copyright ownership. The ASF licenses this file
+; to you under the Apache License, Version 2.0 (the
+; "License"); you may not use this file except in compliance
+; with the License. You may obtain a copy of the License at
+;
+; http://www.apache.org/licenses/LICENSE-2.0
+;
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+
 
 (ns dda.pallet.domain.managed-ide
   (:require
@@ -8,29 +22,9 @@
     [dda.pallet.crate.managed-ide :as crate]
     [dda.pallet.crate.managed-vm :as vm-crate]
     [org.domaindrivenarchitecture.pallet.crate.backup :as backup-crate]
+    [dda.pallet.domain.managed-ide.atom :as domain-atom]
+    [dda.pallet.domain.managed-ide.repos :as domain-repos]
     [dda.pallet.domain.managed-vm :as vm-convention]))
-
-(def ^:dynamic dda-projects
-  {:dda-pallet
-   ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
-    "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
-    "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
-    "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-iptables-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-provider-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-init-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-mysql-crate.git"
-    "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-linkeddata-crate.git"
-    "https://github.com:DomainDrivenArchitecture/dda-git-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
-    "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-    "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"]})
 
 (def DdaIdeConventionConfig
   "The convention configuration for managed vms crate."
@@ -49,17 +43,12 @@
   [user-key dev-platform vm-platform]
   (map-utils/deep-merge
     {:ide-user user-key
-     :project-config dda-projects}
+     :project-config domain-repos/dda-projects}
     (cond
       (= dev-platform :clojure-atom) {:clojure {:os-user-name (name user-key)}
-                                      :atom {:settings (if (= vm-platform :aws)
-                                                         #{:install-aws-workaround}
-                                                         #{})
-                                             :plugins ["ink" "proto-repl"]}
-                                      }
+                                      :atom (domain-atom/atom-config vm-platform)}
       (= dev-platform :clojure-nightlight) {:clojure {:os-user-name (name user-key)
-                                                      :settings #{:install-nightlight}}
-                                            }
+                                                      :settings #{:install-nightlight}}}
       :default {})
     ))
 

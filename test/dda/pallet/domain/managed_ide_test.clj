@@ -19,6 +19,7 @@
   (:require
     [clojure.test :refer :all]
     [schema.core :as s]
+    [dda.pallet.domain.managed-ide.repos :as domain-repos]
     [dda.pallet.domain.managed-ide :as sut]))
 
 (def domain-input
@@ -28,7 +29,7 @@
 
 (def expected-ide-configuration
   {:ide-user :test
-   :project-config sut/dda-projects
+   :project-config domain-repos/dda-projects
    :clojure {:os-user-name "test"
              :settings #{:install-nightlight}}
    } 
