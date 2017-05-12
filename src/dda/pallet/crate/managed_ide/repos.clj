@@ -5,8 +5,8 @@
   (:require
     [pallet.actions :as actions]
     [pallet.stevedore :as stevedore]
-    [pallet.crate.git :as git]
-    ))
+    [pallet.crate.git :as git]))
+
 
 (defn add-fingerprint-to-known-hosts
   "add a node qualified by ip or fqdn to the users ~/.ssh/known_hosts file."
@@ -23,7 +23,7 @@
 (defn add-node-to-known-hosts
   "add a node qualified by ip or fqdn to the users ~/.ssh/known_hosts file."
   [os-user-name fqdn-or-ip & {:keys [port]                            ;; optional parameter
-       :or {port 22}}]
+                              :or {port 22}}]
   (let [home (str "/home/" os-user-name)
         command
          (str "ssh-keyscan -p " port " -H " fqdn-or-ip " >> " home "/.ssh/known_hosts")]
@@ -59,8 +59,8 @@
                 (.contains url "http"))              ;or http is defined ...
             url                                    ; ... assume url to be correct or ...
             (str "ssh://" git-user-name "@" url))  ; ... else add git-user-name
-          :checkout-dir current-repo-path))
-      )))
+          :checkout-dir current-repo-path)))))
+
 
 (defn clone-project-repositories
   "clone repositories of one given project"

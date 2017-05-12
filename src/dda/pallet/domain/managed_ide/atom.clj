@@ -20,19 +20,19 @@
     [schema.core :as s]))
 
 (def base-plugins
-  ["ink" "minimap"])
+  ["ink" "minimap" "busy-signal"])
 
 (def clean-typing-plugins
-  ["trailing-spaces" "linter" "linter-shellcheck" "linter-write-good" "linter-htmlhint" "linter-jsonlint"])
+  ["trailing-spaces" "linter" "linter-shellcheck" "linter-write-good" "linter-ui-default" "linter-jsonlint" "linter-spell-html" "minimap-linter"])
 
 (def pair-programming-plugins
-  ["atom-pair"])
+  ["atom-pair" "floobits" "motepair"])
 
 (def clojure-plugins
-  ["proto-repl" "clojure-plus" "linter-eastwood"])
+  ["proto-repl" "atom-toolbar" "clojure-plus" "parinfer" "lisp-paredit" "linter-clojure"])
 
 (def git-plugins
-  ["atomatigit" "merge-conflicts" "split-diff" "git-time-machine"])
+  ["git-plus" "tree-view-git-status" "git-time-machine" "language-diff"])
 
 (s/defn atom-config
   "create a atom configuration"
@@ -40,8 +40,8 @@
   {:settings (if (= vm-platform :aws)
                #{:install-aws-workaround}
                #{})
-   :plugins (into 
-              [] 
-              (concat base-plugins clean-typing-plugins 
-                      pair-programming-plugins clojure-plugins 
+   :plugins (into
+              []
+              (concat base-plugins clean-typing-plugins
+                      pair-programming-plugins clojure-plugins
                       git-plugins))})
