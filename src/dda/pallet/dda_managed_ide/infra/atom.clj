@@ -16,9 +16,9 @@
 
 (ns dda.pallet.crate.managed-ide.atom
   (:require
-    [schema.core :as s]    
+    [schema.core :as s]
     [clojure.tools.logging :as logging]
-    [pallet.actions :as actions]    
+    [pallet.actions :as actions]
     [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
     [org.domaindrivenarchitecture.pallet.crate.util :as util]))
 
@@ -27,21 +27,21 @@
         settings (-> atom-config :settings)]
     (actions/package "python")
     (actions/package "gvfs-bin")
-    (actions/remote-file 
-      "/tmp/atom.deb" 
-      :owner "root" 
+    (actions/remote-file
+      "/tmp/atom.deb"
+      :owner "root"
       :group "users"
       :mode "600"
       :url "https://atom.io/download/deb")
     (actions/exec-script ("dpkg" "-i" "/tmp/atom.deb"))
     (when (contains? settings :install-aws-workaround)
-      (actions/exec-checked-script 
+      (actions/exec-checked-script
         "aws-atom-workaround"
         ("cp" "/usr/lib/x86_64-linux-gnu/libxcb.so.1" "/usr/share/atom/")
-        ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1"))
-      )
-    )
-  )
+        ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1")))))
+
+
+
 
 (defn install-user-plugins [config]
   (let [atom-config (-> config :atom)]
@@ -50,7 +50,4 @@
         (doseq [plugin plugins]
           (actions/exec-checked-script
             (str "install-apm-plugin-" plugin)
-            ("apm install" ~plugin))))
-      )
-    )
-  )
+            ("apm install" ~plugin)))))))

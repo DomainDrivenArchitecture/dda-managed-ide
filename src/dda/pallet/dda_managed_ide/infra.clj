@@ -13,7 +13,7 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns dda.pallet.crate.managed-ide
+(ns dda.pallet.crate.dda-managed-ide.infra
   (:require
     [clojure.tools.logging :as logging]
     [schema.core :as s]
@@ -35,17 +35,15 @@
   {s/Keyword [s/Str]})
 
 (def DdaIdeConfig
-  "The configuration for managed ide crate."
   {:project-config GitProjectConfig
    :ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
-                           (s/optional-key :plugins) [s/Str]}
-   }
-  )
+                           (s/optional-key :plugins) [s/Str]}})
+
+(def InfraResult {facility DdaIdeConfig})
 
 (s/defn install-system
-  "install common used packages for ide"
   [config :- DdaIdeConfig]
   (pallet.action/with-action-options
     {:sudo-user "root"
@@ -58,15 +56,13 @@
     (when (contains? config :atom)
       (actions/as-action
           (logging/info (str facility "-install system: atom")))
-      (atom/install config))
-    ))
+      (atom/install config))))
 
 (s/defn configure-user
-  "install common used packages for ide"
   [config :- DdaIdeConfig]
   (let [os-user-name (name (-> config :ide-user))
-  git-user-name (:git-user-name config)
-  project-config (:project-config config)]
+        git-user-name (:git-user-name config)
+        project-config (:project-config config)]
     (pallet.action/with-action-options
       {:sudo-user os-user-name
        :script-dir (str "/home/" os-user-name "/")
@@ -82,31 +78,24 @@
       (when (contains? config :atom)
         (actions/as-action
           (logging/info (str facility "-configure user: atom")))
-        (atom/install-user-plugins config))
-      ))
-  )
+        (atom/install-user-plugins config)))))
 
-(s/defmethod dda-crate/dda-configure facility
-  [dda-crate config]
-  "dda managed vm: install configure"
-  (configure-user config)
-  )
 
 (s/defmethod dda-crate/dda-install facility
   [dda-crate config]
-  "dda managed vm: install routine"
-  (install-system config)
-  )
+  (install-system config))
+
+(s/defmethod dda-crate/dda-configure facility
+  [dda-crate config]
+  (configure-user config))
 
 (s/defmethod dda-crate/dda-settings facility
-  [dda-crate partial-effective-config]
+  [dda-crate partial-effective-config])
   ;(package-fact/collect-packages-fact)
-  )
 
 (s/defmethod dda-crate/dda-test facility
   [dda-crate partial-effective-config]
-  (package-test/test-installed? "atom")
-  )
+  (package-test/test-installed? "atom"))
 
 (def dda-ide-crate
   (dda-crate/make-dda-crate
