@@ -1,7 +1,7 @@
 ; Copyright (c) meissa GmbH. All rights reserved.
 ; You must not remove this notice, or any other, from this software.
 
-(ns dda.pallet.domain.managed-ide
+(ns dda.pallet.dda-managed-ide.domain
   (:require
     [schema.core :as s]
     [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
@@ -36,27 +36,43 @@
    :vm-platform (s/enum :virtualbox :aws)
    :dev-platform (s/enum :clojure-atom :clojure-nightlight)})
 
+(s/defn ^:always-validate ide-git-config :- git/GitDomainConfig
+ [ide-config :- DdaIdeDomainConfig]
+ (let [{:keys [ide-user user-email] :or {user-email (str (name ide-user) "@domain")}} ide-config]
+   {:os-user ide-user
+    :user-email user-email
+    :repos dda-projects}))
 
-;TODO: gitconfig (dda-projects), serverspec config
+(s/defn ^:always-validate ide-serverspec-config :- serverspec/ServerTestDomainConfig
+ [ide-config :- DdaIdeDomainConfig]
+ (let [{:keys [dev-platform]} ide-config
+       file-config '({:path "/opt/leiningen/lein"}
+                     {:path "/etc/profile.d/lein.sh"}
+                     ;TODO: needs to be tested
+                     {:path "~/.lein/profiles.clj"})
+       platform-dep-config (if (and (= vm-platform :aws) (= dev-platform :clojure-atom))
+                             (concat file-config '({:path "/usr/share/atom/libxcb.so.1"})')
+                             file-config)]
+   (map-utils/deep-merge
+    {:file platform-dep-config}
+    (cond
+      (= dev-platform :clojure-atom) {:package '({:name "atom"}
+                                                 {:name "python"}
+                                                 {:name "gvfs-bin"})}
+
+      :default {}))))
 
 (s/defn ^:always-validate dda-vm-domain-configuration
   [domain-config :- DomainConfig]
   {:vm-user (:ide-user domain-config)
    :platform (:vm-platform domain-config)})
 
-;TODO: brauchen wir Backup-Crate überhaupt noch, wenn er doch im
-;VM schon eingerichtet und verwendet wird?
-;Mehr als home wollen wir gar nicht sichern
-
-; (s/defn default-ide-backup-config :- backup-crate/BackupConfig
-;   [user-key :- s/Keyword]
-;   (vm-convention/default-vm-backup-config user-key))
-
 (s/defn ^:always-validate infra-configuration :- InfraResult
-  [domain-config :- DomainConfig]
+  [domain-config :- DdaIdeDomainConfig]
   (let [{:keys [ide-user vm-platform dev-platform]} domain-config
         user-name (name ide-user)]
-    (map-utils/deep-merge
+    {infra/facility
+     (map-utils/deep-merge
       {:ide-user ide-user}
       (cond
         (= dev-platform :clojure-atom) {:clojure {:os-user-name user-name}
@@ -68,4 +84,4 @@
         (= dev-platform :clojure-nightlight) {:clojure {:os-user-name user-name
                                                         :settings #{:install-nightlight}}}
 
-        :default {}))))
+        :default {}))}))

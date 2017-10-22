@@ -23,7 +23,6 @@
     [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
     [dda.pallet.crate.managed-ide.clojure :as clojure]
     [dda.pallet.crate.managed-ide.atom :as atom]
-    [dda.pallet.crate.managed-ide.repos :as repos]
     [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-fact]
     [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]))
 
@@ -60,9 +59,7 @@
 
 (s/defn configure-user
   [config :- DdaIdeConfig]
-  (let [os-user-name (name (-> config :ide-user))
-        git-user-name (:git-user-name config)
-        project-config (:project-config config)]
+  (let [os-user-name (name (-> config :ide-user))]
     (pallet.action/with-action-options
       {:sudo-user os-user-name
        :script-dir (str "/home/" os-user-name "/")
@@ -71,10 +68,6 @@
         (actions/as-action
           (logging/info (str facility "-configure user: clojure")))
         (clojure/configure-user-leiningen (-> config :clojure)))
-      (when (contains? config :project-config)
-        (actions/as-action
-          (logging/info (str facility "-configure user: repos")))
-        (repos/clone-projects os-user-name git-user-name :project-config project-config))
       (when (contains? config :atom)
         (actions/as-action
           (logging/info (str facility "-configure user: atom")))
@@ -91,11 +84,12 @@
 
 (s/defmethod dda-crate/dda-settings facility
   [dda-crate partial-effective-config])
-  ;(package-fact/collect-packages-fact)
+  ;TODO: (package-fact/collect-packages-fact)
 
 (s/defmethod dda-crate/dda-test facility
   [dda-crate partial-effective-config]
   (package-test/test-installed? "atom"))
+  ;TODO: put into serverspec
 
 (def dda-ide-crate
   (dda-crate/make-dda-crate

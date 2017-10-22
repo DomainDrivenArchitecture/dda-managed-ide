@@ -40,11 +40,10 @@
 
 (defn apply-install
   ([]
-    (operation/do-apply-install provider (group/managed-ide-group ide-config/vbox-managed-ide-config {:login "initial"
-                                                                                                      :password "test1234"})))
-  )
+   (operation/do-apply-install provider (group/managed-ide-group ide-config/vbox-managed-ide-config {:login "initial"
+                                                                                                     :password "test1234"}))))
+
 
 (defn server-test
   ([]
-    (operation/do-server-test provider (group/managed-ide-group ide-config/vbox-managed-ide-config "fienchen")))
-  )
+   (operation/do-server-test provider (group/managed-ide-group ide-config/vbox-managed-ide-config "fienchen"))))

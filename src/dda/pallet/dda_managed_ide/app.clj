@@ -20,6 +20,9 @@
    [dda.cm.group :as group]
    [dda.pallet.core.dda-crate :as dda-crate]
    [dda.pallet.dda-config-crate.infra :as config-crate]
+   [dda.pallet.dda-git-crate.app :as git]
+   [dda.pallet.dda-serverspec-crate.app :as serverspec]
+   [dda.pallet.dda-managed-vm.app :as managed-vm]
    [dda.pallet.dda-managed-ide.infra :as infra]
    [dda.pallet.dda-managed-ide.domain :as domain]))
 
@@ -29,7 +32,10 @@
 
 (def DdaIdeAppConfig
   {:group-specific-config
-   {s/Keyword InfraResult}})
+   {s/Keyword (merge InfraResult
+                     git/InfraResult
+                     serverspec/InfraResult
+                     managed-vm/InfraResult)}})
 
 (s/defn ^:allways-validate create-app-configuration :- DdaIdeAppConfig
   [config :- infra/DdaIdeConfig
@@ -38,25 +44,19 @@
    {group-key config}})
 
 (defn app-configuration
-  [user-config domain-config & {:keys [group-key] :or {group-key :dda-ide-group}}]
+  [domain-config & {:keys [group-key] :or {group-key :dda-ide-group}}]
   (s/validate domain/DdaIdeDomainConfig domain-config)
   (mu/deep-merge
-   (user/app-configuration user-config :group-key group-key)
-   ; TODO - only if install-git is selected
-   ; TODO: needs managed-vm config
-   (git/app-configuration (domain/vm-git-config vm-config) :group-key group-key)
-   (serverspec/app-configuration (domain/vm-serverspec-config vm-config) :group-key group-key)
+   (managed-vm/app-configuration (domain/vm-config domain-config) :group-key group-key)
+   (git/app-configuration (domain/ide-git-config domain-config) :group-key group-key)
+   (serverspec/app-configuration (domain/ide-serverspec-config domain-config) :group-key group-key)
    (create-app-configuration (domain/infra-configuration domain-config) group-key)))
 
 (s/defn ^:always-validate dda-ide-group-spec
   [app-config :- DdaIdeAppConfig]
-  (let [group-name (name (key (first (:group-specific-config app-config))))]
-    (api/group-spec
-     group-name
-     :extends [(config-crate/with-config app-config)
+  (group/group-spec
+   app-config [(config-crate/with-config app-config)
                serverspec/with-serverspec
-               user/with-user
                git/with-git
                managed-vm/with-dda-vm
-               ;TODO: also in app-config, backup/with-backup
-               with-dda-ide])))
+               with-dda-ide]))

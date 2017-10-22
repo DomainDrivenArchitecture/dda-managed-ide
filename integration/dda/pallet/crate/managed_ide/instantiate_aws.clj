@@ -28,10 +28,10 @@
 
 (defn aws-node-spec []
   (api/node-spec
-    :location {:location-id "eu-central-1a"
+    :location {:location-id "eu-central-1a"}
                ;:location-id "eu-west-1b"
                ;:location-id "us-east-1a"
-               }
+
     :image {:os-family :ubuntu
             ;eu-central-1 16-04 LTS hvm
             :image-id "ami-82cf0aed"
@@ -49,42 +49,41 @@
 
 (defn aws-provider
   ([]
-  (let
-    [aws-decrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])]
-    (compute/instantiate-provider
-     :pallet-ec2
-     :identity (get-in aws-decrypted-credentials [:account])
-     :credential (get-in aws-decrypted-credentials [:secret])
-     :endpoint "eu-central-1"
-     :subnet-ids ["subnet-f929df91"])))
+   (let
+     [aws-decrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])]
+     (compute/instantiate-provider
+      :pallet-ec2
+      :identity (get-in aws-decrypted-credentials [:account])
+      :credential (get-in aws-decrypted-credentials [:secret])
+      :endpoint "eu-central-1"
+      :subnet-ids ["subnet-f929df91"])))
   ([key-id key-passphrase]
-  (let
-    [aws-encrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])
-     aws-decrypted-credentials (crypto/decrypt
-                                 (crypto/get-secret-key
-                                   {:user-home "/home/mje/"
-                                    :key-id key-id})
-                                 aws-encrypted-credentials
-                                 key-passphrase)]
-    (compute/instantiate-provider
-     :pallet-ec2
-     :identity (get-in aws-decrypted-credentials [:account])
-     :credential (get-in aws-decrypted-credentials [:secret])
-     :endpoint "eu-central-1"
-     :subnet-ids ["subnet-f929df91"]))))
+   (let
+     [aws-encrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])
+      aws-decrypted-credentials (crypto/decrypt
+                                  (crypto/get-secret-key
+                                    {:user-home "/home/mje/"
+                                     :key-id key-id})
+                                  aws-encrypted-credentials
+                                  key-passphrase)]
+     (compute/instantiate-provider
+      :pallet-ec2
+      :identity (get-in aws-decrypted-credentials [:account])
+      :credential (get-in aws-decrypted-credentials [:secret])
+      :endpoint "eu-central-1"
+      :subnet-ids ["subnet-f929df91"]))))
 
 (defn converge-install
   ([count]
-    (operation/do-converge-install (aws-provider) (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
+   (operation/do-converge-install (aws-provider) (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
   ([key-id key-passphrase count]
-    (operation/do-converge-install
-      (aws-provider key-id key-passphrase)
-      (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
-  )
+   (operation/do-converge-install
+     (aws-provider key-id key-passphrase)
+     (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec)))))
+
 
 (defn server-test
   ([]
-    (operation/do-server-test (aws-provider) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
+   (operation/do-server-test (aws-provider) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
   ([key-id key-passphrase]
-    (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
-  )
+   (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser"))))
