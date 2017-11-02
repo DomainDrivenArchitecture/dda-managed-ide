@@ -13,34 +13,25 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns dda.pallet.crate.dda-managed-ide.infra
+(ns dda.pallet.dda-managed-ide.infra
   (:require
     [clojure.tools.logging :as logging]
     [schema.core :as s]
     [pallet.api :as api]
     [pallet.actions :as actions]
     [pallet.crate :as crate]
-    [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
-    [dda.pallet.crate.managed-ide.clojure :as clojure]
-    [dda.pallet.crate.managed-ide.atom :as atom]
-    [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-fact]
-    [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]))
+    [dda.pallet.core.dda-crate :as dda-crate]
+    [dda.pallet.dda-managed-ide.infra.clojure :as clojure]
+    [dda.pallet.dda-managed-ide.infra.atom :as atom]))
 
 (def facility :dda-managed-ide)
 (def version  [0 1 0])
 
-(def GitProjectConfig
-  "Configuration of projects clone location"
-  {s/Keyword [s/Str]})
-
 (def DdaIdeConfig
-  {:project-config GitProjectConfig
-   :ide-user s/Keyword
+  {:ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
                            (s/optional-key :plugins) [s/Str]}})
-
-(def InfraResult {facility DdaIdeConfig})
 
 (s/defn install-system
   [config :- DdaIdeConfig]
@@ -84,12 +75,6 @@
 
 (s/defmethod dda-crate/dda-settings facility
   [dda-crate partial-effective-config])
-  ;TODO: (package-fact/collect-packages-fact)
-
-(s/defmethod dda-crate/dda-test facility
-  [dda-crate partial-effective-config]
-  (package-test/test-installed? "atom"))
-  ;TODO: put into serverspec
 
 (def dda-ide-crate
   (dda-crate/make-dda-crate

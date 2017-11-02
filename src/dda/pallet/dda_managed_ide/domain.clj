@@ -4,11 +4,19 @@
 (ns dda.pallet.dda-managed-ide.domain
   (:require
     [schema.core :as s]
-    [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
-    [dda.pallet.crate.managed-ide :as crate]
-    [dda.pallet.crate.managed-vm :as vm-crate]
-    [org.domaindrivenarchitecture.pallet.crate.backup :as backup-crate]
-    [dda.pallet.domain.managed-vm :as vm-convention]))
+    [dda.pallet.dda-git-crate.domain :as git]
+    [dda.pallet.dda-serverspec-crate.domain :as serverspec]
+    [dda.pallet.dda-managed-vm.domain :as vm-crate]
+    [dda.pallet.dda-manged-ide.infra :as infra]))
+
+(def DdaIdeDomainConfig
+  {:ide-user s/Keyword
+   :vm-platform (s/enum :virtualbox :aws)
+   :dev-platform (s/enum :clojure-atom :clojure-nightlight)})
+
+(def InfraResult {infra/facility infra/DdaIdeConfig})
+
+;TODO: backup-crate integration
 
 (def ^:dynamic dda-projects
   {:dda-pallet
@@ -31,11 +39,6 @@
     "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
     "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"]})
 
-(def DdaIdeDomainConfig
-  {:ide-user s/Keyword
-   :vm-platform (s/enum :virtualbox :aws)
-   :dev-platform (s/enum :clojure-atom :clojure-nightlight)})
-
 (s/defn ^:always-validate ide-git-config :- git/GitDomainConfig
  [ide-config :- DdaIdeDomainConfig]
  (let [{:keys [ide-user user-email] :or {user-email (str (name ide-user) "@domain")}} ide-config]
@@ -45,15 +48,14 @@
 
 (s/defn ^:always-validate ide-serverspec-config :- serverspec/ServerTestDomainConfig
  [ide-config :- DdaIdeDomainConfig]
- (let [{:keys [dev-platform]} ide-config
+ (let [{:keys [dev-platform vm-platform]} ide-config
        file-config '({:path "/opt/leiningen/lein"}
                      {:path "/etc/profile.d/lein.sh"}
-                     ;TODO: needs to be tested
                      {:path "~/.lein/profiles.clj"})
        platform-dep-config (if (and (= vm-platform :aws) (= dev-platform :clojure-atom))
-                             (concat file-config '({:path "/usr/share/atom/libxcb.so.1"})')
+                             (concat file-config '({:path "/usr/share/atom/libxcb.so.1"}))
                              file-config)]
-   (map-utils/deep-merge
+   (merge
     {:file platform-dep-config}
     (cond
       (= dev-platform :clojure-atom) {:package '({:name "atom"}
@@ -63,7 +65,7 @@
       :default {}))))
 
 (s/defn ^:always-validate dda-vm-domain-configuration
-  [domain-config :- DomainConfig]
+  [domain-config :- vm-crate/DdaVmDomainConfig]
   {:vm-user (:ide-user domain-config)
    :platform (:vm-platform domain-config)})
 
@@ -72,7 +74,7 @@
   (let [{:keys [ide-user vm-platform dev-platform]} domain-config
         user-name (name ide-user)]
     {infra/facility
-     (map-utils/deep-merge
+     (merge
       {:ide-user ide-user}
       (cond
         (= dev-platform :clojure-atom) {:clojure {:os-user-name user-name}

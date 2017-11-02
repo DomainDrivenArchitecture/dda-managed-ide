@@ -53,5 +53,4 @@
              :injections
              ['(require 'pjstadig.humane-test-output)
               '(pjstadig.humane-test-output/activate!)]}}
-           (sut/lein-user-profile {:os-user-name (name :test)})))
-    ))
+           (sut/lein-user-profile {:os-user-name (name :test)})))))

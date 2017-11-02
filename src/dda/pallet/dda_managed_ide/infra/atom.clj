@@ -14,13 +14,12 @@
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
 
-(ns dda.pallet.crate.managed-ide.atom
+(ns dda.pallet.dda-managed-ide.infra.atom
   (:require
     [schema.core :as s]
     [clojure.tools.logging :as logging]
-    [pallet.actions :as actions]
-    [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
-    [org.domaindrivenarchitecture.pallet.crate.util :as util]))
+    [pallet.actions :as actions]))
+
 
 (defn install [config]
   (let [atom-config (-> config :atom)

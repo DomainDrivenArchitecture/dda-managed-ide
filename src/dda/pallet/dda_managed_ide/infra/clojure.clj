@@ -14,12 +14,11 @@
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
 
-(ns dda.pallet.crate.managed-ide.clojure
+(ns dda.pallet.dda-managed-ide.infra.clojure
   (:require
     [schema.core :as s]
     [pallet.actions :as actions]
-    [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
-    [org.domaindrivenarchitecture.pallet.crate.util :as util]))
+    [dda.pallet.crate.util :as util]))
 
 (def Auth
   {:username s/Str
@@ -35,7 +34,7 @@
   "generates a valid lein profile config."
   [lein-config :- LeiningenUserProfileConfig]
   (let [settings (-> lein-config :settings)]
-    (map-utils/deep-merge
+    (merge
       {:user
        {:plugins
         (into

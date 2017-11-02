@@ -23,18 +23,18 @@
 
 (def basic-config
   {:project-config {:test-location ["test-repo"]}
-   :ide-user :some-user}
-  )
+   :ide-user :some-user})
+
 (def basic-atom-config
    {:atom
     {:settings (hash-set :install-aws-workaround)
-     :plugins ["proto-repl"]}}
-  )
+     :plugins ["proto-repl"]}})
+
 (def wrong-atom-config
    {:atom
     {:settings (hash-set :install-aws-workaround)
-     :plugins [:proto-repl]}}
-  )
+     :plugins [:proto-repl]}})
+
 
 (deftest test-schema
   (testing
@@ -42,11 +42,10 @@
     (is (s/validate sut/DdaIdeConfig basic-config))
     (is (s/validate sut/DdaIdeConfig (merge basic-config basic-atom-config)))
     (is (thrown? Exception (s/validate sut/DdaIdeConfig (merge basic-config wrong-atom-config))))
-    (is (thrown? Exception (s/validate sut/DdaIdeConfig {:unsuported-key :unsupported-value})))
-    ))
+    (is (thrown? Exception (s/validate sut/DdaIdeConfig {:unsuported-key :unsupported-value})))))
+
 
 (deftest plan-def
   (testing
     "test plan-def"
-    (is sut/with-dda-ide)
-    ))
+    (is sut/with-dda-ide)))

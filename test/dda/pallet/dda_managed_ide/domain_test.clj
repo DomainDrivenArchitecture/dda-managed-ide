@@ -30,9 +30,9 @@
   {:ide-user :test
    :project-config sut/dda-projects
    :clojure {:os-user-name "test"
-             :settings #{:install-nightlight}}
-   } 
-)
+             :settings #{:install-nightlight}}})
+
+
 
 (def expected-configuration
   {:dda-managed-ide expected-ide-configuration
@@ -40,28 +40,25 @@
    {:vm-user :test
     :settings #{:install-open-jdk-8
                 :install-git
-                :install-linus-basics}}
-   })
+                :install-linus-basics}}})
+
 
 (deftest test-whole-domain
   (testing
     "test the ide schema"
-    (is 
+    (is
       (=
         expected-configuration
         (select-keys
           (sut/ide-convention domain-input)
-          [:dda-managed-ide :dda-managed-vm]))
-    ))
-  )
+          [:dda-managed-ide :dda-managed-vm])))))
+
+
 
 (deftest test-ide-domain
   (testing
     "test the ide schema"
-    (is 
+    (is
       (=
         expected-ide-configuration
-        (sut/default-ide-config :test :clojure-nightlight :aws))
-    ))
-  )
-
+        (sut/default-ide-config :test :clojure-nightlight :aws)))))

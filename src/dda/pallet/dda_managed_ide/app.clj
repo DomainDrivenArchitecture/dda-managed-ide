@@ -18,7 +18,7 @@
   (:require
    [schema.core :as s]
    [dda.cm.group :as group]
-   [dda.pallet.core.dda-crate :as dda-crate]
+   [dda.config.commons.map-utils :as mu]
    [dda.pallet.dda-config-crate.infra :as config-crate]
    [dda.pallet.dda-git-crate.app :as git]
    [dda.pallet.dda-serverspec-crate.app :as serverspec]
