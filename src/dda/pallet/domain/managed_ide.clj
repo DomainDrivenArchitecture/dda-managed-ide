@@ -18,13 +18,13 @@
 (ns dda.pallet.domain.managed-ide
   (:require
     [schema.core :as s]
-    [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
+    [dda.config.commons.map-utils :as map-utils]
     [dda.pallet.crate.managed-ide :as crate]
-    [dda.pallet.crate.managed-vm :as vm-crate]
+    [dda.pallet.dda-managed-vm.infra :as vm-crate]
     [org.domaindrivenarchitecture.pallet.crate.backup :as backup-crate]
     [dda.pallet.domain.managed-ide.atom :as domain-atom]
     [dda.pallet.domain.managed-ide.repos :as domain-repos]
-    [dda.pallet.domain.managed-vm :as vm-convention]))
+    [dda.pallet.dda-managed-vm.domain :as vm-convention]))
 
 (def DdaIdeConventionConfig
   "The convention configuration for managed vms crate."

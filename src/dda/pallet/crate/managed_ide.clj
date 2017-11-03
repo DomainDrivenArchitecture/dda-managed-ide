@@ -24,8 +24,8 @@
     [dda.pallet.crate.managed-ide.clojure :as clojure]
     [dda.pallet.crate.managed-ide.atom :as atom]
     [dda.pallet.crate.managed-ide.repos :as repos]
-    [org.domaindrivenarchitecture.pallet.servertest.fact.packages :as package-fact]
-    [org.domaindrivenarchitecture.pallet.servertest.test.packages :as package-test]))
+    [dda.pallet.serverspec.fact.packages :as package-fact]
+    [dda.pallet.serverspec.test.packages :as package-test]))
 
 (def facility :dda-managed-ide)
 (def version  [0 1 0])

@@ -42,7 +42,7 @@
 (def os-user
   {:root   {:authorized-keys [:my-key :matts-key]}
    :pallet {:authorized-keys [:my-key :matts-key]}
-   :ideuser {:encrypted-password "TMctxnmttcODk" ; pw=test
+   :ideuser {:hashed-password "TMctxnmttcODk" ; pw=test
                :authorized-keys [:my-key :matts-key]}
    })
 

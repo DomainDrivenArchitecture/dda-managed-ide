@@ -19,8 +19,8 @@
     [pallet.api :as api]
     [pallet.compute :as compute]
     [pallet.compute.node-list :as node-list]
-    [org.domaindrivenarchitecture.pallet.commons.session-tools :as session-tools]
-    [org.domaindrivenarchitecture.pallet.commons.pallet-schema :as ps]
+    [dda.pallet.commons.session-tools :as session-tools]
+    [dda.pallet.commons.pallet-schema :as ps]
     [dda.pallet.domain.managed-ide.config :as ide-config]
     [dda.pallet.domain.managed-ide.group :as group]
     [org.domaindrivenarchitecture.cm.operation :as operation]))
@@ -40,11 +40,10 @@
 
 (defn apply-install
   ([]
-    (operation/do-apply-install provider (group/managed-ide-group ide-config/vbox-managed-ide-config {:login "initial"
-                                                                                                      :password "test1234"})))
-  )
+   (operation/do-apply-install provider (group/managed-ide-group ide-config/vbox-managed-ide-config {:login "initial"
+                                                                                                     :password "test1234"}))))
+
 
 (defn server-test
   ([]
-    (operation/do-server-test provider (group/managed-ide-group ide-config/vbox-managed-ide-config "fienchen")))
-  )
+   (operation/do-server-test provider (group/managed-ide-group ide-config/vbox-managed-ide-config "fienchen"))))

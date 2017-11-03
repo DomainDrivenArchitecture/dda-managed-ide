@@ -18,73 +18,54 @@
     [clojure.inspector :as inspector]
     [schema.core :as s]
     [pallet.api :as api]
+    [dda.config.commons.map-utils :as mu]
     [pallet.compute :as compute]
-    [org.domaindrivenarchitecture.pallet.commons.encrypted-credentials :as crypto]
-    [org.domaindrivenarchitecture.pallet.commons.session-tools :as session-tools]
-    [org.domaindrivenarchitecture.pallet.commons.pallet-schema :as ps]
-    [dda.pallet.domain.managed-ide.config :as ide-config]
-    [dda.pallet.domain.managed-ide.group :as group]
-    [org.domaindrivenarchitecture.cm.operation :as operation]))
+    [dda.pallet.commons.encrypted-credentials :as crypto]
+    [dda.pallet.commons.session-tools :as session-tools]
+    [dda.pallet.commons.pallet-schema :as ps]
+    [dda.cm.operation :as operation]
+    [dda.cm.aws :as cloud-target]
+    [dda.pallet.dda-config-crate.infra :as config-crate]
+    [dda.pallet.dda-git-crate.infra :as git-crate]
+    [dda.pallet.dda-serverspec-crate.domain :as server-test-domain]
+    [dda.pallet.dda-serverspec-crate.infra :as server-test-crate]
+    [dda.pallet.dda-git-crate.domain :as domain]
+    [dda.pallet.domain.managed-ide.config :as ide-config]))
 
-(defn aws-node-spec []
-  (api/node-spec
-    :location {:location-id "eu-central-1a"
-               ;:location-id "eu-west-1b"
-               ;:location-id "us-east-1a"
-               }
-    :image {:os-family :ubuntu
-            ;eu-central-1 16-04 LTS hvm
-            :image-id "ami-82cf0aed"
-            ;eu-west1 16-04 LTS hvm :image-id "ami-07174474"
-            ;us-east-1 16-04 LTS hvm :image-id "ami-45b69e52"
-            :os-version "16.04"
-            :login-user "ubuntu"}
-    :hardware {:hardware-id "t2.micro"}
-    :provider {:pallet-ec2 {:key-name "jem"
-                            :network-interfaces [{:device-index 0
-                                                  :groups ["sg-0606b16e"]
-                                                  :subnet-id "subnet-f929df91"
-                                                  :associate-public-ip-address true
-                                                  :delete-on-termination true}]}}))
+(def git-config
+  {:os-user :ubuntu
+   :user-email "ubuntu@domain"
+   :repo-groups #{:dda-pallet}})
 
-(defn aws-provider
-  ([]
-  (let
-    [aws-decrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])]
-    (compute/instantiate-provider
-     :pallet-ec2
-     :identity (get-in aws-decrypted-credentials [:account])
-     :credential (get-in aws-decrypted-credentials [:secret])
-     :endpoint "eu-central-1"
-     :subnet-ids ["subnet-f929df91"])))
-  ([key-id key-passphrase]
-  (let
-    [aws-encrypted-credentials (get-in (pallet.configure/pallet-config) [:services :aws])
-     aws-decrypted-credentials (crypto/decrypt
-                                 (crypto/get-secret-key
-                                   {:user-home "/home/mje/"
-                                    :key-id key-id})
-                                 aws-encrypted-credentials
-                                 key-passphrase)]
-    (compute/instantiate-provider
-     :pallet-ec2
-     :identity (get-in aws-decrypted-credentials [:account])
-     :credential (get-in aws-decrypted-credentials [:secret])
-     :endpoint "eu-central-1"
-     :subnet-ids ["subnet-f929df91"]))))
+(def test-config
+  {:file {:ubuntu-code {:path "/home/ubuntu/code"
+                        :exist? true}}})
+
+(defn group [stack-config]
+  (let []
+   (api/group-spec
+     "dda-managed-ide-group"
+     :extends [(config-crate/with-config stack-config)
+               user-crate/with-user
+               git-crate/with-git
+               managed-vm/with-dda-vm
+               managed-ide/with-dda-ide
+               server-test-crate/with-servertest])))
+
+(defn integrated-group-spec [count]
+  (merge
+    (group (group-configuration))
+    (cloud-target/node-spec "jem")
+    {:count count}))
 
 (defn converge-install
   ([count]
-    (operation/do-converge-install (aws-provider) (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
+   (operation/do-converge-install (cloud-target/provider) (integrated-group-spec count)))
   ([key-id key-passphrase count]
-    (operation/do-converge-install
-      (aws-provider key-id key-passphrase)
-      (group/managed-ide-group count ide-config/aws-managed-ide-config (aws-node-spec))))
-  )
+   (operation/do-converge-install (cloud-target/provider key-id key-passphrase) (integrated-group-spec count))))
 
 (defn server-test
-  ([]
-    (operation/do-server-test (aws-provider) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
-  ([key-id key-passphrase]
-    (operation/do-server-test (aws-provider key-id key-passphrase) (group/managed-ide-group ide-config/aws-managed-ide-config "ideuser")))
-  )
+  ([count]
+   (operation/do-server-test (cloud-target/provider) (integrated-group-spec count)))
+  ([key-id key-passphrase count]
+   (operation/do-server-test (cloud-target/provider key-id key-passphrase) (integrated-group-spec count))))

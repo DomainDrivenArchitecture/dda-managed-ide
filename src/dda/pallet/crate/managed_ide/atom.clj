@@ -19,7 +19,7 @@
     [schema.core :as s]    
     [clojure.tools.logging :as logging]
     [pallet.actions :as actions]    
-    [org.domaindrivenarchitecture.config.commons.map-utils :as map-utils]
+    [dda.config.commons.map-utils :as map-utils]
     [org.domaindrivenarchitecture.pallet.crate.util :as util]))
 
 (defn install [config]
