@@ -18,8 +18,9 @@
   (:require
     [schema.core :as s]
     [clojure.tools.logging :as logging]
-    [pallet.actions :as actions]))
-
+    [pallet.actions :as actions]
+    [dda.config.commons.map-utils :as map-utils]
+    [org.domaindrivenarchitecture.pallet.crate.util :as util]))
 
 (defn install [config]
   (let [atom-config (-> config :atom)
