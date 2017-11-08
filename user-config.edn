@@ -1,9 +1,9 @@
-{:provisioning  {:ip "192.168.56.101"
-                 :login "lucca"
-                 :password "k2XlL7n!"}
- :user          {:name "lucca"
-                 :password "k2XlL7n!"
-                 :email "lucca.hellriegel@meissa-gmbh.de"}
+{:provisioning  {:ip "192.168.56.104"
+                 :login "testymctestface"
+                 :password "test1234"}
+ ; :user          {:name "x"
+ ;                 :password "x!"
+ ;                 :email "x"}
  :dev-platform :clojure-atom}
 ;                  :ssh {:ssh-pub-key "rsa-ssh kfjri5r8irohgn...test.key comment"
 ;                        :ssh-prvate-key "123Test"}
@@ -63,4 +63,4 @@
 ; =0/aC
 ; -----END PGP PRIVATE KEY BLOCK-----
 ; "
-;                        :gpg-passphrase "passphrase"}}}
+;                        :gpg-passphrase "passphrase"}}

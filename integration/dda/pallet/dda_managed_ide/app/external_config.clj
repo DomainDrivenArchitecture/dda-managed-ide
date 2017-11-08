@@ -13,7 +13,7 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns dda.pallet.dda-managed-vm.app.external-config
+(ns dda.pallet.dda-managed-ide.app.external-config
   (:require
     [schema.core :as s]
     [clojure.string :as str]
