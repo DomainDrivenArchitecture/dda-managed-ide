@@ -19,6 +19,7 @@
    [schema.core :as s]
    [dda.cm.group :as group]
    [dda.config.commons.map-utils :as mu]
+   [dda.pallet.commons.external-config :as ext-config]
    [dda.pallet.dda-config-crate.infra :as config-crate]
    [dda.pallet.dda-git-crate.app :as git]
    [dda.pallet.dda-serverspec-crate.app :as serverspec]
@@ -37,6 +38,10 @@
                      serverspec/InfraResult
                      managed-vm/InfraResult)}})
 
+(s/defn ^:always-validate load-domain :- domain/DdaIdeDomainConfig
+  [file-name :- s/Str]
+  (ext-config/parse-config file-name))
+
 (s/defn ^:allways-validate create-app-configuration :- DdaIdeAppConfig
   [config :- infra/DdaIdeConfig
    group-key :- s/Keyword]
@@ -47,7 +52,7 @@
   [domain-config & {:keys [group-key] :or {group-key :dda-ide-group}}]
   (s/validate domain/DdaIdeDomainConfig domain-config)
   (mu/deep-merge
-   (managed-vm/app-configuration (domain/vm-config domain-config) :group-key group-key)
+   (managed-vm/app-configuration (domain/dda-vm-domain-configuration domain-config) :group-key group-key)
    (git/app-configuration (domain/ide-git-config domain-config) :group-key group-key)
    (serverspec/app-configuration (domain/ide-serverspec-config domain-config) :group-key group-key)
    (create-app-configuration (domain/infra-configuration domain-config) group-key)))

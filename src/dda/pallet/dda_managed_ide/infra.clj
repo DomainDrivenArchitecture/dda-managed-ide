@@ -21,12 +21,9 @@
     [pallet.api :as api]
     [pallet.actions :as actions]
     [pallet.crate :as crate]
-    [org.domaindrivenarchitecture.pallet.core.dda-crate :as dda-crate]
-    [dda.pallet.crate.managed-ide.clojure :as clojure]
-    [dda.pallet.crate.managed-ide.atom :as atom]
-    [dda.pallet.crate.managed-ide.repos :as repos]
-    [dda.pallet.serverspec.fact.packages :as package-fact]
-    [dda.pallet.serverspec.test.packages :as package-test]))
+    [dda.pallet.core.dda-crate :as dda-crate]
+    [dda.pallet.dda-managed-ide.infra.clojure :as clojure]
+    [dda.pallet.dda-managed-ide.infra.atom :as atom]))
 
 (def facility :dda-managed-ide)
 (def version  [0 1 0])

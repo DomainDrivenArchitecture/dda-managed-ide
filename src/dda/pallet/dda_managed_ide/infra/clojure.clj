@@ -18,12 +18,8 @@
   (:require
     [schema.core :as s]
     [pallet.actions :as actions]
-<<<<<<< HEAD:src/dda/pallet/dda_managed_ide/infra/clojure.clj
     [dda.pallet.crate.util :as util]))
-=======
-    [dda.config.commons.map-utils :as map-utils]
-    [org.domaindrivenarchitecture.pallet.crate.util :as util]))
->>>>>>> issue_26:src/dda/pallet/crate/managed_ide/clojure.clj
+
 
 (def Auth
   {:username s/Str

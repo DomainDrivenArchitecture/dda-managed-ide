@@ -20,7 +20,7 @@
     [dda.pallet.dda-git-crate.domain :as git]
     [dda.pallet.dda-serverspec-crate.domain :as serverspec]
     [dda.pallet.dda-managed-vm.domain :as vm-crate]
-    [dda.pallet.dda-manged-ide.infra :as infra]))
+    [dda.pallet.dda-managed-ide.infra :as infra]))
 
 (def DdaIdeDomainConfig
   {:ide-user s/Keyword
@@ -78,9 +78,36 @@
       :default {}))))
 
 (s/defn ^:always-validate dda-vm-domain-configuration
-  [domain-config :- vm-crate/DdaVmDomainConfig]
-  {:vm-user (:ide-user domain-config)
-   :platform (:vm-platform domain-config)})
+  [ide-config :- DdaIdeDomainConfig]
+  {:vm-user (:ide-user ide-config)
+   :platform (:vm-platform ide-config)})
+
+(def base-plugins
+  ["ink" "minimap" "busy-signal"])
+
+(def clean-typing-plugins
+  ["trailing-spaces" "linter" "linter-shellcheck" "linter-write-good" "linter-ui-default" "linter-jsonlint" "linter-spell-html" "minimap-linter"])
+
+(def pair-programming-plugins
+  ["atom-pair" "floobits" "motepair"])
+
+(def clojure-plugins
+  ["proto-repl" "atom-toolbar" "clojure-plus" "parinfer" "lisp-paredit" "linter-clojure"])
+
+(def git-plugins
+  ["git-plus" "tree-view-git-status" "git-time-machine" "language-diff"])
+
+(s/defn atom-config
+  "create a atom configuration"
+  [vm-platform]
+  {:settings (if (= vm-platform :aws)
+               #{:install-aws-workaround}
+               #{})
+   :plugins (into
+              []
+              (concat base-plugins clean-typing-plugins
+                      pair-programming-plugins clojure-plugins
+                      git-plugins))})
 
 (s/defn ^:always-validate infra-configuration :- InfraResult
   [domain-config :- DdaIdeDomainConfig]
@@ -91,10 +118,7 @@
       {:ide-user ide-user}
       (cond
         (= dev-platform :clojure-atom) {:clojure {:os-user-name user-name}
-                                        :atom {:settings (if (= vm-platform :aws)
-                                                           #{:install-aws-workaround}
-                                                           #{})
-                                               :plugins ["ink" "proto-repl"]}}
+                                        :atom (atom-config vm-platform)}
 
         (= dev-platform :clojure-nightlight) {:clojure {:os-user-name user-name
                                                         :settings #{:install-nightlight}}}

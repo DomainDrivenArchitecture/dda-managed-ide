@@ -19,8 +19,7 @@
     [schema.core :as s]
     [clojure.tools.logging :as logging]
     [pallet.actions :as actions]
-    [dda.config.commons.map-utils :as map-utils]
-    [org.domaindrivenarchitecture.pallet.crate.util :as util]))
+    [dda.config.commons.map-utils :as map-utils]))
 
 (defn install [config]
   (let [atom-config (-> config :atom)
@@ -39,9 +38,6 @@
         "aws-atom-workaround"
         ("cp" "/usr/lib/x86_64-linux-gnu/libxcb.so.1" "/usr/share/atom/")
         ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1")))))
-
-
-
 
 (defn install-user-plugins [config]
   (let [atom-config (-> config :atom)]
