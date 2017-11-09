@@ -19,6 +19,7 @@
     [schema.core :as s]
     [dda.pallet.dda-managed-vm.domain :as vm-domain]
     [dda.pallet.dda-managed-ide.domain.git :as git]
+    [dda.pallet.dda-managed-ide.domain.atom :as atom]
     [dda.pallet.dda-managed-ide.infra :as infra]))
 
 (def DdaIdeDomainConfig
@@ -59,43 +60,16 @@
   {:vm-user (:ide-user ide-config)
    :platform (:vm-platform ide-config)})
 
-(def base-plugins
-  ["ink" "minimap" "busy-signal"])
-
-(def clean-typing-plugins
-  ["trailing-spaces" "linter" "linter-shellcheck" "linter-write-good" "linter-ui-default" "linter-jsonlint" "linter-spell-html" "minimap-linter"])
-
-(def pair-programming-plugins
-  ["atom-pair" "floobits" "motepair"])
-
-(def clojure-plugins
-  ["proto-repl" "atom-toolbar" "clojure-plus" "parinfer" "lisp-paredit" "linter-clojure"])
-
-(def git-plugins
-  ["git-plus" "tree-view-git-status" "git-time-machine" "language-diff"])
-
-(s/defn atom-config
-  "create a atom configuration"
-  [vm-platform]
-  {:settings (if (= vm-platform :aws)
-               #{:install-aws-workaround}
-               #{})
-   :plugins (into
-              []
-              (concat base-plugins clean-typing-plugins
-                      pair-programming-plugins clojure-plugins
-                      git-plugins))})
-
 (s/defn ^:always-validate infra-configuration :- InfraResult
   [domain-config :- DdaIdeDomainConfig]
-  (let [{:keys [ide-user vm-platform dev-platform]} domain-config
+  (let [{:keys [ide-user vm-type dev-platform]} domain-config
         user-name (name ide-user)]
     {infra/facility
      (merge
       {:ide-user ide-user}
       (cond
         (= dev-platform :clojure-atom) {:clojure {:os-user-name user-name}
-                                        :atom (atom-config vm-platform)}
+                                        :atom (atom-config vm-type)}
 
         (= dev-platform :clojure-nightlight) {:clojure {:os-user-name user-name
                                                         :settings #{:install-nightlight}}}
