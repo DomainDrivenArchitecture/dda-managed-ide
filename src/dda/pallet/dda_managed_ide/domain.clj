@@ -17,49 +17,26 @@
 (ns dda.pallet.dda-managed-ide.domain
   (:require
     [schema.core :as s]
-    [dda.pallet.dda-git-crate.domain :as git]
-    [dda.pallet.dda-serverspec-crate.domain :as serverspec]
-    [dda.pallet.dda-managed-vm.domain :as vm-crate]
+    [dda.pallet.dda-managed-vm.domain :as vm-domain]
+    [dda.pallet.dda-managed-ide.domain.git :as git]
     [dda.pallet.dda-managed-ide.infra :as infra]))
 
 (def DdaIdeDomainConfig
-  {:ide-user s/Keyword
-   :vm-platform (s/enum :virtualbox :aws)
-   :dev-platform (s/enum :clojure-atom :clojure-nightlight)})
+  (merge
+    vm-domain/DdaVmUser
+    vm-domain/DdaVmBookmarks
+    {:vm-type (s/enum :remote :desktop)
+     :dev-platform (s/enum :clojure-atom :clojure-nightlight)}))
 
 (def InfraResult {infra/facility infra/DdaIdeConfig})
 
 ;TODO: backup-crate integration
 
-(def ^:dynamic dda-projects
-  {:dda-pallet
-   ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
-    "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
-    "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
-    "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-iptables-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-provider-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-init-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-mysql-crate.git"
-    "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-linkeddata-crate.git"
-    "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
-    "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-    "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"]})
-
-(s/defn ^:always-validate ide-git-config :- git/GitDomainConfig
+(s/defn ^:always-validate ide-git-config
  [ide-config :- DdaIdeDomainConfig]
- (let [{:keys [ide-user user-email] :or {user-email (str (name ide-user) "@domain")}} ide-config]
-   {:os-user ide-user
-    :user-email user-email
-    :repos dda-projects}))
+ (git/ide-git-config ide-config))
 
-(s/defn ^:always-validate ide-serverspec-config :- serverspec/ServerTestDomainConfig
+(s/defn ^:always-validate ide-serverspec-config
  [ide-config :- DdaIdeDomainConfig]
  (let [{:keys [dev-platform vm-platform]} ide-config
        file-config '({:path "/opt/leiningen/lein"}
