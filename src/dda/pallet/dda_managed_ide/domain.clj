@@ -57,8 +57,14 @@
 
 (s/defn ^:always-validate dda-vm-domain-configuration
   [ide-config :- DdaIdeDomainConfig]
-  {:vm-user (:ide-user ide-config)
-   :platform (:vm-platform ide-config)})
+  (let [{:keys [user bookmarks vm-type]} ide-config]
+    (merge
+      {:user user}
+      (if bookmarks
+        {:bookmarks bookmarks} {})
+      {:type (cond
+               (= vm-type :remote) :remote
+               (= vm-type :desktop) :desktop-office)})))
 
 (s/defn ^:always-validate infra-configuration :- InfraResult
   [domain-config :- DdaIdeDomainConfig]
@@ -69,7 +75,7 @@
       {:ide-user ide-user}
       (cond
         (= dev-platform :clojure-atom) {:clojure {:os-user-name user-name}
-                                        :atom (atom-config vm-type)}
+                                        :atom (atom/atom-config vm-type)}
 
         (= dev-platform :clojure-nightlight) {:clojure {:os-user-name user-name
                                                         :settings #{:install-nightlight}}}

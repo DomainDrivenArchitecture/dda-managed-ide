@@ -22,6 +22,7 @@
    [dda.pallet.commons.external-config :as ext-config]
    [dda.pallet.dda-config-crate.infra :as config-crate]
    [dda.pallet.dda-git-crate.app :as git]
+   [dda.pallet.dda-user-crate.app :as user]
    [dda.pallet.dda-serverspec-crate.app :as serverspec]
    [dda.pallet.dda-managed-vm.app :as managed-vm]
    [dda.pallet.dda-managed-ide.infra :as infra]
@@ -34,34 +35,32 @@
 (def DdaIdeAppConfig
   {:group-specific-config
    {s/Keyword (merge ;InfraResult
-                     ;git/InfraResult
-                     ;serverspec/InfraResult
-                     managed-vm/InfraResult)}})
+                     managed-vm/InfraResult
+                     git/InfraResult
+                     user/InfraResult
+                     serverspec/InfraResult)}})
 
 (s/defn ^:always-validate load-domain :- domain/DdaIdeDomainConfig
   [file-name :- s/Str]
   (ext-config/parse-config file-name))
 
-(s/defn ^:allways-validate create-app-configuration :- DdaIdeAppConfig
-  [config :- infra/DdaIdeConfig
-   group-key :- s/Keyword]
-  {:group-specific-config
-   {group-key config}})
-
-(defn app-configuration
-  [domain-config & {:keys [group-key] :or {group-key :dda-ide-group}}]
-  (s/validate domain/DdaIdeDomainConfig domain-config)
-  (mu/deep-merge
-   (managed-vm/app-configuration (domain/dda-vm-domain-configuration domain-config) :group-key group-key)))
-   ;(git/app-configuration (domain/ide-git-config domain-config) :group-key group-key)
-   ;(serverspec/app-configuration (domain/ide-serverspec-config domain-config) :group-key group-key)
-   ;(create-app-configuration (domain/infra-configuration domain-config) group-key)))
+(s/defn ^:always-validate app-configuration :- DdaIdeAppConfig
+  [domain-config :- domain/DdaIdeDomainConfig
+   & options]
+  (let [{:keys [group-key] :or {group-key infra/facility}} options]
+    (s/validate domain/DdaIdeDomainConfig domain-config)
+    (mu/deep-merge
+     (managed-vm/app-configuration (domain/dda-vm-domain-configuration domain-config) :group-key group-key))))
+     ;(git/app-configuration (domain/ide-git-config domain-config) :group-key group-key)
+     ;(serverspec/app-configuration (domain/ide-serverspec-config domain-config) :group-key group-key)
+     ;{:group-specific-config {group-key (domain/infra-configuration domain-config)})))
 
 (s/defn ^:always-validate dda-ide-group-spec
   [app-config :- DdaIdeAppConfig]
   (group/group-spec
    app-config [(config-crate/with-config app-config)
                serverspec/with-serverspec
+               user/with-user
                git/with-git
-               managed-vm/with-dda-vm
-               with-dda-ide]))
+               managed-vm/with-dda-vm]))
+               ;with-dda-ide]))
