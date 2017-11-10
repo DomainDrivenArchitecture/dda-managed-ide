@@ -34,7 +34,7 @@
 
 (def DdaIdeAppConfig
   {:group-specific-config
-   {s/Keyword (merge ;InfraResult
+   {s/Keyword (merge InfraResult
                      managed-vm/InfraResult
                      git/InfraResult
                      user/InfraResult
@@ -50,10 +50,10 @@
   (let [{:keys [group-key] :or {group-key infra/facility}} options]
     (s/validate domain/DdaIdeDomainConfig domain-config)
     (mu/deep-merge
-     (managed-vm/app-configuration (domain/dda-vm-domain-configuration domain-config) :group-key group-key))))
-     ;(git/app-configuration (domain/ide-git-config domain-config) :group-key group-key)
-     ;(serverspec/app-configuration (domain/ide-serverspec-config domain-config) :group-key group-key)
-     ;{:group-specific-config {group-key (domain/infra-configuration domain-config)})))
+     (managed-vm/app-configuration (domain/dda-vm-domain-configuration domain-config) :group-key group-key)
+     ;(git/app-configuration (domain/ide-git-config domain-config) :group-key group-key))))
+     (serverspec/app-configuration (domain/ide-serverspec-config domain-config) :group-key group-key)
+     {:group-specific-config {group-key (domain/infra-configuration domain-config)}})))
 
 (s/defn ^:always-validate dda-ide-group-spec
   [app-config :- DdaIdeAppConfig]
@@ -62,5 +62,5 @@
                serverspec/with-serverspec
                user/with-user
                git/with-git
-               managed-vm/with-dda-vm]))
-               ;with-dda-ide]))
+               managed-vm/with-dda-vm
+               with-dda-ide]))

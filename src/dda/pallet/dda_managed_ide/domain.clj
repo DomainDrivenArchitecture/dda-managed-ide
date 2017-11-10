@@ -22,6 +22,8 @@
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
     [dda.pallet.dda-managed-ide.infra :as infra]))
 
+;TODO: new vm-type needs to be changed, aws-workaround?
+
 (def DdaIdeDomainConfig
   (merge
     vm-domain/DdaVmUser
@@ -39,10 +41,12 @@
 
 (s/defn ^:always-validate ide-serverspec-config
  [ide-config :- DdaIdeDomainConfig]
- (let [{:keys [dev-platform vm-platform]} ide-config
-       file-config '({:path "/opt/leiningen/lein"}
-                     {:path "/etc/profile.d/lein.sh"}
-                     {:path "~/.lein/profiles.clj"})
+ (let [{:keys [user dev-platform vm-platform]} ide-config
+       profile-map (assoc {} :path (str "/home/" (:name user) "/.lein/profiles.clj"))
+       profile-list (conj '() profile-map)
+       file-config (concat '({:path "/opt/leiningen/lein"}
+                             {:path "/etc/profile.d/lein.sh"})
+                    profile-list)
        platform-dep-config (if (and (= vm-platform :aws) (= dev-platform :clojure-atom))
                              (concat file-config '({:path "/usr/share/atom/libxcb.so.1"}))
                              file-config)]
@@ -68,11 +72,11 @@
 
 (s/defn ^:always-validate infra-configuration :- InfraResult
   [domain-config :- DdaIdeDomainConfig]
-  (let [{:keys [ide-user vm-type dev-platform]} domain-config
-        user-name (name ide-user)]
+  (let [{:keys [user vm-type dev-platform]} domain-config
+        user-name (:name user)]
     {infra/facility
      (merge
-      {:ide-user ide-user}
+      {:ide-user (keyword (:name user))}
       (cond
         (= dev-platform :clojure-atom) {:clojure {:os-user-name user-name}
                                         :atom (atom/atom-config vm-type)}

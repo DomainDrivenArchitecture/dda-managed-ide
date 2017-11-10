@@ -50,15 +50,17 @@
   (let [{:keys [summarize-session]}
         :or {summarize-session true} options]
     (operation/do-apply-configure
-     (provider)
+     (provider )
      (provisioning-spec)
      :summarize-session summarize-session)))
 
 (defn test "executes the tests on the server"
   [& options]
-  (let [{:keys [summarize-session]}
+  (let [target-config (existing/load-targets "targets.edn")
+        domain-config (app/load-domain "ide.edn")
+        {:keys [summarize-session]}
         :or {summarize-session true} options]
     (operation/do-server-test
-     (provider)
-     (provisioning-spec)
+     (provider target-config)
+     (provisioning-spec target-config domain-config)
      :summarize-session summarize-session)))
