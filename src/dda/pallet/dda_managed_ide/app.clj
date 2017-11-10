@@ -51,7 +51,7 @@
     (s/validate domain/DdaIdeDomainConfig domain-config)
     (mu/deep-merge
      (managed-vm/app-configuration (domain/dda-vm-domain-configuration domain-config) :group-key group-key)
-     ;(git/app-configuration (domain/ide-git-config domain-config) :group-key group-key))))
+     (git/app-configuration (domain/ide-git-config domain-config) :group-key group-key)
      (serverspec/app-configuration (domain/ide-serverspec-config domain-config) :group-key group-key)
      {:group-specific-config {group-key (domain/infra-configuration domain-config)}})))
 
