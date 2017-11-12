@@ -19,6 +19,7 @@
    [schema.core :as s]
    [dda.cm.group :as group]
    [dda.config.commons.map-utils :as mu]
+   [dda.pallet.commons.existing :as existing]
    [dda.pallet.commons.external-config :as ext-config]
    [dda.pallet.dda-config-crate.infra :as config-crate]
    [dda.pallet.dda-git-crate.app :as git]
@@ -30,7 +31,13 @@
 
 (def with-dda-ide infra/with-dda-ide)
 
+(def DdaIdeDomainConfig domain/DdaIdeDomainConfig)
+
 (def InfraResult domain/InfraResult)
+
+(def ProvisioningUser existing/ProvisioningUser)
+
+(def Targets existing/Targets)
 
 (def DdaIdeAppConfig
   {:group-specific-config
@@ -40,15 +47,19 @@
                      user/InfraResult
                      serverspec/InfraResult)}})
 
-(s/defn ^:always-validate load-domain :- domain/DdaIdeDomainConfig
+(s/defn ^:always-validate load-targets :- Targets
+  [file-name :- s/Str]
+  (ext-config/parse-config file-name))
+
+(s/defn ^:always-validate load-domain :- DdaIdeDomainConfig
   [file-name :- s/Str]
   (ext-config/parse-config file-name))
 
 (s/defn ^:always-validate app-configuration :- DdaIdeAppConfig
-  [domain-config :- domain/DdaIdeDomainConfig
+  [domain-config :- DdaIdeDomainConfig
    & options]
   (let [{:keys [group-key] :or {group-key infra/facility}} options]
-    (s/validate domain/DdaIdeDomainConfig domain-config)
+    (s/validate DdaIdeDomainConfig domain-config)
     (mu/deep-merge
      (managed-vm/app-configuration (domain/dda-vm-domain-configuration domain-config) :group-key group-key)
      (git/app-configuration (domain/ide-git-config domain-config) :group-key group-key)
@@ -64,3 +75,11 @@
                git/with-git
                managed-vm/with-dda-vm
                with-dda-ide]))
+
+(s/defn ^:always-validate existing-provisioning-spec
+  "Creates an integrated group spec from a domain config and a provisioning user."
+  [domain-config :- DdaIdeDomainConfig
+   provisioning-user :- ProvisioningUser]
+  (merge
+   (dda-ide-group-spec (app-configuration domain-config))
+   (existing/node-spec provisioning-user)))

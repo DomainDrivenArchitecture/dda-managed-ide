@@ -22,8 +22,6 @@
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
     [dda.pallet.dda-managed-ide.infra :as infra]))
 
-;TODO: new vm-type needs to be changed, aws-workaround?
-
 (def DdaIdeDomainConfig
   (merge
     vm-domain/DdaVmUser

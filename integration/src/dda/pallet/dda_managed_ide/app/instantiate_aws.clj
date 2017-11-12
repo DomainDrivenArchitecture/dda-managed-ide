@@ -13,7 +13,7 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns dda.pallet.dda-managed-vm.app.instantiate-aws
+(ns dda.pallet.dda-managed-ide.app.instantiate-aws
   (:require
     [clojure.inspector :as inspector]
     [schema.core :as s]
@@ -23,7 +23,7 @@
     [dda.pallet.commons.operation :as operation]
     [dda.pallet.commons.aws :as cloud-target]
     [dda.config.commons.user-env :as user-env]
-    [dda.pallet.dda-managed-vm.app :as app]))
+    [dda.pallet.dda-managed-ide.app :as app]))
 
 (def ssh-pub-key
   (user-env/read-ssh-pub-key-to-config))
