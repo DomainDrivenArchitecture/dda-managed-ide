@@ -18,7 +18,7 @@ This crate builds on top of the dda-managed-vm to additionally provide a develop
 It crate automatically installs software on a Linux system. It can be a standalone system, but normally would be a virtual machine. For this reason we usually refer to the system as "virtual machine" in the text below.
 
 As this crate is build on top of the dda-managed-vm, all the software and tools that is installed by the vm, can also
-be installed with the ide. The configuration is detailed in the reference. For more details on the software see: https://github.com/DomainDrivenArchitecture/dda-managed-vm
+be installed with the ide. For the vm-type :desktop the maximum desktop setup is used (:desktop-office). The configuration is detailed in the reference. For more details on the software see: https://github.com/DomainDrivenArchitecture/dda-managed-vm
 
 The following software/packages are installed additionally by dda-managed-ide:
 
@@ -82,7 +82,7 @@ Example content of file `targets.edn`:
 #### VM config example
 Example content of file `ide.edn`:
 ```clojure
-{:vm-type :desktop-office
+{:vm-type :desktop
  :dev-platform :clojure-atom
  :user {:name "test-user"
         :password {:plain "xxx"}
@@ -115,7 +115,7 @@ The schema for the targets config is:
                    })
 
 (def ProvisioningUser {:login Str                   ; user account used for provisioning / executing tests
-                       (optional-key :password) Str ; password, is no authorized ssh key is avail.
+                       (optional-key :password) Str ; password, if no authorized ssh key is avail.
                        })
 
 (def Targets {:existing [ExistingNode]              ; nodes to test or install
@@ -142,9 +142,8 @@ The schema for the ide configuration is:
 
 {:dev-platform (s/enum :clojure-atom :clojure-nightlight),          ; clojure-atom: full clojure and atom setup
                                                                     ; clojure-nightlight: full clojure and nightlight web server setup
- :vm-type (enum :remote :desktop-office :desktop-minimal),          ; remote: all featured software, no vbox-guest-utils
-                                                                    ; desktop-office: vbox-guest utils, all featured software, no vnc
-                                                                    ; desktop-minimal: just vbox-guest-utils, no java
+ :vm-type (enum :remote :desktop),                                  ; remote: all featured software, no vbox-guest-utils
+                                                                    ; desktop: vbox-guest utils, all featured software, no vnc
  (optional-key :bookmarks) Bookmarks,                               ; initial bookmarks
  :user {:name s/Str                                                 ; user with his credentials
         :password Secret
