@@ -68,7 +68,7 @@ The configuration consists of two files defining both WHERE to install the softw
 * `targets.edn`: describes on which target system(s) the software will be installed
 * `ide.edn`: describes which software/packages will be installed
 
-You can download examples of these configuration files from 
+You can download examples of these configuration files from  
 [https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/targets.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/targets.edn) and
 [https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/ide.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/vm.edn) respectively.
 
