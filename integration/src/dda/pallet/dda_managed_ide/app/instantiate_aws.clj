@@ -25,57 +25,51 @@
     [dda.config.commons.user-env :as user-env]
     [dda.pallet.dda-managed-ide.app :as app]))
 
-(def ssh-pub-key
-  (user-env/read-ssh-pub-key-to-config))
-
-(def user-config
-   {:user-name {:hashed-password  "xxx"
-                :authorized-keys [ssh-pub-key]}})
-
-(def vm-config
-  {:vm-user :test-user
-   :platform :aws
-   :user-email "user-name@mydomain.org"})
-
-(defn provisioning-spec [target-config domain-config count]
+(defn provisioning-spec [domain-config target-config count]
   (merge
-    (app/vm-group-spec
+    (app/dda-ide-group-spec
       (app/app-configuration domain-config))
-    (cloud-target/node-spec "jem")
+    (cloud-target/node-spec target-config)
     {:count count}))
 
 (defn converge-install
   [count & options]
-  (let [{:keys [gpg-key-id gpg-passphrase
+  (let [{:keys [gpg-key-id gpg-passphrase domain targets
                 summarize-session]
-         :or {summarize-session true}} options]
+         :or {domain "integration/resources/snakeoil-vm-remote.edn"
+              targets "integration/resources/jem-aws-target-external.edn"
+              summarize-session true}} options
+        target-config (cloud-target/load-targets targets)
+        domain-config (app/load-domain domain)]
    (operation/do-converge-install
-     (if (some? gpg-key-id)
-       (cloud-target/provider gpg-key-id gpg-passphrase)
-       (cloud-target/provider))
-     (provisioning-spec count)
+     (cloud-target/provider (:context target-config))
+     (provisioning-spec domain-config (:node-spec target-config) count)
      :summarize-session summarize-session)))
 
 (defn configure
  [& options]
- (let [{:keys [gpg-key-id gpg-passphrase
+ (let [{:keys [gpg-key-id gpg-passphrase domain targets
                summarize-session]
-        :or {summarize-session true}} options]
+        :or {domain "integration/resources/snakeoil-vm-remote.edn"
+             targets "integration/resources/jem-aws-target-external.edn"
+             summarize-session true}} options
+       target-config (cloud-target/load-targets targets)
+       domain-config (app/load-domain domain)]
   (operation/do-apply-configure
-    (if (some? gpg-key-id)
-      (cloud-target/provider gpg-key-id gpg-passphrase)
-      (cloud-target/provider))
-    (provisioning-spec 0)
+    (cloud-target/provider (:context target-config))
+    (provisioning-spec domain-config (:node-spec target-config) 0)
     :summarize-session summarize-session)))
 
 (defn serverspec
   [& options]
-  (let [{:keys [gpg-key-id gpg-passphrase
+  (let [{:keys [gpg-key-id gpg-passphrase domain targets
                 summarize-session]
-         :or {summarize-session true}} options]
-   (operation/do-server-test
-     (if (some? gpg-key-id)
-       (cloud-target/provider gpg-key-id gpg-passphrase)
-       (cloud-target/provider))
-     (provisioning-spec 0)
-     :summarize-session summarize-session)))
+         :or {domain "integration/resources/snakeoil-vm-remote.edn"
+              targets "integration/resources/jem-aws-target-external.edn"
+              summarize-session true}} options
+        target-config (cloud-target/load-targets targets)
+        domain-config (app/load-domain domain)]
+    (operation/do-server-test
+      (cloud-target/provider (:context target-config))
+      (provisioning-spec domain-config (:node-spec target-config) 0)
+      :summarize-session summarize-session)))
