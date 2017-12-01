@@ -35,7 +35,7 @@
       "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
       "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
       "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-      "https://github.com/DomainDrivenArchitecture/dda-iptables-crate.git"
+      "https://github.com/DomainDrivenArchitecture/dda-tinc-crate.git"
       "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
       "https://github.com/DomainDrivenArchitecture/dda-provider-crate.git"
       "https://github.com/DomainDrivenArchitecture/dda-init-crate.git"
