@@ -22,7 +22,7 @@
   ["ink" "minimap" "busy-signal" "atom-toolbar" "atom-meld" "intentions"])
 
 (def clean-typing-plugins
-  ["trailing-spaces" "linter" "linter-shell" "linter-write-good" "linter-ui-default" "linter-jsonlint" "linter-spell-html" "linter-clojure" "minimap-linter"])
+  ["trailing-spaces" "linter" "linter-write-good" "linter-ui-default" "linter-jsonlint" "linter-spell" "linter-spell-html" "linter-clojure" "minimap-linter"])
 
 (def pair-programming-plugins
   ["teletype"])
