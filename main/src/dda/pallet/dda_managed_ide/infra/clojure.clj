@@ -18,50 +18,20 @@
   (:require
     [schema.core :as s]
     [pallet.actions :as actions]
+    [selmer.parser :as selmer]
     [dda.pallet.crate.util :as util]))
 
 
-(def Auth
-  {:username s/Str
+(def RepoAuth
+  {:repo s/Str
+   :username s/Str
    :password s/Str})
 
 (def LeiningenUserProfileConfig
   {:os-user-name s/Str
    (s/optional-key :signing-gpg-key) s/Str
-   (s/optional-key :auth-clojars) Auth
+   (s/optional-key :repo-auth) [RepoAuth]
    (s/optional-key :settings) (hash-set (s/enum :install-nightlight))})
-
-(s/defn lein-user-profile
-  "generates a valid lein profile config."
-  [lein-config :- LeiningenUserProfileConfig]
-  (let [settings (-> lein-config :settings)]
-    (merge
-      {:user
-       {:plugins
-        (into
-          [['lein-release "1.0.5"]
-           ['slamhound "1.5.5"]
-           ['lein-cloverage "1.0.6"]
-           ['jonase/eastwood "0.2.3"]
-           ['lein-kibit "0.1.2"]
-           ['lein-ancient "0.6.10"]]
-          (if (contains? settings :install-nightlight)
-            [['nightlight/lein-nightlight "1.6.1"]]
-            []))
-        :dependencies [['pjstadig/humane-test-output "0.7.1"]]
-        :injections ['(require 'pjstadig.humane-test-output)
-                     '(pjstadig.humane-test-output/activate!)]}}
-      (if (contains? lein-config :signing-gpg-key)
-        {:user
-         {:signing {:gpg-key (get-in lein-config [:signing-gpg-key])}}}
-        {})
-      (if (contains? lein-config :auth-clojars)
-        {:auth
-         {:repository-auth
-          {#"clojars"
-           (get-in lein-config [:auth-clojars])}}}
-        {}))))
-
 
 (defn install-leiningen
   []
@@ -82,14 +52,17 @@
     :literal true
     :content
     (util/create-file-content
-      ["PATH=$PATH:/opt/leiningen"
-       "export PATH"])))
+      ["PATH=$PATH:/opt/leiningen"])))
+
+(s/defn lein-user-profile :- s/Str
+  [lein-config :- LeiningenUserProfileConfig]
+  (selmer/render-file "lein_profiles.template" lein-config))
 
 
 (s/defn configure-user-leiningen
   "configure lein settings"
   [lein-config :- LeiningenUserProfileConfig]
-  (let [os-user-name (get-in lein-config [:os-user-name])
+  (let [{:keys [os-user-name]} lein-config
         path (str "/home/" os-user-name "/.lein/")]
    (actions/directory
      path
@@ -102,4 +75,4 @@
      :group os-user-name
      :literal true
      :content
-     (str (lein-user-profile lein-config)))))
+     (lein-user-profile lein-config))))

@@ -27,7 +27,8 @@
     vm-domain/DdaVmUser
     vm-domain/DdaVmBookmarks
     {:vm-type (s/enum :remote :desktop)
-     :dev-platform (s/enum :clojure-atom :clojure-nightlight)}))
+     :dev-platform (s/enum :clojure-atom :clojure-nightlight)
+     (s/optional-key :lein-auth) [infra/LeinRepoAuth]}))
 
 (def InfraResult {infra/facility infra/DdaIdeConfig})
 

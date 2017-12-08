@@ -28,6 +28,8 @@
 (def facility :dda-managed-ide)
 (def version  [0 1 0])
 
+(def LeinRepoAuth clojure/RepoAuth)
+
 (def DdaIdeConfig
   {:ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
