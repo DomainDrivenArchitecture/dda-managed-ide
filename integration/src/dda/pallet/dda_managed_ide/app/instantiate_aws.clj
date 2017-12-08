@@ -39,7 +39,7 @@
 
 (defn provisioning-spec [target-config domain-config count]
   (merge
-    (app/vm-group-spec
+    (app/dda-ide-group-spec
       (app/app-configuration domain-config))
     (cloud-target/node-spec "jem")
     {:count count}))
