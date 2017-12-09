@@ -17,10 +17,20 @@
 (ns dda.pallet.dda-managed-ide.domain
   (:require
     [schema.core :as s]
+    [dda.pallet.commons.secret :as secret]
     [dda.pallet.dda-managed-vm.domain :as vm-domain]
     [dda.pallet.dda-managed-ide.domain.git :as git]
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
     [dda.pallet.dda-managed-ide.infra :as infra]))
+
+(def InfraResult {infra/facility infra/DdaIdeConfig})
+
+(def RepoAuth
+  {:repo s/Str
+   :username secret/Secret
+   :password secret/Secret})
+
+(def RepoAuthResolved infra/LeinRepoAuth)
 
 (def DdaIdeDomainConfig
   (merge
@@ -28,9 +38,15 @@
     vm-domain/DdaVmBookmarks
     {:vm-type (s/enum :remote :desktop)
      :dev-platform (s/enum :clojure-atom :clojure-nightlight)
-     (s/optional-key :lein-auth) [infra/LeinRepoAuth]}))
+     (s/optional-key :lein-auth) [RepoAuth]}))
 
-(def InfraResult {infra/facility infra/DdaIdeConfig})
+(def DdaIdeDomainResolvedConfig
+  (merge
+    vm-domain/DdaVmUserResolved
+    vm-domain/DdaVmBookmarks
+    {:vm-type (s/enum :remote :desktop)
+     :dev-platform (s/enum :clojure-atom :clojure-nightlight)
+     (s/optional-key :lein-auth) [RepoAuthResolved]}))
 
 ;TODO: backup-crate integration
 
