@@ -54,28 +54,30 @@
  [ide-config :- DdaIdeDomainConfig]
  (git/ide-git-config ide-config))
 
-(s/defn ^:always-validate ide-serverspec-config
- [ide-config :- DdaIdeDomainConfig]
- (let [{:keys [user dev-platform vm-platform]} ide-config
-       profile-map (assoc {} :path (str "/home/" (:name user) "/.lein/profiles.clj"))
-       profile-list (conj '() profile-map)
-       file-config (concat '({:path "/opt/leiningen/lein"}
-                             {:path "/etc/profile.d/lein.sh"})
-                    profile-list)
-       platform-dep-config (if (and (= vm-platform :aws) (= dev-platform :clojure-atom))
-                             (concat file-config '({:path "/usr/share/atom/libxcb.so.1"}))
-                             file-config)]
-   (merge
-    {:file platform-dep-config}
-    (cond
-      (= dev-platform :clojure-atom) {:package '({:name "atom"}
-                                                 {:name "python"}
-                                                 {:name "gvfs-bin"})}
+(s/defn ^:always-validate
+  ide-serverspec-config
+  [ide-config :- DdaIdeDomainResolvedConfig]
+  (let [{:keys [user dev-platform vm-platform]} ide-config
+        profile-map (assoc {} :path (str "/home/" (:name user) "/.lein/profiles.clj"))
+        profile-list (conj '() profile-map)
+        file-config (concat '({:path "/opt/leiningen/lein"}
+                              {:path "/etc/profile.d/lein.sh"})
+                     profile-list)
+        platform-dep-config (if (and (= vm-platform :aws) (= dev-platform :clojure-atom))
+                              (concat file-config '({:path "/usr/share/atom/libxcb.so.1"}))
+                              file-config)]
+    (merge
+     {:file platform-dep-config}
+     (cond
+       (= dev-platform :clojure-atom) {:package '({:name "atom"}
+                                                  {:name "python"}
+                                                  {:name "gvfs-bin"})}
 
-      :default {}))))
+       :default {}))))
 
-(s/defn ^:always-validate dda-vm-domain-configuration
-  [ide-config :- DdaIdeDomainConfig]
+(s/defn ^:always-validate
+  dda-vm-domain-configuration
+  [ide-config :- DdaIdeDomainResolvedConfig]
   (let [{:keys [user bookmarks vm-type]} ide-config]
     (merge
       {:user user}
@@ -85,8 +87,9 @@
                (= vm-type :remote) :remote
                (= vm-type :desktop) :desktop-office)})))
 
-(s/defn ^:always-validate infra-configuration :- InfraResult
-  [domain-config :- DdaIdeDomainConfig]
+(s/defn ^:always-validate
+  infra-configuration :- InfraResult
+  [domain-config :- DdaIdeDomainResolvedConfig]
   (let [{:keys [user vm-type dev-platform]} domain-config
         user-name (:name user)]
     {infra/facility
