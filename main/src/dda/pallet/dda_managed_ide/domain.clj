@@ -51,7 +51,7 @@
 ;TODO: backup-crate integration
 
 (s/defn ^:always-validate ide-git-config
- [ide-config :- DdaIdeDomainConfig]
+ [ide-config :- DdaIdeDomainResolvedConfig]
  (git/ide-git-config ide-config))
 
 (s/defn ^:always-validate
