@@ -67,7 +67,8 @@
       {:username (secret/resolve-secret (:username domain-config))
        :password (secret/resolve-secret (:password domain-config))})))
 
-(s/defn ^:always-validate resolve-secrets :- DdaIdeDomainResolvedConfig
+(s/defn ^:always-validate
+  resolve-secrets :- DdaIdeDomainResolvedConfig
   [domain-config :- DdaIdeDomainConfig]
   (let [{:keys [user type lein-auth]} domain-config
         {:keys [ssh gpg]} user]
@@ -86,18 +87,19 @@
       (when (contains? domain-config :lein-auth)
         {:lein-auth (into [] (map resolve-repo-auth-secrets lein-auth))}))))
 
-(s/defn ^:always-validate app-configuration :- DdaIdeAppConfig
+(s/defn ^:always-validate
+  app-configuration :- DdaIdeAppConfig
   [domain-config :- DdaIdeDomainResolvedConfig
    & options]
   (let [{:keys [group-key] :or {group-key infra/facility}} options]
-    (s/validate DdaIdeDomainConfig domain-config)
     (mu/deep-merge
      (managed-vm/app-configuration-resolved (domain/dda-vm-domain-configuration domain-config) :group-key group-key)
      (git/app-configuration (domain/ide-git-config domain-config) :group-key group-key)
      (serverspec/app-configuration (domain/ide-serverspec-config domain-config) :group-key group-key)
      {:group-specific-config {group-key (domain/infra-configuration domain-config)}})))
 
-(s/defn ^:always-validate dda-ide-group-spec
+(s/defn ^:always-validate
+  dda-ide-group-spec
   [app-config :- DdaIdeAppConfig]
   (group/group-spec
    app-config [(config-crate/with-config app-config)
@@ -107,7 +109,8 @@
                managed-vm/with-dda-vm
                with-dda-ide]))
 
-(s/defn ^:always-validate existing-provisioning-spec
+(s/defn ^:always-validate
+  existing-provisioning-spec
   "Creates an integrated group spec from a domain config and a provisioning user."
   [domain-config :- DdaIdeDomainConfig
    provisioning-user :- ProvisioningUser]
