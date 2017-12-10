@@ -18,11 +18,8 @@
     [clojure.inspector :as inspector]
     [schema.core :as s]
     [pallet.api :as api]
-    [pallet.compute :as compute]
-    [dda.pallet.commons.encrypted-credentials :as crypto]
     [dda.pallet.commons.operation :as operation]
     [dda.pallet.commons.aws :as cloud-target]
-    [dda.config.commons.user-env :as user-env]
     [dda.pallet.dda-managed-ide.app :as app]))
 
 (defn provisioning-spec [domain-config target-config count]
@@ -36,8 +33,8 @@
   [count & options]
   (let [{:keys [gpg-key-id gpg-passphrase domain targets
                 summarize-session]
-         :or {domain "integration/resources/snakeoil-vm-remote.edn"
-              targets "integration/resources/jem-aws-target-external.edn"
+         :or {domain "integration/resources/snakeoil-ide-remote.edn"
+              targets "integration/resources/user-aws-target.edn"
               summarize-session true}} options
         target-config (cloud-target/load-targets targets)
         domain-config (app/load-domain domain)]
@@ -50,8 +47,8 @@
  [& options]
  (let [{:keys [gpg-key-id gpg-passphrase domain targets
                summarize-session]
-        :or {domain "integration/resources/snakeoil-vm-remote.edn"
-             targets "integration/resources/jem-aws-target-external.edn"
+        :or {domain "integration/resources/snakeoil-ide-remote.edn"
+             targets "integration/resources/user-aws-target.edn"
              summarize-session true}} options
        target-config (cloud-target/load-targets targets)
        domain-config (app/load-domain domain)]
@@ -64,8 +61,8 @@
   [& options]
   (let [{:keys [gpg-key-id gpg-passphrase domain targets
                 summarize-session]
-         :or {domain "integration/resources/snakeoil-vm-remote.edn"
-              targets "integration/resources/jem-aws-target-external.edn"
+         :or {domain "integration/resources/snakeoil-ide-remote.edn"
+              targets "integration/resources/user-aws-target.edn"
               summarize-session true}} options
         target-config (cloud-target/load-targets targets)
         domain-config (app/load-domain domain)]
