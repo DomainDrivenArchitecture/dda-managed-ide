@@ -24,33 +24,36 @@
 
 (deftest lein-user-profile-test
   (testing
-    (is (= {:user
-            {:plugins
-             [['lein-release "1.0.5"]
-              ['slamhound "1.5.5"]
-              ['lein-cloverage "1.0.6"]
-              ['jonase/eastwood "0.2.3"]
-              ['lein-kibit "0.1.2"]
-              ['lein-ancient "0.6.10"]
-              ['nightlight/lein-nightlight "1.6.1"]]
-             :dependencies
-             [['pjstadig/humane-test-output "0.7.1"]]
-             :injections
-             ['(require 'pjstadig.humane-test-output)
-              '(pjstadig.humane-test-output/activate!)]}}
-           (sut/lein-user-profile {:os-user-name (name :test)
-                                   :settings #{:install-nightlight}})))
-    (is (= {:user
-            {:plugins
-             [['lein-release "1.0.5"]
-              ['slamhound "1.5.5"]
-              ['lein-cloverage "1.0.6"]
-              ['jonase/eastwood "0.2.3"]
-              ['lein-kibit "0.1.2"]
-              ['lein-ancient "0.6.10"]]
-             :dependencies
-             [['pjstadig/humane-test-output "0.7.1"]],
-             :injections
-             ['(require 'pjstadig.humane-test-output)
-              '(pjstadig.humane-test-output/activate!)]}}
-           (sut/lein-user-profile {:os-user-name (name :test)})))))
+    (is (re-find
+         #"nightlight/lein-nightlight"
+         (sut/lein-user-profile {:os-user-name "test"
+                                 :settings #{:install-nightlight}})))
+    (is (not (re-find
+               #"nightlight/lein-nightlight"
+               (sut/lein-user-profile {:os-user-name "test"}))))
+    (is (re-find
+         #"signing"
+         (sut/lein-user-profile {:os-user-name "test"
+                                 :signing-gpg-key "gpg"})))
+    (is (not (re-find
+               #"signing"
+               (sut/lein-user-profile {:os-user-name "test"}))))
+    (is (re-find
+         #"clojars"
+         (sut/lein-user-profile {:os-user-name "test"
+                                 :repo-auth [{:repo "clojars"
+                                              :username "u"
+                                              :password "p"}]})))
+    (is (re-find
+         #"otherrepo"
+         (sut/lein-user-profile {:os-user-name "test"
+                                 :repo-auth [{:repo "clojars"
+                                              :username "u"
+                                              :password "p"}
+                                             {:repo "otherrepo"
+                                              :username "u"
+                                              :password "p"}]})))
+    (is (not (re-find
+               #"username"
+               (sut/lein-user-profile {:os-user-name "test"
+                                       :repo-auth []}))))))

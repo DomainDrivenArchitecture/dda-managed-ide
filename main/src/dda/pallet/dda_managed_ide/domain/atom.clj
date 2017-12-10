@@ -19,19 +19,19 @@
     [schema.core :as s]))
 
 (def base-plugins
-  ["ink" "minimap" "busy-signal"])
+  ["ink" "minimap" "busy-signal" "atom-toolbar" "atom-meld" "intentions"])
 
 (def clean-typing-plugins
-  ["trailing-spaces" "linter" "linter-shellcheck" "linter-write-good" "linter-ui-default" "linter-jsonlint" "linter-spell-html" "minimap-linter"])
+  ["trailing-spaces" "linter" "linter-write-good" "linter-ui-default" "linter-jsonlint" "linter-spell" "linter-spell-html" "linter-clojure" "minimap-linter"])
 
 (def pair-programming-plugins
-  ["atom-pair" "floobits" "motepair"])
+  ["teletype"])
 
 (def clojure-plugins
-  ["proto-repl" "atom-toolbar" "clojure-plus" "parinfer" "lisp-paredit" "linter-clojure"])
+  ["proto-repl"  "clojure-plus" "parinfer" "lisp-paredit" "linter-clojure"])
 
 (def git-plugins
-  ["git-plus" "tree-view-git-status" "git-time-machine" "language-diff"])
+  ["git-plus" "tree-view-git-status" "git-time-machine" "language-diff" "split-diff"])
 
 (s/defn atom-config
   "create a atom configuration"

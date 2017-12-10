@@ -15,7 +15,7 @@ This crate works with:
 
 This crate builds on top of the dda-managed-vm to additionally provide a development environment.
 
-It crate automatically installs software on a Linux system. It can be a standalone system, but normally would be a virtual machine. For this reason we usually refer to the system as "virtual machine" in the text below.
+It crate automatically installs software on a Linux system. It can be a standalone system, but normally it would be a virtual machine. For this reason we usually refer to the system as "virtual machine" in the text below.
 
 As this crate is build on top of the dda-managed-vm, all the software and tools that is installed by the vm, can also
 be installed with the ide. For the vm-type :desktop the maximum desktop setup is used (:desktop-office). The configuration is detailed in the reference. For more details on the software see: https://github.com/DomainDrivenArchitecture/dda-managed-vm
@@ -68,10 +68,12 @@ The configuration consists of two files defining both WHERE to install the softw
 * `targets.edn`: describes on which target system(s) the software will be installed
 * `ide.edn`: describes which software/packages will be installed
 
-You can download examples of these configuration files from [https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/targets.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/targets.edn) and [https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/ide.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/vm.edn) respectively.
+You can download examples of these configuration files from  
+[https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/targets.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/targets.edn) and
+[https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/ide.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/vm.edn) respectively.
 
 #### Targets config example
-Example content of file `targets.edn`:
+Example content of the file, `targets.edn`:
 ```clojure
 {:existing [{:node-name "test-vm1"            ; semantic name
              :node-ip "35.157.19.218"}]       ; the ip4 address of the machine to be provisioned
@@ -80,7 +82,7 @@ Example content of file `targets.edn`:
 ```
 
 #### VM config example
-Example content of file `ide.edn`:
+Example content of the file, `ide.edn`:
 ```clojure
 {:vm-type :desktop
  :dev-platform :clojure-atom
