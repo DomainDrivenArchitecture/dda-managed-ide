@@ -97,13 +97,14 @@
       {:ide-user (keyword (:name user))}
       (cond
         (= dev-platform :clojure-atom)
-        {:clojure (merge
-                   {:os-user-name user-name
-                    :atom (atom/atom-config vm-type)}
+        {:atom (atom/atom-config vm-type)
+         :clojure (merge
+                   {:os-user-name user-name}
                    (when (contains? domain-config :lein-auth)
                      {:lein-auth lein-auth}))}
         (= dev-platform :clojure-nightlight)
-        {:clojure (merge
+        {:os-user-name user-name
+         :clojure (merge
                     {:os-user-name user-name
                      :settings #{:install-nightlight}}
                     (when (contains? domain-config :lein-auth)
