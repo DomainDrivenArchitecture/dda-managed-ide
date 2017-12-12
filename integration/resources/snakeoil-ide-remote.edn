@@ -1,5 +1,8 @@
 {:vm-type :remote
  :dev-platform :clojure-nightlight
+ :lein-auth [{:repo "clojars"
+              :username {:plain "clojars-user"}
+              :password {:plain "clojar-password"}}]
  :user {:name "test-user"
         :password {:plain "xxx"}
         :email "test-user@mydomain.org"

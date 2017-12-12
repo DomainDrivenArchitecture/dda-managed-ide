@@ -41,13 +41,13 @@
     (is (re-find
          #"clojars"
          (sut/lein-user-profile {:os-user-name "test"
-                                 :repo-auth [{:repo "clojars"
+                                 :lein-auth [{:repo "clojars"
                                               :username "u"
                                               :password "p"}]})))
     (is (re-find
          #"otherrepo"
          (sut/lein-user-profile {:os-user-name "test"
-                                 :repo-auth [{:repo "clojars"
+                                 :lein-auth [{:repo "clojars"
                                               :username "u"
                                               :password "p"}
                                              {:repo "otherrepo"
@@ -56,4 +56,4 @@
     (is (not (re-find
                #"username"
                (sut/lein-user-profile {:os-user-name "test"
-                                       :repo-auth []}))))))
+                                       :lein-auth []}))))))

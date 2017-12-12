@@ -22,7 +22,7 @@
   :auth
   {:repository-auth
     {
-      {% for auth in repo-auth %}
+      {% for auth in lein-auth %}
       #"{{auth.repo}}"
       {:username "{{auth.username}}" :password "{{auth.password}}"}
       {% endfor %}

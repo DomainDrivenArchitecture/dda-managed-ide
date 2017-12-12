@@ -60,7 +60,7 @@
   (ext-config/parse-config file-name))
 
 (s/defn ^:always-validate
-  resolve-repo-auth-secrets :- domain/RepoAuthResolved
+  resolve-lein-auth-secrets :- domain/RepoAuthResolved
   [domain-config :- domain/RepoAuth]
   (let [{:keys [username password]} domain-config]
     (merge
@@ -86,7 +86,7 @@
                        :gpg-private-key (secret/resolve-secret (:gpg-private-key gpg))
                        :gpg-passphrase (secret/resolve-secret (:gpg-passphrase gpg))}}))}
       (when (contains? domain-config :lein-auth)
-        {:lein-auth (into [] (map resolve-repo-auth-secrets lein-auth))}))))
+        {:lein-auth (into [] (map resolve-lein-auth-secrets lein-auth))}))))
 
 (s/defn ^:always-validate
   app-configuration-resolved :- DdaIdeAppConfig

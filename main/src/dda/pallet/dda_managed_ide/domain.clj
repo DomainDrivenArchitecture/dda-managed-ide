@@ -81,8 +81,8 @@
   (let [{:keys [user bookmarks vm-type]} ide-config]
     (merge
       {:user user}
-      (if bookmarks
-        {:bookmarks bookmarks} {})
+      (when (contains? ide-config :bookmarks)
+        {:bookmarks bookmarks})
       {:type (cond
                (= vm-type :remote) :remote
                (= vm-type :desktop) :desktop-office)})))
@@ -90,16 +90,22 @@
 (s/defn ^:always-validate
   infra-configuration :- InfraResult
   [domain-config :- DdaIdeDomainResolvedConfig]
-  (let [{:keys [user vm-type dev-platform]} domain-config
+  (let [{:keys [user vm-type dev-platform lein-auth]} domain-config
         user-name (:name user)]
     {infra/facility
      (merge
       {:ide-user (keyword (:name user))}
       (cond
-        (= dev-platform :clojure-atom) {:clojure {:os-user-name user-name}
-                                        :atom (atom/atom-config vm-type)}
-
-        (= dev-platform :clojure-nightlight) {:clojure {:os-user-name user-name
-                                                        :settings #{:install-nightlight}}}
-
+        (= dev-platform :clojure-atom)
+        {:clojure (merge
+                   {:os-user-name user-name
+                    :atom (atom/atom-config vm-type)}
+                   (when (contains? domain-config :lein-auth)
+                     {:lein-auth lein-auth}))}
+        (= dev-platform :clojure-nightlight)
+        {:clojure (merge
+                    {:os-user-name user-name
+                     :settings #{:install-nightlight}}
+                    (when (contains? domain-config :lein-auth)
+                      {:lein-auth lein-auth}))}
         :default {}))}))

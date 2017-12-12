@@ -24,6 +24,9 @@
 (def config-full
   {:vm-type :desktop
    :dev-platform :clojure-atom
+   :lein-auth [{:repo "clojars"
+                :username {:plain "u"}
+                :password {:plain "p"}}]
    :user {:name "test-user"
           :password {:plain "xxx"}
           :email "test-user@mydomain.org"
