@@ -1,6 +1,5 @@
 {:user
-  {:plugins [[lein-release "1.1.3"]
-             [slamhound "1.5.5"]
+  {:plugins [[slamhound "1.5.5"]
              [lein-cloverage "1.0.10"]
              [jonase/eastwood "0.2.6-beta2"]
              [lein-kibit "0.1.6"]
