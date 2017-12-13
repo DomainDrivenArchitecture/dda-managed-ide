@@ -130,35 +130,51 @@ The "targets.edn" uses this schema.
 The schema for the ide configuration is:
 ```clojure
 
-(def Bookmarks
+(def Secret                         ; see dda-pallet-commons
+  (either
+    {:plain Str}                    ;   as plain text
+    {:password-store-single Str}    ;   as password store key wo linebreaks & whitespaces
+    {:password-store-record         ;   as password store entry containing login (record :login)
+      {:path Str,                   ;      and password (no field or :password)
+       :element (enum :password :login)}}
+    {:password-store-multi Str}     ;   as password store key with linebreaks
+    {:pallet-secret {:key-id Str,
+                    :service-path [Keyword],
+                    :record-element (enum :secret :account)}})
+
+(def User                           ; see dda-user-crate
+  {:password Secret,
+   :name Str,
+   (optional-key :gpg) {:gpg-passphrase Secret
+                        :gpg-public-key Secret
+                        :gpg-private-key Secret}
+   (optional-key :ssh) {:ssh-private-key Secret
+                        :ssh-public-key Secret}})
+
+(def Bookmarks                      ; see dda-managed-vm
   [{(optional-key :childs) [(recursive
                            (var
                             dda.pallet.dda-managed-vm.infra.mozilla/Folder))],
   :name Str,
   (optional-key :links) [[(one Str "url") (one Str "name")]]}])
 
-(def Secret                                       ; secrets can be given
-  { (optional-key :plain) Str,                    ;   as plain text
-    (optional-key :password-store-single) Str,    ;   as password store key wo linebreaks
-    (optional-key :password-store-multi) Str})    ;   as password store key with linebreaks
+(def RepoAuth
+  {:password Secret
+   :username Secret
+   :repo Str})
 
-{:dev-platform (s/enum :clojure-atom :clojure-nightlight),          ; clojure-atom: full clojure and atom setup
-                                                                    ; clojure-nightlight: full clojure and nightlight web server setup
- :vm-type (enum :remote :desktop),                                  ; remote: all featured software, no vbox-guest-utils
-                                                                    ; desktop: vbox-guest utils, all featured software, no vnc
- (optional-key :bookmarks) Bookmarks,                               ; initial bookmarks
- :user {:name s/Str                                                 ; user with his credentials
-        :password Secret
-        (s/optional-key :email) s/Str
-        (s/optional-key :ssh) {:ssh-public-key Secret
-                               :ssh-private-key Secret}
-        (s/optional-key :gpg) {:gpg-public-key Secret
-                               :gpg-private-key Secret
-                               :gpg-passphrase Secret}}
-        (optional-key :email) Str}}                                 ; email for git config
+(def DdaIdeDomainConfig
+   {:vm-type                        ; remote: all featured software, no vbox-guest-utils
+      (enum :remote :desktop),      ; desktop: vbox-guest utils, all featured software, no vnc
+    :dev-platform                   ; clojure-atom: full clojure and atom setup
+      (enum :clojure-atom           ; clojure-nightlight: full clojure and nightlight web server setup
+            :clojure-nightlight),
+    :user User                      ; user to create with his credentials
+    (optional-key :lein-auth) [RepoAuth],
+    (optional-key :bookmarks) Bookmarks, ; initial bookmarks
+    (optional-key :email) Str       ; email for git config
+  }})
 ```
-
-For `Secret` you can find more adapters in dda-pallet-commons.
 
 ### Infra API
 The Infra configuration is a configuration on the infrastructure level of a crate. It contains the complete configuration options that are possible with the crate functions. You can find the details of the infra configurations at the other crates used:
@@ -166,16 +182,19 @@ The Infra configuration is a configuration on the infrastructure level of a crat
 * [dda-git-crate](https://github.com/DomainDrivenArchitecture/dda-git-crate)
 * [dda-serverspec-crate](https://github.com/DomainDrivenArchitecture/dda-serverspec-crate)
 
-For installation & configuration with the dda-managed-vm the schema is:
+For installation & configuration with the dda-managed-ide the schema is:
 ```clojure
-(def DdaVmConfig {
-  {:vm-user s/Keyword                                           ; user-name
-   (s/optional-key :tightvnc-server) {:user-password s/Str}     ; install vnc?
-   (s/optional-key :bookmarks) Bookmarks                        
-   (s/optional-key :settings)
-   (hash-set (s/enum :install-virtualbox-guest :install-libreoffice
-                     :install-open-jdk-8 :install-xfce-desktop
-                     :install-analysis :install-git :install-password-store))})
+(def DdaIdeConfig
+  {(optional-key :clojure) {:os-user-name Str,
+                            (optional-key :signing-gpg-key) Str,
+                            (optional-key :lein-auth) [{:password Str,
+                                                        :username Str,
+                                                        :repo Str}],
+                            (optional-key :settings) #{(enum
+                                                        :install-nightlight)}},
+   (optional-key :atom) {(optional-key :plugins) [Str],
+                         :settings #{(enum :install-aws-workaround)}},
+   :ide-user Keyword}
 ```
 
 ## License
