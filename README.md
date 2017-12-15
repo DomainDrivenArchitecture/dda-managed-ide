@@ -15,6 +15,8 @@ This crate works with:
 
 This crate builds on top of the dda-managed-vm to additionally provide a development environment.
 
+![Create a clojure ide in minutes](https://vimeo.com/247503975)
+
 It crate automatically installs software on a Linux system. It can be a standalone system, but normally it would be a virtual machine. For this reason we usually refer to the system as "virtual machine" in the text below.
 
 As this crate is build on top of the dda-managed-vm, all the software and tools that is installed by the vm, can also
