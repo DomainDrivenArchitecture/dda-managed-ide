@@ -44,6 +44,16 @@
        provisioning-user)
      :summarize-session true)))
 
+(defn execute-configure
+  [domain-config targets]
+  (let [{:keys [existing provisioning-user]} targets]
+    (operation/do-apply-configure
+     (existing/provider {:dda-managed-ide existing})
+     (app/existing-provisioning-spec
+       domain-config
+       provisioning-user)
+     :summarize-session true)))
+
 (def cli-options
   [["-h" "--help"]
    ["-s" "--server-test"]
@@ -85,7 +95,7 @@
                                         (app/load-targets (:targets options)))
       (:configure options) (execute-configure
                              (app/load-domain (first arguments))
-                             (app/load-targets (:targets options))))
+                             (app/load-targets (:targets options)))
       :default (execute-install
                  (app/load-domain (first arguments))
-                 (app/load-targets (:targets options)))))
+                 (app/load-targets (:targets options))))))
