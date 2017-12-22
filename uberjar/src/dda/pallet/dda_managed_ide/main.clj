@@ -47,6 +47,7 @@
 (def cli-options
   [["-h" "--help"]
    ["-s" "--server-test"]
+   ["-c" "--configure"]
    ["-t" "--targets TARGETS.edn" "edn file containing the targets to install on."
     :default "targets.edn"]])
 
@@ -82,6 +83,9 @@
       (:server-test options) (execute-server-test
                                         (app/load-domain (first arguments))
                                         (app/load-targets (:targets options)))
+      (:configure options) (execute-configure
+                             (app/load-domain (first arguments))
+                             (app/load-targets (:targets options))))
       :default (execute-install
                  (app/load-domain (first arguments))
-                 (app/load-targets (:targets options))))))
+                 (app/load-targets (:targets options)))))
