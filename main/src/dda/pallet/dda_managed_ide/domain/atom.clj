@@ -31,7 +31,7 @@
   ["proto-repl"  "clojure-plus" "parinfer" "lisp-paredit" "linter-clojure"])
 
 (def git-plugins
-  ["git-plus" "tree-view-git-status" "git-time-machine" "language-diff" "split-diff"])
+  ["tree-view-git-status" "git-time-machine" "language-diff" "split-diff"])
 
 (s/defn atom-config
   "create a atom configuration"
