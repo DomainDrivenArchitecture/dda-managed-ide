@@ -54,12 +54,17 @@
        provisioning-user)
      :summarize-session true)))
 
+
+(def localhost
+  {:existing [{:node-name "test-ide1"
+               :node-ip "127.0.0.1"}]})
+
 (def cli-options
   [["-h" "--help"]
    ["-s" "--server-test"]
    ["-c" "--configure"]
    ["-t" "--targets TARGETS.edn" "edn file containing the targets to install on."
-    :default "targets.edn"]])
+    :default localhost]])
 
 (defn usage [options-summary]
   (str/join
@@ -84,6 +89,7 @@
   (println msg)
   (System/exit status))
 
+
 (defn -main [& args]
   (let [{:keys [options arguments errors summary help]} (cli/parse-opts args cli-options)]
     (cond
@@ -92,15 +98,16 @@
       (not= (count arguments) 1) (exit 1 (usage summary))
       (:server-test options) (execute-server-test
                                         (app/load-domain (first arguments))
-                                        (app/load-targets (:targets options)))
+                                        (if (= (options :targets) localhost)
+                                          localhost
+                                          (app/load-targets (:targets options))))
       (:configure options) (execute-configure
                              (app/load-domain (first arguments))
-                             (app/load-targets (:targets options)))
+                             (if (= (options :targets) localhost)
+                               localhost
+                               (app/load-targets (:targets options))))
       :default (execute-install
                  (app/load-domain (first arguments))
-                 (app/load-targets (:targets options))))))
-
-(defn test [& args]
-  (let [{:keys [options arguments errors summary help]} (cli/parse-opts args cli-options)]
-    (if (contains? options :targets)
-      (:targets options) "false")))
+                 (if (= (options :targets) localhost)
+                   localhost
+                   (app/load-targets (:targets options)))))))
