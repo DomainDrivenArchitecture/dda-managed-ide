@@ -99,3 +99,8 @@
       :default (execute-install
                  (app/load-domain (first arguments))
                  (app/load-targets (:targets options))))))
+
+(defn test [& args]
+  (let [{:keys [options arguments errors summary help]} (cli/parse-opts args cli-options)]
+    (if (contains? options :targets)
+      (:targets options) "false")))

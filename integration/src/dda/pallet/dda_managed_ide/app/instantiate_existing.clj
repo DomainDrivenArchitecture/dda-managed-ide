@@ -52,7 +52,7 @@
      (provider target-config)
      (provisioning-spec target-config domain-config)
      :summarize-session true)))
-  
+
 (defn test []
   (let [target-config (existing/load-targets "targets.edn")
         domain-config (app/load-domain "ide.edn")]
