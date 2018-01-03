@@ -122,7 +122,7 @@
   existing-provisioning-spec
   "Creates an integrated group spec from a domain config and a provisioning user."
   [domain-config :- DdaIdeDomainConfig
-   provisioning-user :- ProvisioningUser]
+   provisioning-user]
   (merge
    (dda-ide-group-spec (app-configuration domain-config))
    (existing/node-spec provisioning-user)))

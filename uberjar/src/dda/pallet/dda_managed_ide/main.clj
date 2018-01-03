@@ -54,7 +54,6 @@
        provisioning-user)
      :summarize-session true)))
 
-
 (def localhost
   {:existing [{:node-name "test-ide1"
                :node-ip "127.0.0.1"}]})
@@ -88,7 +87,6 @@
 (defn exit [status msg]
   (println msg)
   (System/exit status))
-
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary help]} (cli/parse-opts args cli-options)]
