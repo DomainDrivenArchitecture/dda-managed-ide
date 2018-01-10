@@ -64,6 +64,10 @@ sudo apt-get install openjdk-7-jre-headless
 ```bash
 java -jar dda-managed-ide-standalone.jar --targets targets.edn ide.edn
 ```
+If you want to install the ide on your localhost you don't need a target config.
+```bash
+java -jar dda-managed-ide-0.2.0-standalone.jar ide.edn
+```
 
 ### Configuration
 The configuration consists of two files defining both WHERE to install the software and WHAT to install.
