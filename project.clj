@@ -4,12 +4,7 @@
   :license {:name "Apache License, Version 2.0"
             :url "https://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
-                 [dda/dda-pallet-commons "1.0.0"]
                  [dda/dda-pallet "1.0.1"]
-                 [dda/dda-user-crate "0.7.0"]
-                 [dda/dda-serverspec-crate "0.4.0"]
-                 [dda/dda-git-crate "0.2.2"]
-                 [dda/dda-backup-crate "0.7.1"]
                  [dda/dda-managed-vm "1.0.0"]]
   :source-paths ["main/src"]
   :resource-paths ["main/resources"]
@@ -26,14 +21,14 @@
                    [[org.clojure/test.check "0.10.0-alpha2"]
                     [org.domaindrivenarchitecture/pallet-aws "0.2.8.2"]
                     [com.palletops/pallet "0.8.12" :classifier "tests"]
-                    [dda/dda-pallet-commons "1.0.0" :classifier "tests"]
                     [ch.qos.logback/logback-classic "1.2.3"]
                     [org.slf4j/jcl-over-slf4j "1.8.0-beta0"]]
                    :plugins
                    [[lein-sub "0.3.0"]]
                    :leiningen/reply
                    {:dependencies [[org.slf4j/jcl-over-slf4j "1.8.0-beta0"]]
-                    :exclusions [commons-logging]}}
+                    :exclusions [commons-logging]}
+                   :repl-options {:init-ns dda.pallet.dda-managed-ide.app.instantiate-existing}}
              :test {:test-paths ["test/src"]
                     :resource-paths ["test/resources"]
                     :dependencies [[com.palletops/pallet "0.8.12" :classifier "tests"]]}
