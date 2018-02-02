@@ -21,7 +21,6 @@
     [dda.pallet.commons.pallet-schema :as ps]
     [dda.pallet.commons.operation :as operation]
     [dda.pallet.commons.existing :as existing]
-    [dda.config.commons.user-env :as user-env]
     [dda.pallet.dda-managed-ide.app :as app]
     [dda.pallet.dda-managed-ide.infra :as infra]))
 
@@ -52,8 +51,8 @@
      (provider target-config)
      (provisioning-spec target-config domain-config)
      :summarize-session true)))
-  
-(defn test []
+
+(defn serverspec []
   (let [target-config (existing/load-targets "targets.edn")
         domain-config (app/load-domain "ide.edn")]
     (operation/do-server-test

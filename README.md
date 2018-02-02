@@ -30,6 +30,7 @@ of necessary plugins is installed. For more information on the plugins see:
 ```clojure
 dda.pallet.dda-managed-ide.domain.atom
 ```
+Then we can access the URL of the server that the ide was installed on and work in pairs on the project.
 
 ### Dev Platform Clojure Nightlight
 If this dev platform is chosen, then a fully functional clojure and nightlight web server setup is provided. Nightlight is
@@ -63,6 +64,10 @@ sudo apt-get install openjdk-7-jre-headless
 4. Start the installation:
 ```bash
 java -jar dda-managed-ide-standalone.jar --targets targets.edn ide.edn
+```
+If you want to install the ide on your localhost you don't need a target config.
+```bash
+java -jar dda-managed-ide-0.2.0-standalone.jar ide.edn
 ```
 
 ### Configuration

@@ -17,7 +17,6 @@
   (:require
     [clojure.inspector :as inspector]
     [schema.core :as s]
-    [pallet.api :as api]
     [dda.pallet.commons.operation :as operation]
     [dda.pallet.commons.aws :as cloud-target]
     [dda.pallet.dda-managed-ide.app :as app]))

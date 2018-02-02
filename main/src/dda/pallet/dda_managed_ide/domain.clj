@@ -30,8 +30,6 @@
    :username secret/Secret
    :password secret/Secret})
 
-(def RepoAuthResolved infra/LeinRepoAuth)
-
 (def DdaIdeDomainConfig
   (merge
     vm-domain/DdaVmUser
@@ -40,13 +38,11 @@
      :dev-platform (s/enum :clojure-atom :clojure-nightlight)
      (s/optional-key :lein-auth) [RepoAuth]}))
 
+(def RepoAuthResolved
+  (secret/create-resolved-schema RepoAuth))
+
 (def DdaIdeDomainResolvedConfig
-  (merge
-    vm-domain/DdaVmUserResolved
-    vm-domain/DdaVmBookmarks
-    {:vm-type (s/enum :remote :desktop)
-     :dev-platform (s/enum :clojure-atom :clojure-nightlight)
-     (s/optional-key :lein-auth) [RepoAuthResolved]}))
+  (secret/create-resolved-schema DdaIdeDomainConfig))
 
 ;TODO: backup-crate integration
 
