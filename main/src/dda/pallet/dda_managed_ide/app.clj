@@ -69,26 +69,6 @@
        :password (secret/resolve-secret (:password domain-config))})))
 
 (s/defn ^:always-validate
-  resolve-secrets :- DdaIdeDomainResolvedConfig
-  [domain-config :- DdaIdeDomainConfig]
-  (let [{:keys [user type lein-auth]} domain-config
-        {:keys [ssh gpg]} user]
-    (merge
-      domain-config
-      {:user (merge
-               user
-               {:password (secret/resolve-secret (:password user))}
-               (when (contains? user :ssh)
-                {:ssh {:ssh-public-key (secret/resolve-secret (:ssh-public-key ssh))
-                       :ssh-private-key (secret/resolve-secret (:ssh-private-key ssh))}})
-               (when (contains? user :gpg)
-                {:gpg {:gpg-public-key (secret/resolve-secret (:gpg-public-key gpg))
-                       :gpg-private-key (secret/resolve-secret (:gpg-private-key gpg))
-                       :gpg-passphrase (secret/resolve-secret (:gpg-passphrase gpg))}}))}
-      (when (contains? domain-config :lein-auth)
-        {:lein-auth (into [] (map resolve-lein-auth-secrets lein-auth))}))))
-
-(s/defn ^:always-validate
   app-configuration-resolved :- DdaIdeAppConfig
   [resolved-domain-config :- DdaIdeDomainResolvedConfig
    & options]
@@ -104,7 +84,7 @@
   app-configuration :- DdaIdeAppConfig
   [domain-config :- DdaIdeDomainConfig
    & options]
-  (let [resolved-domain-config (resolve-secrets domain-config)]
+  (let [resolved-domain-config (secret/resolve-secrets domain-config DdaIdeDomainConfig)]
     (apply app-configuration-resolved resolved-domain-config options)))
 
 (s/defn ^:always-validate
