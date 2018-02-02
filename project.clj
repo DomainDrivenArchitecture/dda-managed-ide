@@ -1,4 +1,4 @@
-(defproject dda/dda-managed-ide "0.2.1-SNAPSHOT"
+(defproject dda/dda-managed-ide "1.0.0-SNAPSHOT"
   :description "module to install and configure ide based on ubuntu vm."
   :url "https://www.domaindrivenarchitecture.org"
   :license {:name "Apache License, Version 2.0"
@@ -10,7 +10,7 @@
                  [dda/dda-serverspec-crate "0.4.0"]
                  [dda/dda-git-crate "0.2.2"]
                  [dda/dda-backup-crate "0.7.1"]
-                 [dda/dda-managed-vm "0.5.1-SNAPSHOT"]]
+                 [dda/dda-managed-vm "1.0.0"]]
   :source-paths ["main/src"]
   :resource-paths ["main/resources"]
   :repositories [["snapshots" :clojars]
