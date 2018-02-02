@@ -38,6 +38,9 @@
      :dev-platform (s/enum :clojure-atom :clojure-nightlight)
      (s/optional-key :lein-auth) [RepoAuth]}))
 
+(def RepoAuthResolved
+  (secret/create-resolved-schema RepoAuth))
+
 (def DdaIdeDomainResolvedConfig
   (secret/create-resolved-schema DdaIdeDomainConfig))
 
