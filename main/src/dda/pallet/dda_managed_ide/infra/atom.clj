@@ -18,6 +18,7 @@
   (:require
     [schema.core :as s]
     [clojure.tools.logging :as logging]
+    [pallet.action :as action]
     [pallet.actions :as actions]
     [dda.config.commons.map-utils :as map-utils]))
 
@@ -44,6 +45,7 @@
     (when (contains? atom-config :plugins)
       (let [plugins (-> atom-config :plugins)]
         (doseq [plugin plugins]
-          (actions/exec-checked-script
-            (str "install-apm-plugin-" plugin)
-            ("apm install" ~plugin)))))))
+          (action/with-action-options {:script-prefix :sudo}
+            (actions/exec-checked-script
+              (str "install-apm-plugin-" plugin)
+              ("apm install" ~plugin))))))))
