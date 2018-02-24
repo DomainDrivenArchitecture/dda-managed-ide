@@ -24,46 +24,33 @@
     [dda.pallet.commons.operation :as operation]
     [dda.pallet.dda-managed-ide.app :as app]))
 
-(defn execute-server-test
-  [domain-config targets]
-  (let [{:keys [existing provisioning-user]} targets]
-    (operation/do-server-test
-     (existing/provider {:dda-managed-ide existing})
-     (app/existing-provisioning-spec
-       domain-config
-       provisioning-user)
-     :summarize-session true)))
+(defn execute-serverspec
+  [domain-config target-config]
+  (operation/do-test
+    (app/existing-provider target-config)
+    (app/existing-provisioning-spec domain-config target-config)
+    :summarize-session true))
 
 (defn execute-install
-  [domain-config targets]
-  (let [{:keys [existing provisioning-user]} targets]
-    (operation/do-apply-install
-     (existing/provider {:dda-managed-ide existing})
-     (app/existing-provisioning-spec
-       domain-config
-       provisioning-user)
-     :summarize-session true)))
+  [domain-config target-config]
+  (operation/do-apply-install
+    (app/existing-provider target-config)
+    (app/existing-provisioning-spec domain-config target-config)
+    :summarize-session true))
 
 (defn execute-configure
-  [domain-config targets]
-  (let [{:keys [existing provisioning-user]} targets]
-    (operation/do-apply-configure
-     (existing/provider {:dda-managed-ide existing})
-     (app/existing-provisioning-spec
-       domain-config
-       provisioning-user)
-     :summarize-session true)))
-
-(def localhost
-  {:existing [{:node-name "test-ide1"
-               :node-ip "127.0.0.1"}]})
+  [domain-config target-config]
+  (operation/do-apply-configure
+    (app/existing-provider target-config)
+    (app/existing-provisioning-spec domain-config target-config)
+    :summarize-session true))
 
 (def cli-options
   [["-h" "--help"]
    ["-s" "--server-test"]
    ["-c" "--configure"]
    ["-t" "--targets TARGETS.edn" "edn file containing the targets to install on."
-    :default localhost]])
+    :default "localhost-target.edn"]])
 
 (defn usage [options-summary]
   (str/join
@@ -94,18 +81,12 @@
       help (exit 0 (usage summary))
       errors (exit 1 (error-msg errors))
       (not= (count arguments) 1) (exit 1 (usage summary))
-      (:server-test options) (execute-server-test
-                                        (app/load-domain (first arguments))
-                                        (if (= (options :targets) localhost)
-                                          localhost
-                                          (app/load-targets (:targets options))))
+      (:server-test options) (execute-serverspec
+                               (app/load-domain (first arguments))
+                               (app/load-targets (:targets options)))
       (:configure options) (execute-configure
                              (app/load-domain (first arguments))
-                             (if (= (options :targets) localhost)
-                               localhost
-                               (app/load-targets (:targets options))))
+                             (app/load-targets (:targets options)))
       :default (execute-install
                  (app/load-domain (first arguments))
-                 (if (= (options :targets) localhost)
-                   localhost
-                   (app/load-targets (:targets options)))))))
+                 (app/load-targets (:targets options))))))

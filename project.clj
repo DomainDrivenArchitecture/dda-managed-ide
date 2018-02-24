@@ -4,7 +4,7 @@
   :license {:name "Apache License, Version 2.0"
             :url "https://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
-                 [dda/dda-pallet "1.0.1"]
+                 [dda/dda-pallet "1.2.0"]
                  [dda/dda-managed-vm "1.0.0"]]
   :source-paths ["main/src"]
   :resource-paths ["main/resources"]

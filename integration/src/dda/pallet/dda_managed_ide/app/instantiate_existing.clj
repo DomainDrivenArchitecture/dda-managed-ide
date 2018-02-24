@@ -21,41 +21,40 @@
     [dda.pallet.commons.pallet-schema :as ps]
     [dda.pallet.commons.operation :as operation]
     [dda.pallet.commons.existing :as existing]
-    [dda.pallet.dda-managed-ide.app :as app]
-    [dda.pallet.dda-managed-ide.infra :as infra]))
+    [dda.pallet.dda-managed-ide.app :as app]))
 
-(defn provisioning-spec [target-config domain-config]
-  (let [{:keys [provisioning-user]} target-config]
-    (merge
-      (app/dda-ide-group-spec
-        (app/app-configuration domain-config))
-      (existing/node-spec provisioning-user))))
-
-(defn provider [target-config]
-  (let [{:keys [existing]} target-config]
-    (existing/provider
-     {infra/facility existing})))
-
-(defn apply-install []
-  (let [target-config (existing/load-targets "targets.edn")
-        domain-config (app/load-domain "ide.edn")]
-    (operation/do-apply-install
-     (provider target-config)
-     (provisioning-spec target-config domain-config)
+(defn apply-install
+ [& options]
+ (let [{:keys [domain targets]
+        :or {domain "ide.edn"
+             targets "targets.edn"}} options
+       target-config (app/load-targets targets)
+       domain-config (app/load-domain domain)]
+   (operation/do-apply-install
+     (app/existing-provider target-config)
+     (app/existing-provisioning-spec domain-config target-config)
      :summarize-session true)))
 
-(defn apply-configure []
-  (let [target-config (existing/load-targets "targets.edn")
-        domain-config (app/load-domain "ide.edn")]
-    (operation/do-apply-configure
-     (provider target-config)
-     (provisioning-spec target-config domain-config)
+(defn apply-configure
+ [& options]
+ (let [{:keys [domain targets]
+        :or {domain "ide.edn"
+             targets "targets.edn"}} options
+       target-config (app/load-targets targets)
+       domain-config (app/load-domain domain)]
+   (operation/do-apply-configure
+     (app/existing-provider target-config)
+     (app/existing-provisioning-spec domain-config target-config)
      :summarize-session true)))
 
-(defn serverspec []
-  (let [target-config (existing/load-targets "targets.edn")
-        domain-config (app/load-domain "ide.edn")]
-    (operation/do-server-test
-     (provider target-config)
-     (provisioning-spec target-config domain-config)
-     :summarize-session true)))
+(defn serverspec
+  [& options]
+  (let [{:keys [domain targets]
+         :or {domain "ide.edn"
+              targets "targets.edn"}} options
+        target-config (app/load-targets targets)
+        domain-config (app/load-domain domain)]
+    (operation/do-test
+      (app/existing-provider target-config)
+      (app/existing-provisioning-spec domain-config target-config)
+      :summarize-session true)))
