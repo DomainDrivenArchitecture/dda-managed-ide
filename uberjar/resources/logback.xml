@@ -4,7 +4,7 @@
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-      <level>ERROR</level>
+      <level>INFO</level>
     </filter>
   </appender>
 
@@ -31,7 +31,7 @@
     <appender-ref ref="PALLETFILE" />
   </logger>
 
-  <root level="ERROR">
+  <root level="INFO">
     <appender-ref ref="CONSOLE" />
   </root>
 
