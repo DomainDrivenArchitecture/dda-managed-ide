@@ -45,6 +45,20 @@
     (app/existing-provisioning-spec domain-config target-config)
     :summarize-session true))
 
+(defn execute-configure
+  [domain-config targets]
+  (let [{:keys [existing provisioning-user]} targets]
+    (operation/do-apply-configure
+     (existing/provider {:dda-managed-ide existing})
+     (app/existing-provisioning-spec
+       domain-config
+       provisioning-user)
+     :summarize-session true)))
+
+(def localhost
+  {:existing [{:node-name "test-ide1"
+               :node-ip "127.0.0.1"}]})
+
 (def cli-options
   [["-h" "--help"]
    ["-s" "--server-test"]
@@ -89,4 +103,6 @@
                              (app/load-targets (:targets options)))
       :default (execute-install
                  (app/load-domain (first arguments))
-                 (app/load-targets (:targets options))))))
+                 (if (= (options :targets) localhost)
+                   localhost
+                   (app/load-targets (:targets options)))))))
