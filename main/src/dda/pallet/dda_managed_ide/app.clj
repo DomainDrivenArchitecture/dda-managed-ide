@@ -18,6 +18,7 @@
   (:require
    [schema.core :as s]
    [dda.cm.group :as group]
+   [dda.pallet.core.app :refer :all]
    [dda.config.commons.map-utils :as mu]
    [dda.pallet.commons.secret :as secret]
    [dda.pallet.commons.existing :as existing]
@@ -38,10 +39,6 @@
 
 (def InfraResult domain/InfraResult)
 
-(def ProvisioningUser existing/ProvisioningUser)
-
-(def Targets existing/Targets)
-
 (def DdaIdeAppConfig
   {:group-specific-config
    {s/Keyword (merge InfraResult
@@ -49,25 +46,6 @@
                      git/InfraResult
                      user/InfraResult
                      serverspec/InfraResult)}})
-
-(s/defn ^:always-validate
-  load-targets :- Targets
-  [file-name :- s/Str]
-  (existing/load-targets file-name))
-
-(s/defn ^:always-validate
-  load-domain :- DdaIdeDomainConfig
-  [file-name :- s/Str]
-  (ext-config/parse-config file-name))
-
-(s/defn ^:always-validate
-  resolve-lein-auth-secrets :- domain/RepoAuthResolved
-  [domain-config :- domain/RepoAuth]
-  (let [{:keys [username password]} domain-config]
-    (merge
-      domain-config
-      {:username (secret/resolve-secret (:username domain-config))
-       :password (secret/resolve-secret (:password domain-config))})))
 
 (s/defn ^:always-validate
   app-configuration-resolved :- DdaIdeAppConfig
@@ -88,41 +66,19 @@
   (let [resolved-domain-config (secret/resolve-secrets domain-config DdaIdeDomainConfig)]
     (apply app-configuration-resolved resolved-domain-config options)))
 
-(s/defn ^:always-validate
-  dda-ide-group-spec
-  [app-config :- DdaIdeAppConfig]
-  (group/group-spec
-   app-config [(config-crate/with-config app-config)
-               serverspec/with-serverspec
-               user/with-user
-               git/with-git
-               managed-vm/with-dda-vm
-               with-dda-ide]))
+(s/defmethod group-spec :dda-managed-ide
+  [crate-app  domain-config]
+  (let [app-config (app-configuration-resolved domain-config)]
+    (group/group-spec
+     app-config [(config-crate/with-config app-config)
+                 serverspec/with-serverspec
+                 user/with-user
+                 git/with-git
+                 managed-vm/with-dda-vm
+                 with-dda-ide])))
 
-(s/defn ^:always-validate
-  existing-provisioning-spec-resolved
-  "Creates an integrated group spec from a domain config and a provisioning user."
-  [domain-config :- DdaIdeDomainConfig
-   targets-config :- existing/TargetsResolved]
-  (let [{:keys [existing provisioning-user]} targets-config]
-    (merge
-     (dda-ide-group-spec (app-configuration domain-config))
-     (existing/node-spec provisioning-user))))
-
-(s/defn ^:always-validate
-  existing-provisioning-spec
-  "Creates an integrated group spec from a domain config and a provisioning user."
-  [domain-config :- DdaIdeDomainConfig
-   targets-config :- existing/Targets]
-  (existing-provisioning-spec-resolved domain-config (existing/resolve-targets targets-config)))
-
-(s/defn ^:always-validate
-  existing-provider-resolved
-  [targets-config :- existing/TargetsResolved]
-  (let [{:keys [existing provisioning-user]} targets-config]
-    (existing/provider {:dda-managed-ide existing})))
-
-(s/defn ^:always-validate
-  existing-provider
-  [targets-config :- existing/Targets]
-  (existing-provider-resolved (existing/resolve-targets targets-config)))
+(def crate-app (make-dda-crate-app
+                  :facility :dda-managed-ide
+                  :domain-schema DdaIdeDomainConfig
+                  :domain-schema-resolved DdaIdeDomainResolvedConfig
+                  :default-domain-file "ide.edn"))
