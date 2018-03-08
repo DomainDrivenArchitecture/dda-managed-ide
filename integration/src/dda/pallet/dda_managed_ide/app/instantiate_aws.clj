@@ -17,55 +17,35 @@
   (:require
     [clojure.inspector :as inspector]
     [schema.core :as s]
-    [dda.pallet.commons.operation :as operation]
-    [dda.pallet.commons.aws :as cloud-target]
+    [dda.pallet.core.app :as core-app]
     [dda.pallet.dda-managed-ide.app :as app]))
-
-(defn provisioning-spec [domain-config target-config count]
-  (merge
-    (app/dda-ide-group-spec
-      (app/app-configuration domain-config))
-    (cloud-target/node-spec target-config)
-    {:count count}))
 
 (defn converge-install
   [count & options]
-  (let [{:keys [gpg-key-id gpg-passphrase domain targets
-                summarize-session]
+  (let [{:keys [domain targets summarize-session]
          :or {domain "integration/resources/snakeoil-ide-remote.edn"
-              targets "integration/resources/user-aws-target.edn"
-              summarize-session true}} options
-        target-config (cloud-target/load-targets targets)
-        domain-config (app/load-domain domain)]
-   (operation/do-converge-install
-     (cloud-target/provider (:context target-config))
-     (provisioning-spec domain-config (:node-spec target-config) count)
-     :summarize-session summarize-session)))
+              targets "integration/resources/jem-aws-target.edn"
+              summarize-session true}} options]
+    (core-app/aws-install app/crate-app count
+                          {:domain domain
+                           :targets targets})))
 
 (defn configure
  [& options]
- (let [{:keys [gpg-key-id gpg-passphrase domain targets
-               summarize-session]
+ (let [{:keys [domain targets summarize-session]
         :or {domain "integration/resources/snakeoil-ide-remote.edn"
-             targets "integration/resources/user-aws-target.edn"
-             summarize-session true}} options
-       target-config (cloud-target/load-targets targets)
-       domain-config (app/load-domain domain)]
-  (operation/do-apply-configure
-    (cloud-target/provider (:context target-config))
-    (provisioning-spec domain-config (:node-spec target-config) 0)
-    :summarize-session summarize-session)))
+             targets "integration/resources/jem-aws-target.edn"
+             summarize-session true}} options]
+  (core-app/aws-configure app/crate-app
+                          {:domain domain
+                           :targets targets})))
 
 (defn serverspec
   [& options]
-  (let [{:keys [gpg-key-id gpg-passphrase domain targets
-                summarize-session]
+  (let [{:keys [domain targets summarize-session]
          :or {domain "integration/resources/snakeoil-ide-remote.edn"
-              targets "integration/resources/user-aws-target.edn"
-              summarize-session true}} options
-        target-config (cloud-target/load-targets targets)
-        domain-config (app/load-domain domain)]
-    (operation/do-test
-      (cloud-target/provider (:context target-config))
-      (provisioning-spec domain-config (:node-spec target-config) 0)
-      :summarize-session summarize-session)))
+              targets "integration/resources/jem-aws-target.edn"
+              summarize-session true}} options]
+    (core-app/aws-serverspec app/crate-app
+                             {:domain domain
+                              :targets targets})))

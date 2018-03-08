@@ -21,17 +21,18 @@
    [dda.pallet.core.app :refer :all]
    [dda.config.commons.map-utils :as mu]
    [dda.pallet.commons.secret :as secret]
-   [dda.pallet.commons.existing :as existing]
+   [dda.pallet.core.app :as core-app]
    [dda.pallet.dda-config-crate.infra :as config-crate]
    [dda.pallet.dda-git-crate.app :as git]
    [dda.pallet.dda-user-crate.app :as user]
    [dda.pallet.dda-serverspec-crate.app :as serverspec]
    [dda.pallet.dda-managed-vm.app :as managed-vm]
    [dda.pallet.dda-managed-ide.infra :as infra]
-   [dda.pallet.dda-managed-ide.domain :as domain]
-   [dda.pallet.commons.external-config :as ext-config]))
+   [dda.pallet.dda-managed-ide.domain :as domain]))
 
 (def with-dda-ide infra/with-dda-ide)
+
+(def DdaIdeDomainConfig domain/DdaIdeDomainConfig)
 
 (def DdaIdeDomainConfig domain/DdaIdeDomainConfig)
 
@@ -66,8 +67,10 @@
   (let [resolved-domain-config (secret/resolve-secrets domain-config DdaIdeDomainConfig)]
     (apply app-configuration-resolved resolved-domain-config options)))
 
-(s/defmethod group-spec :dda-managed-ide
-  [crate-app  domain-config]
+(s/defmethod ^:always-validate
+  core-app/group-spec infra/facility
+  [crate-app
+   domain-config :- DdaIdeDomainResolvedConfig]
   (let [app-config (app-configuration-resolved domain-config)]
     (group/group-spec
      app-config [(config-crate/with-config app-config)
@@ -77,8 +80,8 @@
                  managed-vm/with-dda-vm
                  with-dda-ide])))
 
-(def crate-app (make-dda-crate-app
-                  :facility :dda-managed-ide
+(def crate-app (core-app/make-dda-crate-app
+                  :facility infra/facility
                   :domain-schema DdaIdeDomainConfig
                   :domain-schema-resolved DdaIdeDomainResolvedConfig
                   :default-domain-file "ide.edn"))

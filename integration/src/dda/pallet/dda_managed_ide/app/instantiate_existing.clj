@@ -16,5 +16,35 @@
 (ns dda.pallet.dda-managed-ide.app.instantiate-existing
   (:require
     [clojure.inspector :as inspector]
-    [dda.pallet.dda-managed-ide.app :as app]
-    [dda.pallet.core.app :refer :all]))
+    [dda.pallet.core.app :as core-app]
+    [dda.pallet.dda-managed-ide.app :as app]))
+
+(defn install
+  [& options]
+  (let [{:keys [domain targets summarize-session]
+         :or {domain "ide.edn"
+              targets "targets.edn"
+              summarize-session true}} options]
+    (core-app/existing-install app/crate-app
+                          {:domain domain
+                           :targets targets})))
+
+(defn configure
+ [& options]
+ (let [{:keys [domain targets summarize-session]
+        :or {domain "ide.edn"
+             targets "targets.edn"
+             summarize-session true}} options]
+  (core-app/existing-configure app/crate-app
+                          {:domain domain
+                           :targets targets})))
+
+(defn serverspec
+  [& options]
+  (let [{:keys [domain targets summarize-session]
+         :or {domain "ide.edn"
+              targets "targets.edn"
+              summarize-session true}} options]
+    (core-app/existing-serverspec app/crate-app
+                             {:domain domain
+                              :targets targets})))

@@ -18,9 +18,7 @@
   (:require
     [clojure.tools.logging :as logging]
     [schema.core :as s]
-    [pallet.api :as api]
     [pallet.actions :as actions]
-    [pallet.crate :as crate]
     [dda.pallet.core.infra :as core-infra]
     [dda.pallet.dda-managed-ide.infra.clojure :as clojure]
     [dda.pallet.dda-managed-ide.infra.atom :as atom]))
