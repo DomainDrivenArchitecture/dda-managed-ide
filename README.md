@@ -88,16 +88,22 @@ Example content of the file, `targets.edn`:
                      :password "secure1234"}} ; optional password, if no ssh key is authorized
 ```
 
-## start included nightlight ide
-```
-lein nightlight --port 8080
-```
-
-## compatability
-This crate is working with:
- * clojure 1.7
- * pallet 0.8
- * ubuntu 14.04
+#### VM config example
+Example content of the file, `ide.edn`:
+```clojure
+{:vm-type :desktop
+ :dev-platform :clojure-atom
+ :user {:name "test-user"
+        :password {:plain "xxx"}
+        :email "test-user@mydomain.org"
+        :ssh {:ssh-public-key {:plain "rsa-ssh kfjri5r8irohgn...test.key comment"}
+              :ssh-private-key {:plain "123Test"}}}
+       :gpg {:gpg-public-key
+             {:plain "-----BEGIN PGP ...."
+              :gpg-private-key
+              {:plain "-----BEGIN PGP ...."}
+              :gpg-passphrase {:plain "passphrase"}}}}
+```         
 
 The vm config defines the software/packages and user credentials of the newly created user to be installed.
 

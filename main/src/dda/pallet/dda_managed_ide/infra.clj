@@ -18,15 +18,12 @@
   (:require
     [clojure.tools.logging :as logging]
     [schema.core :as s]
-    [pallet.api :as api]
     [pallet.actions :as actions]
-    [pallet.crate :as crate]
-    [dda.pallet.core.dda-crate :as dda-crate]
+    [dda.pallet.core.infra :as core-infra]
     [dda.pallet.dda-managed-ide.infra.clojure :as clojure]
     [dda.pallet.dda-managed-ide.infra.atom :as atom]))
 
 (def facility :dda-managed-ide)
-(def version  [0 1 0])
 
 (def LeinRepoAuth clojure/RepoAuth)
 
@@ -68,21 +65,21 @@
         (atom/install-user-plugins config)))))
 
 
-(s/defmethod dda-crate/dda-install facility
+(s/defmethod core-infra/dda-install facility
   [dda-crate config]
   (install-system config))
 
-(s/defmethod dda-crate/dda-configure facility
+(s/defmethod core-infra/dda-configure facility
   [dda-crate config]
   (configure-user config))
 
-(s/defmethod dda-crate/dda-settings facility
+(s/defmethod core-infra/dda-settings facility
   [dda-crate partial-effective-config])
 
 (def dda-ide-crate
-  (dda-crate/make-dda-crate
+  (core-infra/make-dda-crate-infra
     :facility facility
-    :version version))
+    :infra-schema DdaIdeConfig))
 
 (def with-dda-ide
-  (dda-crate/create-server-spec dda-ide-crate))
+  (core-infra/create-infra-plan dda-ide-crate))
