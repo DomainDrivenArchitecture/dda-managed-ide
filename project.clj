@@ -1,4 +1,4 @@
-(defproject dda/dda-managed-ide "1.0.2"
+(defproject dda/dda-managed-ide "1.0.3-SNAPSHOT"
   :description "module to install and configure ide based on ubuntu vm."
   :url "https://www.domaindrivenarchitecture.org"
   :license {:name "Apache License, Version 2.0"
