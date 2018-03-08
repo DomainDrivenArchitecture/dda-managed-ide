@@ -99,8 +99,7 @@
                    (when (contains? domain-config :lein-auth)
                      {:lein-auth lein-auth}))}
         (= dev-platform :clojure-nightlight)
-        {:os-user-name user-name
-         :clojure (merge
+        {:clojure (merge
                     {:os-user-name user-name
                      :settings #{:install-nightlight}}
                     (when (contains? domain-config :lein-auth)
