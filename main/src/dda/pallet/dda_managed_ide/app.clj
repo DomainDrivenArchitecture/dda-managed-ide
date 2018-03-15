@@ -17,7 +17,6 @@
 (ns dda.pallet.dda-managed-ide.app
   (:require
    [schema.core :as s]
-   [dda.cm.group :as group]
    [dda.pallet.core.app :refer :all]
    [dda.config.commons.map-utils :as mu]
    [dda.pallet.commons.secret :as secret]
@@ -72,7 +71,7 @@
   [crate-app
    domain-config :- DdaIdeDomainResolvedConfig]
   (let [app-config (app-configuration-resolved domain-config)]
-    (group/group-spec
+    (core-app/pallet-group-spec
      app-config [(config-crate/with-config app-config)
                  serverspec/with-serverspec
                  user/with-user
