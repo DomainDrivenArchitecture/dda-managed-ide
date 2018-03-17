@@ -33,8 +33,6 @@
 
 (def DdaIdeDomainConfig domain/DdaIdeDomainConfig)
 
-(def DdaIdeDomainConfig domain/DdaIdeDomainConfig)
-
 (def DdaIdeDomainResolvedConfig domain/DdaIdeDomainResolvedConfig)
 
 (def InfraResult domain/InfraResult)
