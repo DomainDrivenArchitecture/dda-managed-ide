@@ -34,7 +34,7 @@
   (merge
     vm-domain/DdaVmUser
     vm-domain/DdaVmBookmarks
-    {:vm-type (s/enum :remote :desktop)
+    {:vm-type (s/enum :remote :desktop :desktop-novbox)
      :dev-platform (s/enum :clojure-atom :clojure-nightlight)
      (s/optional-key :lein-auth) [RepoAuth]}))
 
@@ -81,7 +81,8 @@
         {:bookmarks bookmarks})
       {:type (cond
                (= vm-type :remote) :remote
-               (= vm-type :desktop) :desktop-office)})))
+               (= vm-type :desktop) :desktop-office
+               (= vm-type :desktop-novbox) :desktop-novbox)})))
 
 (s/defn ^:always-validate
   infra-configuration :- InfraResult
