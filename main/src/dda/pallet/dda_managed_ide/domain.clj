@@ -79,9 +79,12 @@
       {:user user}
       (when (contains? ide-config :bookmarks)
         {:bookmarks bookmarks})
-      {:type (cond
-               (= vm-type :remote) :remote
-               (= vm-type :desktop) :desktop-office)})))
+      (when = vm-type :remote
+        {:target-type :remote-aws
+         :usage-type :desktop-office})
+      (when = vm-type :desktop-office
+        {:target-type :virtualbox
+         :usage-type :desktop-office}))))
 
 (s/defn ^:always-validate
   infra-configuration :- InfraResult
