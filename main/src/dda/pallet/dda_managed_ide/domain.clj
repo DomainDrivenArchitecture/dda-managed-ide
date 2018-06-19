@@ -78,8 +78,7 @@
     (merge
       {:user user}
       (when (contains? ide-config :bookmarks)
-        {:bookmarks bookmarks}))))
-<<<<<<< HEAD
+        {:bookmarks bookmarks})
       (when = vm-type :remote
         {:target-type :remote-aws
          :usage-type :desktop-base})
@@ -88,13 +87,7 @@
          :usage-type :desktop-office})
       (when = vm-type :desktop-novbox
         {:target-type :plain
-         :usage-type :desktop-base})
-=======
-      {:type (cond
-               (= vm-type :remote) :remote
-               (= vm-type :desktop) :desktop-office
-               (= vm-type :desktop-novbox) :plain)}
->>>>>>> 64e739dfa2d341f0779b1ba67cdefae5d70bbf02
+         :usage-type :desktop-base}))))
 
 (s/defn ^:always-validate
   infra-configuration :- InfraResult
