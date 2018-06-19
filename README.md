@@ -7,8 +7,8 @@
 ## Compatibility
 
 This crate works with:
- * pallet 0.8
- * clojure 1.7
+ * pallet 0.9
+ * clojure 1.9
  * xubuntu 16.04.02
 
 ## Features
