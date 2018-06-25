@@ -30,8 +30,8 @@
 (def LeiningenUserProfileConfig
   {:os-user-name s/Str
    (s/optional-key :signing-gpg-key) s/Str
-   (s/optional-key :lein-auth) [RepoAuth]
-   (s/optional-key :settings) (hash-set (s/enum :install-nightlight))})
+   (s/optional-key :lein-auth) [RepoAuth]})
+   ;(s/optional-key :settings) (hash-set (s/enum))})
 
 (defn install-leiningen
   []
