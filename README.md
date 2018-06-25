@@ -9,7 +9,7 @@
 This crate works with:
  * pallet 0.9
  * clojure 1.9
- * xubuntu 16.04.02
+ * xubuntu 18.04
 
 ## Features
 
@@ -167,7 +167,7 @@ The schema for the ide configuration is:
 (def Bookmarks                      ; see dda-managed-vm
   [{(optional-key :childs) [(recursive
                            (var
-                            dda.pallet.dda-managed-vm.infra.mozilla/Folder))],
+                            dda.pallet.dda-managed-vm.infra.browser/Folder))],
   :name Str,
   (optional-key :links) [[(one Str "url") (one Str "name")]]}])
 
