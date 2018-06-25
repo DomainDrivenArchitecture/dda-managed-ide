@@ -18,6 +18,7 @@
   (:require
     [schema.core :as s]
     [dda.pallet.commons.secret :as secret]
+    [dda.config.commons.map-utils :as mu]
     [dda.pallet.dda-managed-vm.domain :as vm-domain]
     [dda.pallet.dda-managed-ide.domain.git :as git]
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
@@ -32,11 +33,11 @@
 
 (def DdaIdeDomainConfig
   (merge
-    vm-domain/DdaVmUser
-    vm-domain/DdaVmBookmarks
-    {:vm-type (s/enum :remote :desktop :desktop-novbox)
-     :dev-platform (s/enum :clojure-atom :clojure-nightlight)
-     (s/optional-key :lein-auth) [RepoAuth]}))
+    vm-domain/DdaVmDomainConfig
+    {:dev-platform (hash-set (s/enum :clojure :devops))
+     :ide-platform (hash-set (s/enum :atom))
+     :user {:project-set (hash-set (s/enum :dda-pallet))
+            (s/optional-key :lein-auth) [RepoAuth]}}))
 
 (def RepoAuthResolved
   (secret/create-resolved-schema RepoAuth))
