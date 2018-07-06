@@ -3,8 +3,7 @@
   :url "https://www.domaindrivenarchitecture.org"
   :license {:name "Apache License, Version 2.0"
             :url "https://www.apache.org/licenses/LICENSE-2.0.html"}
-  :dependencies [[dda/dda-config-commons "1.4.0"]
-                 [dda/dda-pallet "2.2.0"]
+  :dependencies [[dda/dda-pallet "2.2.1"]
                  [dda/dda-managed-vm "2.1.1"]]
   :source-paths ["main/src"]
   :resource-paths ["main/resources"]
@@ -27,7 +26,7 @@
                    :leiningen/reply
                    {:dependencies [[org.slf4j/jcl-over-slf4j "1.8.0-beta0"]]
                     :exclusions [commons-logging]}
-                   :repl-options {:init-ns dda.pallet.dda-managed-ide.app.instantiate-aws}}
+                   :repl-options {:init-ns dda.pallet.dda-managed-ide.app.instantiate-existing}}
              :test {:test-paths ["test/src"]
                     :resource-paths ["test/resources"]
                     :dependencies [[dda/pallet "0.9.0" :classifier "tests"]]}
