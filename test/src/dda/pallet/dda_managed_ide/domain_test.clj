@@ -66,7 +66,8 @@
                                               "clojure-plus" "parinfer" "lisp-paredit" "linter-clojure"
                                               "tree-view-git-status" "git-time-machine"
                                               "language-diff" "split-diff"]}
-                             :ide-settings #{:install-idea-inodes}}}})
+                             :ide-settings #{:install-idea-inodes :install-basics
+                                             :install-mfa}}}})
 
 (def config-set-2
   {:domain-input {:user {:name  "test"
@@ -112,7 +113,8 @@
                                               "linter-clojure" "tree-view-git-status"
                                               "git-time-machine" "language-diff" "split-diff",]}
                                    :clojure {:os-user-name "test"}
-                             :ide-settings #{:install-idea-inodes}}}})
+                             :ide-settings #{:install-idea-inodes :install-basics
+                                             :install-mfa}}}})
 
 (def config-set-3
   {:domain-input {:user {:name  "test"
@@ -158,7 +160,8 @@
                                               "proto-repl" "clojure-plus" "parinfer" "lisp-paredit"
                                               "linter-clojure" "tree-view-git-status"
                                               "git-time-machine" "language-diff" "split-diff"]}
-                             :ide-settings #{:install-idea-inodes}}}})
+                             :ide-settings #{:install-idea-inodes :install-basics
+                                             :install-mfa}}}})
 
 (deftest test-git-config
   (testing
