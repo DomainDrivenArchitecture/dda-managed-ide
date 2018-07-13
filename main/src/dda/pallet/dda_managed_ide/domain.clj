@@ -97,7 +97,8 @@
       {:ide-user (keyword (:name user))
        :ide-settings #{:install-idea-inodes
                        :install-basics
-                       :install-mfa}}
+                       :install-mfa
+                       :install-asciinema}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type)})
       (when (contains? domain-config :clojure)

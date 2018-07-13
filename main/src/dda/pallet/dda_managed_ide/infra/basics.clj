@@ -23,8 +23,9 @@
 
 (def Settings
    #{:install-basics
-     :install-mfa})
-    
+     :install-mfa
+     :install-asciinema})
+
 
 (defn install-basics
   [facility]
@@ -43,9 +44,27 @@
     "install mfa"
     ("pip" "install" "mfa")))
 
+(defn install-asciinema
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "configure system: install-asciinema")))
+  (actions/package-source "asciinema"
+    :aptitude
+    {:url "http://ppa.launchpad.net/zanchey/asciinema/ubuntu "
+     :release "bionic"
+     :scopes ["main"]
+     :key-url "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9D2E234C0F833EAD"})
+  (actions/package-manager :update)
+  (actions/packages :aptitude ["asciinema" "nodejs" "phantomjs" "imagemagick" "gifsicle"])
+  (actions/exec-checked-script
+    "install asciicast2gif"
+    ("npm" "install" "--global" "asciicast2gif")))
+
 (s/defn install-system
   [facility ide-settings]
   (when (contains? ide-settings :install-basics)
      (install-basics facility))
   (when (contains? ide-settings :install-mfa)
-     (install-mfa facility)))
+     (install-mfa facility))
+  (when (contains? ide-settings :install-asciinema)
+     (install-asciinema facility)))

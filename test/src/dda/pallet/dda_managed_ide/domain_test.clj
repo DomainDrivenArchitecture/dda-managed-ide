@@ -67,7 +67,7 @@
                                               "tree-view-git-status" "git-time-machine"
                                               "language-diff" "split-diff"]}
                              :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-mfa}}}})
+                                             :install-mfa :install-asciinema}}}})
 
 (def config-set-2
   {:domain-input {:user {:name  "test"
@@ -114,7 +114,7 @@
                                               "git-time-machine" "language-diff" "split-diff",]}
                                    :clojure {:os-user-name "test"}
                              :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-mfa}}}})
+                                             :install-mfa :install-asciinema}}}})
 
 (def config-set-3
   {:domain-input {:user {:name  "test"
@@ -161,7 +161,7 @@
                                               "linter-clojure" "tree-view-git-status"
                                               "git-time-machine" "language-diff" "split-diff"]}
                              :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-mfa}}}})
+                                             :install-mfa :install-asciinema}}}})
 
 (deftest test-git-config
   (testing

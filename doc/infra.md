@@ -18,7 +18,8 @@ For installation & configuration with the dda-managed-ide the schema is:
                          :settings #{(enum :install-aws-workaround)}},
    :ide-settings #{(enum :install-idea-inodes
                          :install-basics
-                         :install-mfa)}
+                         :install-mfa
+                         :install-asciinema)}
    :ide-user Keyword}
 ```
 
