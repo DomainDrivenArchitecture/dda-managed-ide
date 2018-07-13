@@ -20,6 +20,7 @@
     [schema.core :as s]
     [pallet.actions :as actions]
     [dda.pallet.core.infra :as core-infra]
+    [dda.pallet.dda-managed-ide.infra.basics :as basics]
     [dda.pallet.dda-managed-ide.infra.clojure :as clojure]
     [dda.pallet.dda-managed-ide.infra.atom :as atom]
     [dda.pallet.dda-managed-ide.infra.idea :as idea]))
@@ -36,6 +37,7 @@
    :ide-settings
    (hash-set (apply s/enum
                     (clojure.set/union
+                      basics/Settings
                       idea/Settings)))})
 
 (s/defn install-system
@@ -44,7 +46,8 @@
     {:sudo-user "root"
      :script-dir "/root/"
      :script-env {:HOME (str "/root")}}
-    (idea/install-idea-inodes facility (:ide-settings config))
+    (basics/install-system facility (:ide-settings config))
+    (idea/install-system facility (:ide-settings config))
     (when (contains? config :clojure)
       (actions/as-action
           (logging/info (str facility "-install system: clojure")))

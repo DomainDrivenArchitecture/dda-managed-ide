@@ -14,7 +14,7 @@
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
 
-(ns dda.pallet.dda-managed-ide.infra.idea
+(ns dda.pallet.dda-managed-ide.infra.basics
   (:require
     [clojure.tools.logging :as logging]
     [schema.core :as s]
@@ -22,18 +22,30 @@
     [dda.config.commons.user-home :as user-env]))
 
 (def Settings
-   #{:install-idea-inodes})
+   #{:install-basics
+     :install-mfa})
+    
 
-(defn install-idea-inodes
+(defn install-basics
   [facility]
   (actions/as-action
-    (logging/info (str facility "configure system: install-idea-inodes")))
+    (logging/info (str facility "configure system: install-basics")))
+  (actions/packages
+    :aptitude ["curl" "gnutls-bin" "apache2-utils" "meld" "whois" "make"]))
+
+(defn install-mfa
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "configure system: install-mfa")))
+  (actions/packages
+    :aptitude ["clipit" "python-pip"])
   (actions/exec-checked-script
-    "adjust inodes for idea"
-    ("echo" "\"fs.inotify.max_user_watches = 524288\"" ">" "/etc/sysctl.conf")
-    ("sysctl" "-p")))
+    "install mfa"
+    ("pip" "install" "mfa")))
 
 (s/defn install-system
   [facility ide-settings]
-  (when (contains? ide-settings :install-idea-inodes)
-     (install-idea-inodes facility)))
+  (when (contains? ide-settings :install-basics)
+     (install-basics facility))
+  (when (contains? ide-settings :install-mfa)
+     (install-mfa facility)))

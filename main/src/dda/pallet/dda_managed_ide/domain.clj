@@ -95,7 +95,9 @@
     {infra/facility
      (merge
       {:ide-user (keyword (:name user))
-       :ide-settings #{:install-idea-inodes}}
+       :ide-settings #{:install-idea-inodes
+                       :install-basics
+                       :install-mfa}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type)})
       (when (contains? domain-config :clojure)
