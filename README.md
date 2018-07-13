@@ -207,6 +207,7 @@ For installation & configuration with the dda-managed-ide the schema is:
                                                         :install-nightlight)}},
    (optional-key :atom) {(optional-key :plugins) [Str],
                          :settings #{(enum :install-aws-workaround)}},
+   :ide-settings #{(enum :install-idea-inodes)}
    :ide-user Keyword}
 ```
 

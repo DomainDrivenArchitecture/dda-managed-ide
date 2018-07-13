@@ -41,6 +41,8 @@
           :password "pwd"}
    :dev-platform :clojure-atom})
 
+
+
 (deftest test-git-config
   (testing
     "test the git config creation"

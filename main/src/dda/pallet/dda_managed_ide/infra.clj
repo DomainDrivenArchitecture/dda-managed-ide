@@ -21,7 +21,8 @@
     [pallet.actions :as actions]
     [dda.pallet.core.infra :as core-infra]
     [dda.pallet.dda-managed-ide.infra.clojure :as clojure]
-    [dda.pallet.dda-managed-ide.infra.atom :as atom]))
+    [dda.pallet.dda-managed-ide.infra.atom :as atom]
+    [dda.pallet.dda-managed-ide.infra.idea :as idea]))
 
 (def facility :dda-managed-ide)
 
@@ -31,7 +32,11 @@
   {:ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
-                           (s/optional-key :plugins) [s/Str]}})
+                           (s/optional-key :plugins) [s/Str]}
+   :ide-settings
+   (hash-set (apply s/enum
+                    (clojure.set/union
+                      idea/Settings)))})
 
 (s/defn install-system
   [config :- DdaIdeConfig]
@@ -39,6 +44,7 @@
     {:sudo-user "root"
      :script-dir "/root/"
      :script-env {:HOME (str "/root")}}
+    (idea/install-idea-inodes facility (:ide-settings config))
     (when (contains? config :clojure)
       (actions/as-action
           (logging/info (str facility "-install system: clojure")))
