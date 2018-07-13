@@ -20,6 +20,7 @@
     [dda.pallet.commons.secret :as secret]
     [dda.config.commons.map-utils :as mu]
     [dda.pallet.dda-managed-vm.domain :as vm-domain]
+    [dda.pallet.dda-git-crate.domain :as git-domain]
     [dda.pallet.dda-managed-ide.domain.git :as git]
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
     [dda.pallet.dda-managed-ide.infra :as infra]))
@@ -33,11 +34,13 @@
 
 (def DdaIdeDomainConfig
   (merge
-    vm-domain/DdaVmDomainConfig
-    {:dev-platform (hash-set (s/enum :clojure :devops))
-     :ide-platform (hash-set (s/enum :atom))
-     :user {:project-set (hash-set (s/enum :dda-pallet))
-            (s/optional-key :lein-auth) [RepoAuth]}}))
+    vm-domain/DdaVmUser
+    vm-domain/DdaVmBookmarks
+    {:target-type (s/enum :virtualbox :remote-aws :plain)}
+    {:ide-platform (hash-set (s/enum :atom :idea))
+     (s/optional-key :git) git-domain/GitDomainConfig
+     (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
+     (s/optional-key :devops)  {}}))
 
 (def RepoAuthResolved
   (secret/create-resolved-schema RepoAuth))
@@ -47,9 +50,10 @@
 
 ;TODO: backup-crate integration
 
-(s/defn ^:always-validate ide-git-config
- [ide-config :- DdaIdeDomainResolvedConfig]
- (git/ide-git-config ide-config))
+(s/defn ^:always-validate
+  ide-git-config
+  [ide-config :- DdaIdeDomainResolvedConfig]
+  (git/ide-git-config ide-config))
 
 (s/defn ^:always-validate
   ide-serverspec-config
@@ -75,40 +79,27 @@
 (s/defn ^:always-validate
   dda-vm-domain-configuration
   [ide-config :- DdaIdeDomainResolvedConfig]
-  (let [{:keys [user bookmarks vm-type]} ide-config]
+  (let [{:keys [user bookmarks target-type]} ide-config]
     (merge
-      {:user user}
+      {:user user
+       :target-type target-type
+       :usage-type :desktop-base}
       (when (contains? ide-config :bookmarks)
-        {:bookmarks bookmarks})
-      (when = vm-type :remote
-        {:target-type :remote-aws
-         :usage-type :desktop-base})
-      (when = vm-type :desktop-office
-        {:target-type :virtualbox
-         :usage-type :desktop-office})
-      (when = vm-type :desktop-novbox
-        {:target-type :plain
-         :usage-type :desktop-base}))))
+        {:bookmarks bookmarks}))))
 
 (s/defn ^:always-validate
   infra-configuration :- InfraResult
   [domain-config :- DdaIdeDomainResolvedConfig]
-  (let [{:keys [user vm-type dev-platform lein-auth]} domain-config
+  (let [{:keys [user vm-type ide-platform lein-auth]} domain-config
         user-name (:name user)]
     {infra/facility
      (merge
-      {:ide-user (keyword (:name user))}
-      (cond
-        (= dev-platform :clojure-atom)
-        {:atom (atom/atom-config vm-type)
-         :clojure (merge
-                   {:os-user-name user-name}
-                   (when (contains? domain-config :lein-auth)
-                     {:lein-auth lein-auth}))}
-        (= dev-platform :clojure-nightlight)
-        {:clojure (merge
-                    {:os-user-name user-name
-                     :settings #{:install-nightlight}}
-                    (when (contains? domain-config :lein-auth)
-                      {:lein-auth lein-auth}))}
-        :default {}))}))
+      {:ide-user (keyword (:name user))
+       :ide-settings #{:install-idea-inodes}}
+      (when (contains? ide-platform :atom)
+        {:atom (atom/atom-config vm-type)})
+      (when (contains? domain-config :clojure)
+         {:clojure (merge
+                     {:os-user-name user-name}
+                     (when (contains? domain-config :lein-auth)
+                       {:lein-auth lein-auth}))}))}))

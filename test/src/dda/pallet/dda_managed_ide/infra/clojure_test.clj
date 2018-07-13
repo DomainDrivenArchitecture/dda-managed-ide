@@ -21,16 +21,10 @@
     [schema.core :as s]
     [dda.pallet.dda-managed-ide.infra.clojure :as sut]))
 
+(s/set-fn-validation! true)
 
 (deftest lein-user-profile-test
   (testing
-    (is (re-find
-         #"nightlight/lein-nightlight"
-         (sut/lein-user-profile {:os-user-name "test"
-                                 :settings #{:install-nightlight}})))
-    (is (not (re-find
-               #"nightlight/lein-nightlight"
-               (sut/lein-user-profile {:os-user-name "test"}))))
     (is (re-find
          #"signing"
          (sut/lein-user-profile {:os-user-name "test"

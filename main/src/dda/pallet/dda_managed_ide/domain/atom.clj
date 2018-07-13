@@ -22,7 +22,8 @@
   ["ink" "minimap" "busy-signal" "atom-toolbar" "atom-meld" "intentions"])
 
 (def clean-typing-plugins
-  ["trailing-spaces" "linter" "linter-write-good" "linter-ui-default" "linter-jsonlint" "linter-spell" "linter-spell-html" "linter-clojure" "minimap-linter"])
+  ["trailing-spaces" "linter" "linter-write-good" "linter-ui-default" "linter-jsonlint"
+   "linter-spell" "linter-spell-html" "linter-clojure" "minimap-linter"])
 
 (def pair-programming-plugins
   ["teletype"])
@@ -31,7 +32,7 @@
   ["proto-repl"  "clojure-plus" "parinfer" "lisp-paredit" "linter-clojure"])
 
 (def git-plugins
-  ["git-plus" "tree-view-git-status" "git-time-machine" "language-diff" "split-diff"])
+  ["tree-view-git-status" "git-time-machine" "language-diff" "split-diff"])
 
 (s/defn atom-config
   "create a atom configuration"

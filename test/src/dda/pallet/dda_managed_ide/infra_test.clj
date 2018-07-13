@@ -22,7 +22,8 @@
     [dda.pallet.dda-managed-ide.infra :as sut]))
 
 (def basic-config
-  {:ide-user :some-user})
+  {:ide-user :some-user
+   :ide-settings #{}})
 
 (def basic-atom-config
    {:atom
