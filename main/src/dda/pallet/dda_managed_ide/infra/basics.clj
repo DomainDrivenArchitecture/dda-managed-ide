@@ -26,11 +26,10 @@
      :install-mfa
      :install-asciinema})
 
-
 (defn install-basics
   [facility]
   (actions/as-action
-    (logging/info (str facility "configure system: install-basics")))
+    (logging/info (str facility "install system: install-basics")))
   (actions/packages
     :aptitude ["curl" "gnutls-bin" "apache2-utils" "meld" "whois" "make"]))
 

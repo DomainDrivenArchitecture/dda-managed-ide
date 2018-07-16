@@ -16,6 +16,7 @@
 
 (ns dda.pallet.dda-managed-ide.infra.clojure
   (:require
+    [clojure.tools.logging :as logging]
     [schema.core :as s]
     [pallet.actions :as actions]
     [selmer.parser :as selmer]
@@ -31,10 +32,14 @@
   {:os-user-name s/Str
    (s/optional-key :signing-gpg-key) s/Str
    (s/optional-key :lein-auth) [RepoAuth]})
-   ;(s/optional-key :settings) (hash-set (s/enum))})
+
+(def Settings
+   #{:install-mach})
 
 (defn install-leiningen
-  []
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-install system: clojure")))
   "get and install lein at /opt/leiningen"
   (actions/directory
     "/opt/leiningen"
@@ -54,25 +59,47 @@
     (util/create-file-content
       ["PATH=$PATH:/opt/leiningen"])))
 
-(s/defn lein-user-profile :- s/Str
-  [lein-config :- LeiningenUserProfileConfig]
-  (selmer/render-file "lein_profiles.template" lein-config))
-
+(defn install-mach
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "install system: install-mach")))
+  (actions/packages
+    :aptitude ["npm"])
+  (actions/exec-checked-script
+    "install mach"
+    ("npm" "install" "-g" "@juxt/mach")
+    ("cd" "/usr/local/bin")
+    ("curl" "-fsSLo" "boot"
+            "https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh")
+    ("chmod" "755" "boot")))
 
 (s/defn configure-user-leiningen
   "configure lein settings"
-  [lein-config :- LeiningenUserProfileConfig]
+  [facility lein-config :- LeiningenUserProfileConfig]
   (let [{:keys [os-user-name]} lein-config
         path (str "/home/" os-user-name "/.lein/")]
-   (actions/directory
-     path
-     :owner os-user-name
-     :group os-user-name
-     :mode "755")
-   (actions/remote-file
-     (str path "profiles.clj")
-     :owner os-user-name
-     :group os-user-name
-     :literal true
-     :content
-     (lein-user-profile lein-config))))
+    (actions/as-action
+      (logging/info (str facility "-configure user: clojure")))
+    (actions/directory
+      path
+      :owner os-user-name
+      :group os-user-name
+      :mode "755")
+    (actions/remote-file
+      (str path "profiles.clj")
+      :owner os-user-name
+      :group os-user-name
+      :literal true
+      :content
+      (selmer/render-file "lein_profiles.template" lein-config))))
+
+
+(s/defn install-system
+  [facility config]
+  (when (contains? config :clojure)
+    (install-leiningen facility)))
+
+(s/defn configure-user
+  [facility config]
+  (when (contains? config :clojure)
+    (configure-user-leiningen (-> config :clojure))))

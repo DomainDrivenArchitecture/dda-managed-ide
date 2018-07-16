@@ -103,6 +103,7 @@
         {:atom (atom/atom-config vm-type)})
       (when (contains? domain-config :clojure)
          {:clojure (merge
-                     {:os-user-name user-name}
+                     {:os-user-name user-name
+                      :ide-settings #{:install-mach}}
                      (when (contains? domain-config :lein-auth)
                        {:lein-auth lein-auth}))}))}))

@@ -38,7 +38,8 @@
    (hash-set (apply s/enum
                     (clojure.set/union
                       basics/Settings
-                      idea/Settings)))})
+                      idea/Settings
+                      clojure/Settings)))})
 
 (s/defn install-system
   [config :- DdaIdeConfig]
@@ -48,10 +49,7 @@
      :script-env {:HOME (str "/root")}}
     (basics/install-system facility (:ide-settings config))
     (idea/install-system facility (:ide-settings config))
-    (when (contains? config :clojure)
-      (actions/as-action
-          (logging/info (str facility "-install system: clojure")))
-      (clojure/install-leiningen))
+    (clojure/install-system facility config)
     (when (contains? config :atom)
       (actions/as-action
           (logging/info (str facility "-install system: atom")))
@@ -64,10 +62,7 @@
       {:sudo-user os-user-name
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
-      (when (contains? config :clojure)
-        (actions/as-action
-          (logging/info (str facility "-configure user: clojure")))
-        (clojure/configure-user-leiningen (-> config :clojure)))
+      (clojure/configure-user facility config)
       (when (contains? config :atom)
         (actions/as-action
           (logging/info (str facility "-configure user: atom")))
