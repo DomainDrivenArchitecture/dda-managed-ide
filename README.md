@@ -60,27 +60,27 @@ sudo apt-get install openjdk-7-jre-headless
 ### Usage Summary
 1. Download the jar-file from the releases page of this repository (e.g. dda-manage-ide-x.x.x-standalone.jar).
 2. Deploy the jar-file on the source machine
-3. Create the files `ide.edn` (Domain-Schema for your desktop) and `target.edn` (Schema for Targets to be provisioned) according to the reference and our example configurations. Please create them in the same folder where you've saved the jar-file. For more information about these files refer to the corresponding information below.
+3. Create the files `example-ide.edn` (Domain-Schema for your desktop) and `target.edn` (Schema for Targets to be provisioned) according to the reference and our example configurations. Please create them in the same folder where you've saved the jar-file. For more information about these files refer to the corresponding information below.
 4. Start the installation:
 ```bash
-java -jar dda-managed-ide-standalone.jar --targets targets.edn ide.edn
+java -jar dda-managed-ide-standalone.jar --targets example-targets.edn example-ide.edn
 ```
 If you want to install the ide on your localhost you don't need a target config.
 ```bash
-java -jar dda-managed-ide-0.2.0-standalone.jar ide.edn
+java -jar dda-managed-ide-0.2.0-standalone.jar example-ide.edn
 ```
 
 ### Configuration
 The configuration consists of two files defining both WHERE to install the software and WHAT to install.
-* `targets.edn`: describes on which target system(s) the software will be installed
-* `ide.edn`: describes which software/packages will be installed
+* `example-targets.edn`: describes on which target system(s) the software will be installed
+* `example-ide.edn`: describes which software/packages will be installed
 
 You can download examples of these configuration files from  
-[https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/targets.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/targets.edn) and
-[https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/ide.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/vm.edn) respectively.
+[https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/example-targets.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/example-targets.edn) and
+[https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/development/example-ide.edn](https://github.com/DomainDrivenArchitecture/dda-managed-vm/blob/development/vm.edn) respectively.
 
 #### Targets config example
-Example content of the file, `targets.edn`:
+Example content of the file, `example-targets.edn`:
 ```clojure
 {:existing [{:node-name "test-vm1"            ; semantic name
              :node-ip "35.157.19.218"}]       ; the ip4 address of the machine to be provisioned
@@ -90,7 +90,7 @@ Example content of the file, `targets.edn`:
 ```
 
 #### VM config example
-Example content of the file, `ide.edn`:
+Example content of the file, `example-ide.edn`:
 ```clojure
 {:vm-type :desktop
  :dev-platform :clojure-atom
@@ -137,7 +137,7 @@ The schema for the targets config is:
   {:existing [ExistingNode]                                ; one ore more target nodes.
    (s/optional-key :provisioning-user) ProvisioningUser})  ; user can be ommited to execute on localhost with current user.
 ```
-The "targets.edn" uses this schema.
+The "example-targets.edn" uses this schema.
 
 ### Domain API
 The schema for the ide configuration is:

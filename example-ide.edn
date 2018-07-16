@@ -1,5 +1,5 @@
-{:vm-type :desktop
- :dev-platform :clojure-atom
+{:target-type :virtualbox
+ :ide-platform #{:atom}
  :user          {:name "test-user"
                  :password {:plain "xxx"}
                  :email "test-user@mydomain.org"

@@ -28,7 +28,7 @@
   [["-h" "--help"]
    ["-s" "--serverspec"]
    ["-c" "--configure"]
-   ["-t" "--targets targets.edn" "edn file containing the targets to install on."
+   ["-t" "--targets example-targets.edn" "edn file containing the targets to install on."
     :default "localhost-target.edn"]
    ["-v" "--verbose"]])
 

@@ -53,7 +53,7 @@
         {:keys [type]} resolved-domain-config]
     (mu/deep-merge
      (managed-vm/app-configuration-resolved (domain/dda-vm-domain-configuration resolved-domain-config) :group-key group-key)
-     (git/app-configuration (domain/ide-git-config resolved-domain-config) :group-key group-key)
+     (git/app-configuration-resolved (domain/ide-git-config resolved-domain-config) :group-key group-key)
      (serverspec/app-configuration (domain/ide-serverspec-config resolved-domain-config) :group-key group-key)
      {:group-specific-config {group-key (domain/infra-configuration resolved-domain-config)}})))
 
@@ -81,4 +81,4 @@
                   :facility infra/facility
                   :domain-schema DdaIdeDomainConfig
                   :domain-schema-resolved DdaIdeDomainResolvedConfig
-                  :default-domain-file "ide.edn"))
+                  :default-domain-file "example-ide.edn"))

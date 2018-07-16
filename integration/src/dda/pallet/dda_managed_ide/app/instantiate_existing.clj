@@ -22,8 +22,8 @@
 (defn install
   [& options]
   (let [{:keys [domain targets summarize-session]
-         :or {domain "ide.edn"
-              targets "targets.edn"
+         :or {domain "example-ide.edn"
+              targets "example-targets.edn"
               summarize-session true}} options]
     (core-app/existing-install app/crate-app
                           {:domain domain
@@ -32,8 +32,8 @@
 (defn configure
  [& options]
  (let [{:keys [domain targets summarize-session]
-        :or {domain "ide.edn"
-             targets "targets.edn"
+        :or {domain "example-ide.edn"
+             targets "example-targets.edn"
              summarize-session true}} options]
   (core-app/existing-configure app/crate-app
                           {:domain domain
@@ -42,8 +42,8 @@
 (defn serverspec
   [& options]
   (let [{:keys [domain targets summarize-session]
-         :or {domain "ide.edn"
-              targets "targets.edn"
+         :or {domain "example-ide.edn"
+              targets "example-targets.edn"
               summarize-session true}} options]
     (core-app/existing-serverspec app/crate-app
                              {:domain domain
