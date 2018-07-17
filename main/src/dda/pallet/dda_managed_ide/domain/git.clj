@@ -46,4 +46,5 @@
        "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
        "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
        "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"]}}))
+       "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
+       "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git"]}}))
