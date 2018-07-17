@@ -36,12 +36,12 @@
 
 (s/defn atom-config
   "create a atom configuration"
-  [vm-type]
+  [vm-type contains-clojure?]
   {:settings (if (= vm-type :remote)
                #{:install-aws-workaround}
                #{})
    :plugins (into
               []
               (concat base-plugins clean-typing-plugins
-                      pair-programming-plugins clojure-plugins
-                      git-plugins))})
+                      pair-programming-plugins git-plugins
+                      (when contains-clojure? clojure-plugins)))})

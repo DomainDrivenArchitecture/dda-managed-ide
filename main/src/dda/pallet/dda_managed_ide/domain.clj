@@ -91,19 +91,20 @@
   infra-configuration :- InfraResult
   [domain-config :- DdaIdeDomainResolvedConfig]
   (let [{:keys [user vm-type ide-platform lein-auth]} domain-config
-        user-name (:name user)]
+        user-name (:name user)
+        contains-clojure? (contains? domain-config :clojure)]
     {infra/facility
-     (merge
+     (mu/deep-merge
       {:ide-user (keyword (:name user))
        :ide-settings #{:install-idea-inodes
                        :install-basics
                        :install-mfa
                        :install-asciinema}}
       (when (contains? ide-platform :atom)
-        {:atom (atom/atom-config vm-type)})
-      (when (contains? domain-config :clojure)
+        {:atom (atom/atom-config vm-type contains-clojure?)})
+      (when contains-clojure?
          {:clojure (merge
-                     {:os-user-name user-name
-                      :ide-settings #{:install-mach}}
+                     {:os-user-name user-name}
                      (when (contains? domain-config :lein-auth)
-                       {:lein-auth lein-auth}))}))}))
+                       {:lein-auth lein-auth}))
+          :ide-settings #{:install-mach}}))}))

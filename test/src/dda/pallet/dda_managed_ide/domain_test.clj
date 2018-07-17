@@ -53,19 +53,29 @@
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"],
                         :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
                 :os-user :test}
-   :serverspec-domain {:file '({:path "/opt/leiningen/lein"}
-                               {:path "/etc/profile.d/lein.sh"}
-                               {:path "/home/test/.lein/profiles.clj"})}
+   :serverspec-domain {:file '()}
    :infra {:dda-managed-ide {:ide-user :test,
                              :atom {:settings #{},
-                                    :plugins ["ink" "minimap" "busy-signal" "atom-toolbar"
-                                              "atom-meld" "intentions" "trailing-spaces"
-                                              "linter" "linter-write-good" "linter-ui-default"
-                                              "linter-jsonlint" "linter-spell" "linter-spell-html"
-                                              "linter-clojure" "minimap-linter" "teletype" "proto-repl"
-                                              "clojure-plus" "parinfer" "lisp-paredit" "linter-clojure"
-                                              "tree-view-git-status" "git-time-machine"
-                                              "language-diff" "split-diff"]}
+                                    :plugins ["ink"
+                                              "minimap"
+                                              "busy-signal"
+                                              "atom-toolbar"
+                                              "atom-meld"
+                                              "intentions"
+                                              "trailing-spaces"
+                                              "linter"
+                                              "linter-write-good"
+                                              "linter-ui-default"
+                                              "linter-jsonlint"
+                                              "linter-spell"
+                                              "linter-spell-html"
+                                              "linter-clojure"
+                                              "minimap-linter"
+                                              "teletype"
+                                              "tree-view-git-status"
+                                              "git-time-machine"
+                                              "language-diff"
+                                              "split-diff"]}
                              :ide-settings #{:install-idea-inodes :install-basics
                                              :install-mfa :install-asciinema}}}})
 
@@ -105,16 +115,34 @@
                                {:path "/home/test/.lein/profiles.clj"})}
    :infra {:dda-managed-ide {:ide-user :test,
                              :atom {:settings #{},
-                                    :plugins ["ink" "minimap" "busy-signal" "atom-toolbar" "atom-meld"
-                                              "intentions" "trailing-spaces" "linter" "linter-write-good"
-                                              "linter-ui-default" "linter-jsonlint" "linter-spell"
-                                              "linter-spell-html" "linter-clojure" "minimap-linter"
-                                              "teletype" "proto-repl" "clojure-plus" "parinfer" "lisp-paredit"
-                                              "linter-clojure" "tree-view-git-status"
-                                              "git-time-machine" "language-diff" "split-diff",]}
+                                    :plugins ["ink"
+                                              "minimap"
+                                              "busy-signal"
+                                              "atom-toolbar"
+                                              "atom-meld"
+                                              "intentions"
+                                              "trailing-spaces"
+                                              "linter"
+                                              "linter-write-good"
+                                              "linter-ui-default"
+                                              "linter-jsonlint"
+                                              "linter-spell"
+                                              "linter-spell-html"
+                                              "linter-clojure"
+                                              "minimap-linter"
+                                              "teletype"
+                                              "tree-view-git-status"
+                                              "git-time-machine"
+                                              "language-diff"
+                                              "split-diff"
+                                              "proto-repl"
+                                              "clojure-plus"
+                                              "parinfer"
+                                              "lisp-paredit"
+                                              "linter-clojure"]}
                                    :clojure {:os-user-name "test"}
                              :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-mfa :install-asciinema}}}})
+                                             :install-mfa :install-asciinema :install-mach}}}})
 
 (def config-set-3
   {:domain-input {:user {:name  "test"
@@ -148,18 +176,29 @@
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"],
                         :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
                 :os-user :test}
-   :serverspec-domain {:file '({:path "/opt/leiningen/lein"}
-                               {:path "/etc/profile.d/lein.sh"}
-                               {:path "/home/test/.lein/profiles.clj"})}
+   :serverspec-domain {:file '()}
    :infra {:dda-managed-ide {:ide-user :test,
                              :atom {:settings #{},
-                                    :plugins ["ink" "minimap" "busy-signal" "atom-toolbar" "atom-meld"
-                                              "intentions" "trailing-spaces" "linter" "linter-write-good"
-                                              "linter-ui-default" "linter-jsonlint" "linter-spell"
-                                              "linter-spell-html" "linter-clojure" "minimap-linter" "teletype"
-                                              "proto-repl" "clojure-plus" "parinfer" "lisp-paredit"
-                                              "linter-clojure" "tree-view-git-status"
-                                              "git-time-machine" "language-diff" "split-diff"]}
+                                    :plugins ["ink"
+                                              "minimap"
+                                              "busy-signal"
+                                              "atom-toolbar"
+                                              "atom-meld"
+                                              "intentions"
+                                              "trailing-spaces"
+                                              "linter"
+                                              "linter-write-good"
+                                              "linter-ui-default"
+                                              "linter-jsonlint"
+                                              "linter-spell"
+                                              "linter-spell-html"
+                                              "linter-clojure"
+                                              "minimap-linter"
+                                              "teletype"
+                                              "tree-view-git-status"
+                                              "git-time-machine"
+                                              "language-diff"
+                                              "split-diff"]}
                              :ide-settings #{:install-idea-inodes :install-basics
                                              :install-mfa :install-asciinema}}}})
 

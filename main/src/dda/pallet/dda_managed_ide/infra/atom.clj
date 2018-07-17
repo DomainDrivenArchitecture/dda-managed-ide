@@ -25,8 +25,7 @@
 (defn install [config]
   (let [atom-config (-> config :atom)
         settings (-> atom-config :settings)]
-    (actions/package "python")
-    (actions/package "gvfs-bin")
+    (actions/packages :aptitude ["python" "gvfs-bin" "gconf2" "gconf-service"])
     (actions/remote-file
       "/tmp/atom.deb"
       :owner "root"

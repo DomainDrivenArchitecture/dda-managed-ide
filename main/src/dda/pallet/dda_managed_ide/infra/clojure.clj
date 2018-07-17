@@ -73,6 +73,10 @@
             "https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh")
     ("chmod" "755" "boot")))
 
+(s/defn lein-user-profile
+  [lein-config :- LeiningenUserProfileConfig]
+  (selmer/render-file "lein_profiles.template" lein-config))
+
 (s/defn configure-user-leiningen
   "configure lein settings"
   [facility lein-config :- LeiningenUserProfileConfig]
@@ -91,7 +95,7 @@
       :group os-user-name
       :literal true
       :content
-      (selmer/render-file "lein_profiles.template" lein-config))))
+      (lein-user-profile lein-config))))
 
 
 (s/defn install-system
