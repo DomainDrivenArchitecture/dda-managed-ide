@@ -106,4 +106,4 @@
 (s/defn configure-user
   [facility config]
   (when (contains? config :clojure)
-    (configure-user-leiningen (-> config :clojure))))
+    (configure-user-leiningen facility (-> config :clojure))))
