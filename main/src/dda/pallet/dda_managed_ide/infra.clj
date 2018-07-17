@@ -33,7 +33,7 @@
 (def DdaIdeConfig
   {:ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
-   (s/optional-key :devops) {}
+   (s/optional-key :devops) {(s/optional-key :aws) devops/AwsCredentials}
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
                            (s/optional-key :plugins) [s/Str]}
    :ide-settings
@@ -62,12 +62,16 @@
 
 (s/defn configure-user
   [config :- DdaIdeConfig]
-  (let [os-user-name (name (-> config :ide-user))]
+  (let [{:keys [ide-user clojure devops]} config
+        os-user-name (name ide-user)
+        contains-clojure? (contains? config :clojure)
+        contains-devops? (contains? config :devops)]
     (pallet.action/with-action-options
       {:sudo-user os-user-name
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
-      (clojure/configure-user facility config)
+      (clojure/configure-user facility contains-clojure? os-user-name clojure)
+      (devops/configure-user facility contains-devops? os-user-name devops)
       (when (contains? config :atom)
         (actions/as-action
           (logging/info (str facility "-configure user: atom")))

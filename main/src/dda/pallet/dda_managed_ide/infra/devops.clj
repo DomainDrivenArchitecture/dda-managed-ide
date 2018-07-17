@@ -18,8 +18,13 @@
   (:require
     [clojure.tools.logging :as logging]
     [schema.core :as s]
+    [selmer.parser :as selmer]
     [pallet.actions :as actions]
     [dda.config.commons.user-home :as user-env]))
+
+(def AwsCredentials
+   {(s/optional-key :simple) {:id s/Str
+                              :secret s/Str}})
 
 (def Settings
    #{
@@ -58,18 +63,49 @@
   (actions/packages
     :aptitude ["awscli"]))
 
-(defn configure-aws
-  [facility]
-  (actions/as-action
-    (logging/info (str facility " configure system: configure-aws")))
-  (actions/packages
-    :aptitude ["awscli"]))
+(s/defn aws-credentials-configuration
+  [aws-credentials :- AwsCredentials]
+  (when (contains? aws-credentials :simple)
+    (selmer/render-file "aws_simple_credentials.template" aws-credentials)))
+
+(s/defn configure-aws
+  [facility :- s/Keyword
+   os-user-name :- s/Str
+   aws-credentials :- AwsCredentials]
+  (let [path (str (user-env/user-home-dir os-user-name) "/.aws/")]
+    (actions/as-action
+      (logging/info (str facility " configure system: configure-aws")))
+    (logging/info os-user-name)
+    (logging/info aws-credentials)
+    (logging/info (aws-credentials-configuration aws-credentials))
+    (actions/directory
+      path
+      :owner os-user-name
+      :group os-user-name
+      :mode "755")
+    (when (contains? aws-credentials :simple)
+      (actions/remote-file
+        (str path "credentials")
+        :owner os-user-name
+        :group os-user-name
+        :mode "600"
+        :literal true
+        :content
+        (aws-credentials-configuration aws-credentials)))))
 
 (s/defn install-system
   [facility settings]
   (when (contains? settings :install-mach)
     (install-mach facility))
-  (when (contains? ide-settings :install-mfa)
+  (when (contains? settings :install-mfa)
      (install-mfa facility))
-  (when (contains? ide-settings :install-awscli)
+  (when (contains? settings :install-awscli)
      (install-awscli facility)))
+
+(s/defn configure-user
+  [facility :- s/Keyword
+   contains-devops? :- s/Bool
+   os-user-name :- s/Str
+   aws-credentials :- AwsCredentials]
+  (when contains-devops?
+    (configure-aws facility os-user-name aws-credentials)))

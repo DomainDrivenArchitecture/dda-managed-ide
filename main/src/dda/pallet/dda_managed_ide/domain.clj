@@ -40,7 +40,10 @@
     {:ide-platform (hash-set (s/enum :atom :idea))
      (s/optional-key :git) git-domain/GitDomainConfig
      (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
-     (s/optional-key :devops)  {}}))
+     (s/optional-key :devops)
+     {(s/optional-key :aws)
+      {(s/optional-key :simple) {:id secret/Secret
+                                 :secret secret/Secret}}}}))
 
 (def RepoAuthResolved
   (secret/create-resolved-schema RepoAuth))
@@ -87,7 +90,7 @@
 (s/defn ^:always-validate
   infra-configuration :- InfraResult
   [domain-config :- DdaIdeDomainResolvedConfig]
-  (let [{:keys [user vm-type ide-platform lein-auth]} domain-config
+  (let [{:keys [user vm-type ide-platform clojure devops]} domain-config
         user-name (:name user)
         contains-clojure? (contains? domain-config :clojure)
         contains-devops? (contains? domain-config :devops)]
@@ -102,8 +105,9 @@
       (when contains-clojure?
          {:clojure (merge
                      {:os-user-name user-name}
-                     (when (contains? domain-config :lein-auth)
-                       {:lein-auth lein-auth}))})
+                     clojure)})
       (when contains-devops?
-         {:ide-settings #{:install-mach
-                          :install-mfa}}))}))
+         {:devops devops
+          :ide-settings #{:install-mach
+                          :install-mfa
+                          :install-awscli}}))}))

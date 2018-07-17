@@ -83,7 +83,9 @@
                          :password "pwd"}
                   :target-type :virtualbox
                   :ide-platform #{:atom}
-                  :clojure {}}
+                  :clojure {:lein-auth [{:repo "maven.my-repo.com"
+                                         :username "mvn-account"
+                                         :password "mvn-password"}]}}
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
                    :usage-type :desktop-base}
@@ -140,7 +142,10 @@
                                               "parinfer"
                                               "lisp-paredit"
                                               "linter-clojure"]}
-                                   :clojure {:os-user-name "test"}
+                             :clojure {:os-user-name "test"
+                                       :lein-auth [{:repo "maven.my-repo.com"
+                                                    :username "mvn-account"
+                                                    :password "mvn-password"}]}
                              :ide-settings #{:install-idea-inodes :install-basics
                                              :install-asciinema}}}})
 
@@ -150,7 +155,8 @@
                   :bookmarks [{:name "Bookmarks Toolbar"
                                :links [["url" "name"]]}]
                   :target-type :virtualbox
-                  :devops {}
+                  :devops {:aws {:simple {:id "ACCESS_KEY"
+                                          :secret "SECRET_KEY"}}}
                   :ide-platform #{:atom}}
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
@@ -177,6 +183,8 @@
                 :os-user :test}
    :serverspec-domain {:file '()}
    :infra {:dda-managed-ide {:ide-user :test,
+                             :devops {:aws {:simple {:id "ACCESS_KEY"
+                                                     :secret "SECRET_KEY"}}}
                              :atom {:settings #{},
                                     :plugins ["ink"
                                               "minimap"
@@ -199,7 +207,8 @@
                                               "language-diff"
                                               "split-diff"]}
                              :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-mfa :install-asciinema :install-mach}}}})
+                                             :install-mfa :install-asciinema
+                                             :install-mach :install-awscli}}}})
 
 (deftest test-git-config
   (testing

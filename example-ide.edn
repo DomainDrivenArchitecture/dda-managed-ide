@@ -2,7 +2,8 @@
  :clojure {:lein-auth [{:repo "maven.my-repo.com"
                         :username {:plain "mvn-account"}
                         :password {:plain "mvn-password"}}]}
- :devops {}
+ :devops {:aws {:simple {:id {:plain "ACCESS_KEY"}
+                         :secret {:plain "SECRET_KEY"}}}}
  :ide-platform #{:atom}
  :user          {:name "test-user"
                  :password {:plain "xxx"}

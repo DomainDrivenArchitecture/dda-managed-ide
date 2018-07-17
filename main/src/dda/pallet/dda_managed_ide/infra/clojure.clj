@@ -20,7 +20,8 @@
     [schema.core :as s]
     [pallet.actions :as actions]
     [selmer.parser :as selmer]
-    [dda.pallet.crate.util :as util]))
+    [dda.pallet.crate.util :as util]
+    [dda.config.commons.user-home :as user-env]))
 
 
 (def RepoAuth
@@ -79,9 +80,10 @@
 
 (s/defn configure-user-leiningen
   "configure lein settings"
-  [facility lein-config :- LeiningenUserProfileConfig]
-  (let [{:keys [os-user-name]} lein-config
-        path (str "/home/" os-user-name "/.lein/")]
+  [facility :- s/Keyword
+   os-user-name :- s/Str
+   lein-config :- LeiningenUserProfileConfig]
+  (let [path (str (user-env/user-home-dir os-user-name) "/.lein/")]
     (actions/as-action
       (logging/info (str facility "-configure user: clojure")))
     (actions/directory
@@ -104,6 +106,9 @@
     (install-leiningen facility)))
 
 (s/defn configure-user
-  [facility config]
-  (when (contains? config :clojure)
-    (configure-user-leiningen facility (-> config :clojure))))
+  [facility :- s/Keyword
+   contains-clojure? :- s/Bool
+   os-user-name :- s/Str
+   clojure-config :- LeiningenUserProfileConfig]
+  (when contains-clojure?
+    (configure-user-leiningen facility os-user-name clojure-config)))
