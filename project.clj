@@ -4,7 +4,7 @@
   :license {:name "Apache License, Version 2.0"
             :url "https://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [[dda/dda-pallet "2.2.1"]
-                 [dda/dda-managed-vm "2.2.0"]]
+                 [dda/dda-managed-vm "2.2.1-SNAPSHOT"]]
   :source-paths ["main/src"]
   :resource-paths ["main/resources"]
   :repositories [["snapshots" :clojars]
@@ -17,10 +17,10 @@
                    :resource-paths ["integration/resources"
                                     "test/resources"]
                    :dependencies
-                   [[org.clojure/test.check "0.10.0-alpha2"]
+                   [[org.clojure/test.check "0.10.0-alpha3"]
                     [dda/pallet "0.9.0" :classifier "tests"]
                     [ch.qos.logback/logback-classic "1.3.0-alpha4"]
-                    [org.slf4j/jcl-over-slf4j "1.8.0-beta1"]]
+                    [org.slf4j/jcl-over-slf4j "1.8.0-beta2"]]
                    :plugins
                    [[lein-sub "0.3.0"]]
                    :leiningen/reply
@@ -36,5 +36,5 @@
                        :main dda.pallet.dda-managed-ide.main
                        :dependencies [[org.clojure/tools.cli "0.3.7"]
                                       [ch.qos.logback/logback-classic "1.3.0-alpha4"]
-                                      [org.slf4j/jcl-over-slf4j "1.8.0-beta1"]]}}
+                                      [org.slf4j/jcl-over-slf4j "1.8.0-beta2"]]}}
   :local-repo-classpath true)
