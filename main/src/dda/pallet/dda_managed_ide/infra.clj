@@ -71,7 +71,7 @@
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
       (clojure/configure-user facility contains-clojure? os-user-name clojure)
-      (devops/configure-user facility contains-devops? os-user-name devops)
+      (devops/configure-user facility contains-devops? os-user-name (:aws devops))
       (when (contains? config :atom)
         (actions/as-action
           (logging/info (str facility "-configure user: atom")))
