@@ -53,7 +53,8 @@
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"],
                         :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
                 :os-user :test}
-   :serverspec-domain {:file '()}
+   :serverspec-domain {:package
+                          '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
    :infra {:dda-managed-ide {:ide-user :test,
                              :atom {:settings #{},
                                     :plugins ["ink"
@@ -110,9 +111,12 @@
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"],
                         :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
                 :os-user :test}
-   :serverspec-domain {:file '({:path "/opt/leiningen/lein"}
-                               {:path "/etc/profile.d/lein.sh"}
-                               {:path "/home/test/.lein/profiles.clj"})}
+   :serverspec-domain {:file
+                       '({:path "/home/test/.lein/profiles.clj"}
+                         {:path "/opt/leiningen/lein"}
+                         {:path "/etc/profile.d/lein.sh"},)
+                       :package
+                       '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
    :infra {:dda-managed-ide {:ide-user :test,
                              :atom {:settings #{},
                                     :plugins ["ink"
