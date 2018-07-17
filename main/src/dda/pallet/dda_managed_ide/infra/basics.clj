@@ -23,7 +23,6 @@
 
 (def Settings
    #{:install-basics
-     :install-mfa
      :install-asciinema})
 
 (defn install-basics
@@ -32,16 +31,6 @@
     (logging/info (str facility "install system: install-basics")))
   (actions/packages
     :aptitude ["curl" "gnutls-bin" "apache2-utils" "meld" "whois" "make"]))
-
-(defn install-mfa
-  [facility]
-  (actions/as-action
-    (logging/info (str facility "configure system: install-mfa")))
-  (actions/packages
-    :aptitude ["clipit" "python-pip"])
-  (actions/exec-checked-script
-    "install mfa"
-    ("pip" "install" "mfa")))
 
 (defn install-asciinema
   [facility]
@@ -63,7 +52,5 @@
   [facility ide-settings]
   (when (contains? ide-settings :install-basics)
      (install-basics facility))
-  (when (contains? ide-settings :install-mfa)
-     (install-mfa facility))
   (when (contains? ide-settings :install-asciinema)
      (install-asciinema facility)))

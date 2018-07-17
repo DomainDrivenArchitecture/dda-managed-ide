@@ -59,7 +59,8 @@
   ide-serverspec-config
   [domain-config :- DdaIdeDomainResolvedConfig]
   (let [{:keys [user ide-platform]} domain-config
-        contains-clojure? (contains? domain-config :clojure)]
+        contains-clojure? (contains? domain-config :clojure)
+        contains-devops? (contains? domain-config :devops)]
     (mu/deep-merge
       {}
       (when contains-clojure?
@@ -88,13 +89,13 @@
   [domain-config :- DdaIdeDomainResolvedConfig]
   (let [{:keys [user vm-type ide-platform lein-auth]} domain-config
         user-name (:name user)
-        contains-clojure? (contains? domain-config :clojure)]
+        contains-clojure? (contains? domain-config :clojure)
+        contains-devops? (contains? domain-config :devops)]
     {infra/facility
      (mu/deep-merge
       {:ide-user (keyword (:name user))
        :ide-settings #{:install-idea-inodes
                        :install-basics
-                       :install-mfa
                        :install-asciinema}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure?)})
@@ -102,5 +103,7 @@
          {:clojure (merge
                      {:os-user-name user-name}
                      (when (contains? domain-config :lein-auth)
-                       {:lein-auth lein-auth}))
-          :ide-settings #{:install-mach}}))}))
+                       {:lein-auth lein-auth}))})
+      (when contains-devops?
+         {:ide-settings #{:install-mach
+                          :install-mfa}}))}))

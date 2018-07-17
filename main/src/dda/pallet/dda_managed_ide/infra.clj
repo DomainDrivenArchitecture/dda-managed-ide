@@ -22,6 +22,7 @@
     [dda.pallet.core.infra :as core-infra]
     [dda.pallet.dda-managed-ide.infra.basics :as basics]
     [dda.pallet.dda-managed-ide.infra.clojure :as clojure]
+    [dda.pallet.dda-managed-ide.infra.devops :as devops]
     [dda.pallet.dda-managed-ide.infra.atom :as atom]
     [dda.pallet.dda-managed-ide.infra.idea :as idea]))
 
@@ -32,6 +33,7 @@
 (def DdaIdeConfig
   {:ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
+   (s/optional-key :devops) {}
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
                            (s/optional-key :plugins) [s/Str]}
    :ide-settings
@@ -39,21 +41,24 @@
                     (clojure.set/union
                       basics/Settings
                       idea/Settings
-                      clojure/Settings)))})
+                      clojure/Settings
+                      devops/Settings)))})
 
 (s/defn install-system
   [config :- DdaIdeConfig]
-  (pallet.action/with-action-options
-    {:sudo-user "root"
-     :script-dir "/root/"
-     :script-env {:HOME (str "/root")}}
-    (basics/install-system facility (:ide-settings config))
-    (idea/install-system facility (:ide-settings config))
-    (clojure/install-system facility config)
-    (when (contains? config :atom)
-      (actions/as-action
-          (logging/info (str facility "-install system: atom")))
-      (atom/install config))))
+  (let [{:keys [ide-settings]} config]
+    (pallet.action/with-action-options
+      {:sudo-user "root"
+       :script-dir "/root/"
+       :script-env {:HOME (str "/root")}}
+      (basics/install-system facility ide-settings)
+      (idea/install-system facility ide-settings)
+      (clojure/install-system facility config)
+      (devops/install-system facility ide-settings)
+      (when (contains? config :atom)
+        (actions/as-action
+            (logging/info (str facility "-install system: atom")))
+        (atom/install config)))))
 
 (s/defn configure-user
   [config :- DdaIdeConfig]

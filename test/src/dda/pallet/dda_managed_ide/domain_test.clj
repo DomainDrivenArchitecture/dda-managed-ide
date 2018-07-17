@@ -37,20 +37,18 @@
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-tinc-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-provider-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-init-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-mysql-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-git-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-linkeddata-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"],
+                                     "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git",]
                         :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
                 :os-user :test}
    :serverspec-domain {:package
@@ -78,7 +76,7 @@
                                               "language-diff"
                                               "split-diff"]}
                              :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-mfa :install-asciinema}}}})
+                                             :install-asciinema}}}})
 
 (def config-set-2
   {:domain-input {:user {:name  "test"
@@ -95,20 +93,18 @@
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-tinc-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-provider-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-init-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-mysql-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-git-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-linkeddata-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"],
+                                     "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git",]
                         :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
                 :os-user :test}
    :serverspec-domain {:file
@@ -146,7 +142,7 @@
                                               "linter-clojure"]}
                                    :clojure {:os-user-name "test"}
                              :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-mfa :install-asciinema :install-mach}}}})
+                                             :install-asciinema}}}})
 
 (def config-set-3
   {:domain-input {:user {:name  "test"
@@ -154,6 +150,7 @@
                   :bookmarks [{:name "Bookmarks Toolbar"
                                :links [["url" "name"]]}]
                   :target-type :virtualbox
+                  :devops {}
                   :ide-platform #{:atom}}
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
@@ -164,20 +161,18 @@
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-tinc-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-provider-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-init-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-mysql-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-git-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-linkeddata-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-pallet-masterbuild.git"],
+                                     "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
+                                     "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git",]
                         :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
                 :os-user :test}
    :serverspec-domain {:file '()}
@@ -204,7 +199,7 @@
                                               "language-diff"
                                               "split-diff"]}
                              :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-mfa :install-asciinema}}}})
+                                             :install-mfa :install-asciinema :install-mach}}}})
 
 (deftest test-git-config
   (testing

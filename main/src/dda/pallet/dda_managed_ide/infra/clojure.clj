@@ -34,7 +34,7 @@
    (s/optional-key :lein-auth) [RepoAuth]})
 
 (def Settings
-   #{:install-mach})
+   #{})
 
 (defn install-leiningen
   [facility]
