@@ -33,7 +33,8 @@
 (def DdaIdeConfig
   {:ide-user s/Keyword
    (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
-   (s/optional-key :devops) {(s/optional-key :aws) devops/AwsCredentials}
+   (s/optional-key :devops) {:terraform devops/Terraform
+                             (s/optional-key :aws) devops/AwsCredentials}
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
                            (s/optional-key :plugins) [s/Str]}
    :ide-settings
@@ -46,7 +47,7 @@
 
 (s/defn install-system
   [config :- DdaIdeConfig]
-  (let [{:keys [ide-settings]} config]
+  (let [{:keys [ide-settings devops]} config]
     (pallet.action/with-action-options
       {:sudo-user "root"
        :script-dir "/root/"
@@ -54,7 +55,7 @@
       (basics/install-system facility ide-settings)
       (idea/install-system facility ide-settings)
       (clojure/install-system facility config)
-      (devops/install-system facility ide-settings)
+      (devops/install-system facility ide-settings (:terraform devops))
       (when (contains? config :atom)
         (actions/as-action
             (logging/info (str facility "-install system: atom")))

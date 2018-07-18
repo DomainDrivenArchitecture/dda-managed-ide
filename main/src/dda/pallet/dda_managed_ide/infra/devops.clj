@@ -26,11 +26,16 @@
    {(s/optional-key :simple) {:id s/Str
                               :secret s/Str}})
 
+(def Terraform
+   {:version s/Str
+    (s/optional-key :sha256-hash) s/Str})
+
 (def Settings
    #{
      :install-mfa
      :install-mach
-     :install-awscli})
+     :install-awscli
+     :install-terraform})
 
 (defn install-mach
   [facility]
@@ -93,14 +98,44 @@
         :content
         (aws-credentials-configuration aws-credentials)))))
 
+(s/defn install-terraform
+  [facility
+   terraform-config :- Terraform]
+  (let [{:keys [version sha256-hash]} terraform-config
+        terraform-file-name (str "terraform_" version "_linux_amd64.zip")
+        terraform-sum-name (str terraform-file-name "SHA256SUM")]
+    (actions/as-action
+      (logging/info (str facility " install system: install-terraform")))
+    (when (contains? terraform-config :sha256-hash)
+      (actions/remote-file
+        (str "/tmp/" terraform-sum-name)
+        :owner "root"
+        :group "root"
+        :mode "600"
+        :literal true
+        :content (str sha256-hash " " terraform-file-name)))
+    (actions/exec-checked-script
+      "install terraform"
+      ("curl" "-L" "-o" ~(str "/tmp/" terraform-file-name)
+        ~(str "https://releases.hashicorp.com/terraform/" version "/" terraform-file-name))
+      ("cd" "/tmp")
+      (if (file-exists? ~terraform-sum-name)
+        ("sha256sum" "-c" ~terraform-sum-name))
+      ("unzip" ~terraform-file-name)
+      ("mv" "terraform" "/usr/local/bin/"))))
+
 (s/defn install-system
-  [facility settings]
+  [facility :- s/Keyword
+   settings
+   terraform-config :- Terraform]
   (when (contains? settings :install-mach)
     (install-mach facility))
   (when (contains? settings :install-mfa)
      (install-mfa facility))
   (when (contains? settings :install-awscli)
-     (install-awscli facility)))
+     (install-awscli facility))
+  (when (contains? settings :install-terraform)
+     (install-terraform facility terraform-config)))
 
 (s/defn configure-user
   [facility :- s/Keyword

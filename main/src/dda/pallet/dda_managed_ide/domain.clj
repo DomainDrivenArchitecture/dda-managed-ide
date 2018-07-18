@@ -107,7 +107,10 @@
                      {:os-user-name user-name}
                      clojure)})
       (when contains-devops?
-         {:devops devops
-          :ide-settings #{:install-mach
-                          :install-mfa
-                          :install-awscli}}))}))
+         (mu/deep-merge
+           {:devops {:terraform {:version "0.11.7"
+                                 :sha256-hash "6b8ce67647a59b2a3f70199c304abca0ddec0e49fd060944c26f666298e23418"}}}
+           {:devops devops
+            :ide-settings #{:install-mach
+                            :install-mfa
+                            :install-awscli}})))}))
