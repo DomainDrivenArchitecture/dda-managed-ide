@@ -95,6 +95,7 @@
 
 (s/defmethod core-infra/dda-configure facility
   [dda-crate config]
+  (configure-system config)
   (configure-user config))
 
 (s/defmethod core-infra/dda-settings facility

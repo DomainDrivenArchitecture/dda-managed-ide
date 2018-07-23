@@ -21,6 +21,8 @@
     [schema.core :as s]
     [dda.pallet.dda-managed-ide.infra :as sut]))
 
+(s/set-fn-validation! true)
+
 (def basic-config
   {:ide-user :some-user
    :ide-settings #{}})

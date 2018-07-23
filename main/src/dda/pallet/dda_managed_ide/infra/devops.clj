@@ -30,12 +30,17 @@
    {:version s/Str
     (s/optional-key :sha256-hash) s/Str})
 
+(def Packer
+   {:version s/Str
+    (s/optional-key :sha256-hash) s/Str})
+
 (def Docker
    {:bip s/Str})
 
 (def Devops {(s/optional-key :terraform) Terraform
              (s/optional-key :aws) Aws
-             (s/optional-key :docker) Docker})
+             (s/optional-key :docker) Docker
+             (s/optional-key :packer) Packer})
 
 (def Settings
    #{
@@ -66,6 +71,32 @@
     "install mfa"
     ("pip" "install" "mfa")))
 
+(s/defn install-packer
+  [facility :- s/Keyword
+   config :- Packer]
+  (let [{:keys [version sha256-hash]} config
+        file-name (str "packer_" version "_linux_amd64.zip")
+        sum-name (str file-name "SHA256SUM")]
+    (actions/as-action
+      (logging/info (str facility " install system: install-packer")))
+    (when (contains? config :sha256-hash)
+      (actions/remote-file
+        (str "/tmp/" sum-name)
+        :owner "root"
+        :group "root"
+        :mode "600"
+        :literal true
+        :content (str sha256-hash " " file-name)))
+    (actions/exec-checked-script
+      "install packer"
+      ("curl" "-L" "-o" ~(str "/tmp/" file-name)
+        ~(str "https://releases.hashicorp.com/packer/" version "/" file-name))
+      ("cd" "/tmp")
+      (if (file-exists? ~sum-name)
+        ("sha256sum" "-c" ~sum-name))
+      ("unzip" ~file-name)
+      ("mv" "packer" "/usr/local/bin/"))))
+
 (defn install-docker
   [facility]
   (actions/as-action
@@ -77,7 +108,7 @@
   [facility :- s/Keyword
    docker :- Docker]
   (actions/as-action
-    (logging/info (str facility " configure-system-docker")))
+    (logging/info (str facility "  install system: configure-system-docker")))
   (actions/directory
     "/etc/docker"
     :owner "root"
@@ -157,7 +188,7 @@
    settings
    contains-devops? :- s/Bool
    devops :- Devops]
-  (let [{:keys [terraform]} devops]
+  (let [{:keys [terraform packer]} devops]
     (when (contains? settings :install-mach)
       (install-mach facility))
     (when (contains? settings :install-mfa)
@@ -168,7 +199,9 @@
       (when (contains? devops :docker)
          (install-docker facility))
       (when (contains? devops :terraform)
-         (install-terraform facility terraform)))))
+         (install-terraform facility terraform))
+      (when (contains? devops :packer)
+         (install-packer facility packer)))))
 
 (s/defn configure-system
   [facility :- s/Keyword
@@ -185,6 +218,7 @@
    contains-devops? :- s/Bool
    devops :- Devops]
   (let [{:keys [aws docker]} devops]
+    (logging/info contains-devops? docker)
     (when contains-devops?
       (when (contains? devops :aws)
         (configure-user-aws facility os-user-name aws)))))

@@ -109,6 +109,8 @@
          (mu/deep-merge
            {:devops {:terraform {:version "0.11.7"
                                  :sha256-hash "6b8ce67647a59b2a3f70199c304abca0ddec0e49fd060944c26f666298e23418"}
+                     :packer {:version "1.2.5"
+                              :sha256-hash "bc58aa3f3db380b76776e35f69662b49f3cf15cf80420fc81a15ce971430824c"}
                      :docker {:bip "192.168.1.1/24"}
                      :aws {}}
               :ide-settings #{}}
