@@ -213,7 +213,9 @@
                                               "tree-view-git-status"
                                               "git-time-machine"
                                               "language-diff"
-                                              "split-diff"]}
+                                              "split-diff"
+                                              "language-terraform"
+                                              "terraform-fmt"]}
                              :ide-settings #{:install-idea-inodes :install-basics
                                              :install-mfa :install-asciinema
                                              :install-mach}}}})

@@ -34,9 +34,12 @@
 (def git-plugins
   ["tree-view-git-status" "git-time-machine" "language-diff" "split-diff"])
 
+(def terraform-plugins
+  ["language-terraform" "terraform-fmt"])
+
 (s/defn atom-config
   "create a atom configuration"
-  [vm-type contains-clojure?]
+  [vm-type contains-clojure? contains-devops?]
   {:settings (if (= vm-type :remote)
                #{:install-aws-workaround}
                #{})
@@ -44,4 +47,5 @@
               []
               (concat base-plugins clean-typing-plugins
                       pair-programming-plugins git-plugins
-                      (when contains-clojure? clojure-plugins)))})
+                      (when contains-clojure? clojure-plugins)
+                      (when contains-devops? terraform-plugins)))})

@@ -102,7 +102,7 @@
                        :install-basics
                        :install-asciinema}}
       (when (contains? ide-platform :atom)
-        {:atom (atom/atom-config vm-type contains-clojure?)})
+        {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
       (when contains-clojure?
          {:clojure clojure})
       (when contains-devops?
