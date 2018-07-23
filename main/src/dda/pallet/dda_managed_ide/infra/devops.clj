@@ -218,7 +218,6 @@
    contains-devops? :- s/Bool
    devops :- Devops]
   (let [{:keys [aws docker]} devops]
-    (logging/info contains-devops? docker)
     (when contains-devops?
       (when (contains? devops :aws)
         (configure-user-aws facility os-user-name aws)))))
