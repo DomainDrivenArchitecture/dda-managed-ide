@@ -29,9 +29,8 @@
    :username s/Str
    :password s/Str})
 
-(def LeiningenUserProfileConfig
-  {:os-user-name s/Str
-   (s/optional-key :signing-gpg-key) s/Str
+(def Clojure
+  {(s/optional-key :signing-gpg-key) s/Str
    (s/optional-key :lein-auth) [RepoAuth]})
 
 (def Settings
@@ -75,14 +74,14 @@
     ("chmod" "755" "boot")))
 
 (s/defn lein-user-profile
-  [lein-config :- LeiningenUserProfileConfig]
+  [lein-config :- Clojure]
   (selmer/render-file "lein_profiles.template" lein-config))
 
 (s/defn configure-user-leiningen
   "configure lein settings"
   [facility :- s/Keyword
    os-user-name :- s/Str
-   lein-config :- LeiningenUserProfileConfig]
+   lein-config :- Clojure]
   (let [path (str (user-env/user-home-dir os-user-name) "/.lein/")]
     (actions/as-action
       (logging/info (str facility "-configure user: clojure")))
@@ -101,14 +100,16 @@
 
 
 (s/defn install-system
-  [facility config]
-  (when (contains? config :clojure)
+  [facility :- s/Keyword
+   contains-clojure? :- s/Bool
+   clojure :- Clojure]
+  (when contains-clojure?
     (install-leiningen facility)))
 
 (s/defn configure-user
   [facility :- s/Keyword
-   contains-clojure? :- s/Bool
    os-user-name :- s/Str
-   clojure-config :- LeiningenUserProfileConfig]
+   contains-clojure? :- s/Bool
+   clojure :- Clojure]
   (when contains-clojure?
-    (configure-user-leiningen facility os-user-name clojure-config)))
+    (configure-user-leiningen facility os-user-name clojure)))

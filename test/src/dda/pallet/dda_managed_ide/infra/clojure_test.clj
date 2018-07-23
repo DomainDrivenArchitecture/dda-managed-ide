@@ -27,21 +27,18 @@
   (testing
     (is (re-find
          #"signing"
-         (sut/lein-user-profile {:os-user-name "test"
-                                 :signing-gpg-key "gpg"})))
+         (sut/lein-user-profile {:signing-gpg-key "gpg"})))
     (is (not (re-find
                #"signing"
-               (sut/lein-user-profile {:os-user-name "test"}))))
+               (sut/lein-user-profile {}))))
     (is (re-find
          #"clojars"
-         (sut/lein-user-profile {:os-user-name "test"
-                                 :lein-auth [{:repo "clojars"
+         (sut/lein-user-profile {:lein-auth [{:repo "clojars"
                                               :username "u"
                                               :password "p"}]})))
     (is (re-find
          #"otherrepo"
-         (sut/lein-user-profile {:os-user-name "test"
-                                 :lein-auth [{:repo "clojars"
+         (sut/lein-user-profile {:lein-auth [{:repo "clojars"
                                               :username "u"
                                               :password "p"}
                                              {:repo "otherrepo"
@@ -49,5 +46,4 @@
                                               :password "p"}]})))
     (is (not (re-find
                #"username"
-               (sut/lein-user-profile {:os-user-name "test"
-                                       :lein-auth []}))))))
+               (sut/lein-user-profile {:lein-auth []}))))))
