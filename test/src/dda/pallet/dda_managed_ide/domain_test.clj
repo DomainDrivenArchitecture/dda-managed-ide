@@ -142,8 +142,7 @@
                                               "parinfer"
                                               "lisp-paredit"
                                               "linter-clojure"]}
-                             :clojure {:os-user-name "test"
-                                       :lein-auth [{:repo "maven.my-repo.com"
+                             :clojure {:lein-auth [{:repo "maven.my-repo.com"
                                                     :username "mvn-account"
                                                     :password "mvn-password"}]}
                              :ide-settings #{:install-idea-inodes :install-basics
@@ -187,6 +186,7 @@
                                         {:version "0.11.7",
                                          :sha256-hash
                                          "6b8ce67647a59b2a3f70199c304abca0ddec0e49fd060944c26f666298e23418"}
+                                      :docker {:bip "192.168.1.1/24"}
                                       :aws {:simple {:id "ACCESS_KEY"
                                                      :secret "SECRET_KEY"}}}
                              :atom {:settings #{},
@@ -212,7 +212,7 @@
                                               "split-diff"]}
                              :ide-settings #{:install-idea-inodes :install-basics
                                              :install-mfa :install-asciinema
-                                             :install-mach :install-awscli}}}})
+                                             :install-mach}}}})
 
 (deftest test-git-config
   (testing

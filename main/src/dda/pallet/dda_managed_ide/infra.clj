@@ -32,9 +32,8 @@
 
 (def DdaIdeConfig
   {:ide-user s/Keyword
-   (s/optional-key :clojure) clojure/LeiningenUserProfileConfig
-   (s/optional-key :devops) {:terraform devops/Terraform
-                             (s/optional-key :aws) devops/AwsCredentials}
+   (s/optional-key :clojure) clojure/Clojure
+   (s/optional-key :devops) devops/Devops
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
                            (s/optional-key :plugins) [s/Str]}
    :ide-settings
@@ -47,19 +46,30 @@
 
 (s/defn install-system
   [config :- DdaIdeConfig]
-  (let [{:keys [ide-settings devops]} config]
+  (let [{:keys [ide-settings clojure devops]} config
+          contains-clojure? (contains? config :clojure)
+          contains-devops? (contains? config :devops)]
     (pallet.action/with-action-options
       {:sudo-user "root"
        :script-dir "/root/"
        :script-env {:HOME (str "/root")}}
       (basics/install-system facility ide-settings)
       (idea/install-system facility ide-settings)
-      (clojure/install-system facility config)
-      (devops/install-system facility ide-settings (:terraform devops))
+      (clojure/install-system facility contains-clojure? clojure)
+      (devops/install-system facility ide-settings contains-devops? devops)
       (when (contains? config :atom)
         (actions/as-action
             (logging/info (str facility "-install system: atom")))
         (atom/install config)))))
+
+(s/defn configure-system
+  [config :- DdaIdeConfig]
+  (let [{:keys [clojure devops]} config
+        contains-clojure? (contains? config :clojure)
+        contains-devops? (contains? config :devops)]
+    (pallet.action/with-action-options
+      {:sudo-user "root"}
+      (devops/configure-system facility contains-devops? devops))))
 
 (s/defn configure-user
   [config :- DdaIdeConfig]
@@ -71,8 +81,8 @@
       {:sudo-user os-user-name
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
-      (clojure/configure-user facility contains-clojure? os-user-name clojure)
-      (devops/configure-user facility contains-devops? os-user-name (:aws devops))
+      (clojure/configure-user facility os-user-name contains-clojure? clojure)
+      (devops/configure-user facility os-user-name contains-devops? devops)
       (when (contains? config :atom)
         (actions/as-action
           (logging/info (str facility "-configure user: atom")))

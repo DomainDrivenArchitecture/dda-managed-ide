@@ -22,7 +22,7 @@
     [pallet.actions :as actions]
     [dda.config.commons.user-home :as user-env]))
 
-(def AwsCredentials
+(def Aws
    {(s/optional-key :simple) {:id s/Str
                               :secret s/Str}})
 
@@ -30,12 +30,17 @@
    {:version s/Str
     (s/optional-key :sha256-hash) s/Str})
 
+(def Docker
+   {:bip s/Str})
+
+(def Devops {(s/optional-key :terraform) Terraform
+             (s/optional-key :aws) Aws
+             (s/optional-key :docker) Docker})
+
 (def Settings
    #{
      :install-mfa
-     :install-mach
-     :install-awscli
-     :install-terraform})
+     :install-mach})
 
 (defn install-mach
   [facility]
@@ -61,6 +66,32 @@
     "install mfa"
     ("pip" "install" "mfa")))
 
+(defn install-docker
+  [facility]
+  (actions/as-action
+    (logging/info (str facility " install system: install-docker")))
+  (actions/packages
+    :aptitude ["docker.io"]))
+
+(s/defn configure-system-docker
+  [facility :- s/Keyword
+   docker :- Docker]
+  (actions/as-action
+    (logging/info (str facility " configure-system-docker")))
+  (actions/directory
+    "/etc/docker"
+    :owner "root"
+    :group "root"
+    :mode "755")
+  (actions/remote-file
+    "/etc/docker/daemon.json"
+    :owner "root"
+    :group "root"
+    :mode "644"
+    :literal true
+    :content
+    (selmer/render-file "docker_deamon.json.template" docker)))
+
 (defn install-awscli
   [facility]
   (actions/as-action
@@ -69,26 +100,23 @@
     :aptitude ["awscli"]))
 
 (s/defn aws-credentials-configuration
-  [aws-credentials :- AwsCredentials]
-  (when (contains? aws-credentials :simple)
-    (selmer/render-file "aws_simple_credentials.template" aws-credentials)))
+  [aws :- Aws]
+  (when (contains? aws :simple)
+    (selmer/render-file "aws_simple_credentials.template" aws)))
 
-(s/defn configure-aws
+(s/defn configure-user-aws
   [facility :- s/Keyword
    os-user-name :- s/Str
-   aws-credentials :- AwsCredentials]
+   aws :- Aws]
   (let [path (str (user-env/user-home-dir os-user-name) "/.aws/")]
     (actions/as-action
-      (logging/info (str facility " configure system: configure-aws")))
-    (logging/info os-user-name)
-    (logging/info aws-credentials)
-    (logging/info (aws-credentials-configuration aws-credentials))
+      (logging/info (str facility " configure user: configure-aws")))
     (actions/directory
       path
       :owner os-user-name
       :group os-user-name
       :mode "755")
-    (when (contains? aws-credentials :simple)
+    (when (contains? aws :simple)
       (actions/remote-file
         (str path "credentials")
         :owner os-user-name
@@ -96,7 +124,7 @@
         :mode "600"
         :literal true
         :content
-        (aws-credentials-configuration aws-credentials)))))
+        (aws-credentials-configuration aws)))))
 
 (s/defn install-terraform
   [facility
@@ -127,20 +155,36 @@
 (s/defn install-system
   [facility :- s/Keyword
    settings
-   terraform-config :- Terraform]
-  (when (contains? settings :install-mach)
-    (install-mach facility))
-  (when (contains? settings :install-mfa)
-     (install-mfa facility))
-  (when (contains? settings :install-awscli)
-     (install-awscli facility))
-  (when (contains? settings :install-terraform)
-     (install-terraform facility terraform-config)))
+   contains-devops? :- s/Bool
+   devops :- Devops]
+  (let [{:keys [terraform]} devops]
+    (when (contains? settings :install-mach)
+      (install-mach facility))
+    (when (contains? settings :install-mfa)
+       (install-mfa facility))
+    (when contains-devops?
+      (when (contains? devops :aws)
+         (install-awscli facility))
+      (when (contains? devops :docker)
+         (install-docker facility))
+      (when (contains? devops :terraform)
+         (install-terraform facility terraform)))))
+
+(s/defn configure-system
+  [facility :- s/Keyword
+   contains-devops? :- s/Bool
+   devops :- Devops]
+  (let [{:keys [docker]} devops]
+    (when contains-devops?
+      (when (contains? devops :docker)
+        (configure-system-docker facility docker)))))
 
 (s/defn configure-user
   [facility :- s/Keyword
-   contains-devops? :- s/Bool
    os-user-name :- s/Str
-   aws-credentials :- AwsCredentials]
-  (when contains-devops?
-    (configure-aws facility os-user-name aws-credentials)))
+   contains-devops? :- s/Bool
+   devops :- Devops]
+  (let [{:keys [aws docker]} devops]
+    (when contains-devops?
+      (when (contains? devops :aws)
+        (configure-user-aws facility os-user-name aws)))))

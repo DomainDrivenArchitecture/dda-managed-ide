@@ -43,7 +43,8 @@
      (s/optional-key :devops)
      {(s/optional-key :aws)
       {(s/optional-key :simple) {:id secret/Secret
-                                 :secret secret/Secret}}}}))
+                                 :secret secret/Secret}}
+      (s/optional-key :docker) {:bip s/Str}}}))
 
 (def RepoAuthResolved
   (secret/create-resolved-schema RepoAuth))
@@ -103,14 +104,14 @@
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure?)})
       (when contains-clojure?
-         {:clojure (merge
-                     {:os-user-name user-name}
-                     clojure)})
+         {:clojure clojure})
       (when contains-devops?
          (mu/deep-merge
            {:devops {:terraform {:version "0.11.7"
-                                 :sha256-hash "6b8ce67647a59b2a3f70199c304abca0ddec0e49fd060944c26f666298e23418"}}}
+                                 :sha256-hash "6b8ce67647a59b2a3f70199c304abca0ddec0e49fd060944c26f666298e23418"}
+                     :docker {:bip "192.168.1.1/24"}
+                     :aws {}}
+              :ide-settings #{}}
            {:devops devops
             :ide-settings #{:install-mach
-                            :install-mfa
-                            :install-awscli}})))}))
+                            :install-mfa}})))}))
