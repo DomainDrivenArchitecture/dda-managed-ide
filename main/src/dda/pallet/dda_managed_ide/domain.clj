@@ -36,10 +36,13 @@
   (merge
     vm-domain/DdaVmUser
     vm-domain/DdaVmBookmarks
+    vm-domain/DdaVmTargetType
     {:target-type (s/enum :virtualbox :remote-aws :plain)}
-    {:ide-platform (hash-set (s/enum :atom :idea))
+    {:ide-platform (hash-set (s/enum :atom :idea :sql-client :uml))
      (s/optional-key :git) git-domain/GitDomainConfig
      (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
+     (s/optional-key :java) {}
+     (s/optional-key :java-script) {}
      (s/optional-key :devops)
      {(s/optional-key :aws)
       {(s/optional-key :simple) {:id secret/Secret
@@ -94,6 +97,8 @@
   (let [{:keys [user vm-type ide-platform clojure devops]} domain-config
         user-name (:name user)
         contains-clojure? (contains? domain-config :clojure)
+        contains-java? (contains? domain-config :java)
+        contains-java-script? (contains? domain-config :java-script)
         contains-devops? (contains? domain-config :devops)]
     {infra/facility
      (mu/deep-merge
@@ -103,8 +108,15 @@
                        :install-asciinema}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
+      (when (contains? ide-platform :uml)
+        {:basics {:argo-uml {:version "0.34"}
+                  :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip"}}})
+      (when (contains? ide-platform :sql)
+        {:basics {:dbvis {:version "10.0.13"}}})
       (when contains-clojure?
          {:clojure clojure})
+      (when contains-java?
+         {:java {:gradle {:version "4.9"}}})
       (when contains-devops?
          (mu/deep-merge
            {:devops {:terraform {:version "0.11.7"

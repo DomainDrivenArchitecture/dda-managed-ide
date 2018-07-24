@@ -21,19 +21,33 @@
     [pallet.actions :as actions]
     [dda.config.commons.user-home :as user-env]))
 
+(def ArgoUml
+   {:version s/Str})
+
+(def YEd
+   {:download-url s/Str})
+
+(def Dbvis
+   {:version s/Str})
+
+(def Basics
+  {(s/optional-key :argo-uml) ArgoUml
+   (s/optional-key :y-ed) YEd
+   (s/optional-key :dbvis) Dbvis})
+
 (def Settings
    #{:install-basics
      :install-asciinema})
 
 (defn install-basics
-  [facility]
+  [facility :- s/Keyword]
   (actions/as-action
     (logging/info (str facility "install system: install-basics")))
   (actions/packages
     :aptitude ["curl" "gnutls-bin" "apache2-utils" "meld" "whois" "make"]))
 
 (defn install-asciinema
-  [facility]
+  [facility :- s/Keyword]
   (actions/as-action
     (logging/info (str facility "configure system: install-asciinema")))
   (actions/package-source "asciinema"
@@ -48,9 +62,91 @@
     "install asciicast2gif"
     ("npm" "install" "--global" "asciicast2gif")))
 
+(s/defn
+  install-argouml
+  "get and install argouml at /opt/argouml"
+  [facility :- s/Keyword
+   config :- ArgoUml]
+  (let [{:keys [version]} config]
+    (actions/as-action
+      (logging/info (str facility "configure system: install-argouml")))
+    (actions/remote-directory
+      "/opt/argouml"
+      :owner "root"
+      :group "users"
+      :recursive true
+      :unpack :tar
+      :url (str "http://argouml-downloads.tigris.org/nonav/argouml-" version
+                "/ArgoUML-" version ".tar.gz"))
+    (actions/remote-file
+      "/etc/profile.d/argouml.sh"
+      :literal true
+      :content
+      (util/create-file-content
+        ["PATH=$PATH:/opt/argouml"
+         "export PATH"]))))
+
+(s/defn
+  install-yed
+  "get and install yed at /opt/yed"
+  [facility :- s/Keyword
+   config :- YEd]
+  (let [{:keys [download-url]} config]
+    (actions/as-action
+      (logging/info (str facility "configure system: install-yed")))
+    (actions/remote-directory
+      "/opt/yed"
+      :owner "root"
+      :group "users"
+      :recursive true
+      :unpack :unzip
+      :url download-url)
+    (actions/remote-file
+      "/opt/yed/yed.sh"
+      :literal true
+      :content
+      (util/create-file-content
+        ["#!/bin/bash"
+         "java -jar yed.jar"]))))
+
+(s/defn
+  install-dbvis
+  "get and install dbvis at /opt/dbvis"
+  [facility :- s/Keyword
+   config :- Dbvis]
+  (let [{:keys [version]} config]
+    (actions/as-action
+      (logging/info (str facility "configure system: install-yed")))
+    (actions/remote-directory
+      "/opt/dbvis"
+      :owner "root"
+      :group "users"
+      :recursive true
+      :unpack :tar
+      :url (str "http://www.dbvis.com/product_download/dbvis-" version
+                "/media/dbvis_unix_" (string/replace version #"." "_") ".tar.gz"))
+    (actions/remote-file
+      "/etc/profile.d/dbvis.sh"
+      :literal true
+      :content
+      (util/create-file-content
+        ["PATH=$PATH:/opt/dbvis"
+         "export PATH"]))))
+
 (s/defn install-system
-  [facility ide-settings]
+  [facility :- s/Keyword
+   ide-settings
+   contains-basics? :- s/Bool
+   basics :- Basics]
+  (let [{:keys [argo-uml y-ed dbvis]} basics])
   (when (contains? ide-settings :install-basics)
      (install-basics facility))
   (when (contains? ide-settings :install-asciinema)
-     (install-asciinema facility)))
+     (install-asciinema facility))
+  (when contains-basics?
+    (when (contains? basics :argo-uml)
+      (install-argouml facility argo-uml))
+    (when (contains? basics :y-ed)
+      (install-argouml facility y-ed))
+    (when (contains? basics :dbvis)
+      (install-dbvis facility dbvis))))

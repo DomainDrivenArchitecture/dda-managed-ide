@@ -22,6 +22,7 @@
     [dda.pallet.core.infra :as core-infra]
     [dda.pallet.dda-managed-ide.infra.basics :as basics]
     [dda.pallet.dda-managed-ide.infra.clojure :as clojure]
+    [dda.pallet.dda-managed-ide.infra.java :as java]
     [dda.pallet.dda-managed-ide.infra.devops :as devops]
     [dda.pallet.dda-managed-ide.infra.atom :as atom]
     [dda.pallet.dda-managed-ide.infra.idea :as idea]))
@@ -32,6 +33,7 @@
 
 (def DdaIdeConfig
   {:ide-user s/Keyword
+   (s/optional-key :basics) basics/Basics
    (s/optional-key :clojure) clojure/Clojure
    (s/optional-key :devops) devops/Devops
    (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
@@ -46,17 +48,20 @@
 
 (s/defn install-system
   [config :- DdaIdeConfig]
-  (let [{:keys [ide-settings clojure devops]} config
+  (let [{:keys [ide-settings basics clojure devops java]} config
           contains-clojure? (contains? config :clojure)
-          contains-devops? (contains? config :devops)]
+          contains-devops? (contains? config :devops)
+          contains-java? (contains? config :java)
+          contains-basics? (contains? config :basics)]
     (pallet.action/with-action-options
       {:sudo-user "root"
        :script-dir "/root/"
        :script-env {:HOME (str "/root")}}
-      (basics/install-system facility ide-settings)
+      (basics/install-system facility ide-settings contains-basics? basics)
       (idea/install-system facility ide-settings)
       (clojure/install-system facility contains-clojure? clojure)
       (devops/install-system facility ide-settings contains-devops? devops)
+      (java/install-system facility contains-java? java)
       (when (contains? config :atom)
         (actions/as-action
             (logging/info (str facility "-install system: atom")))
