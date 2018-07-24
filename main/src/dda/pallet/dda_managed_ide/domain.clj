@@ -38,7 +38,7 @@
     vm-domain/DdaVmBookmarks
     vm-domain/DdaVmTargetType
     {:target-type (s/enum :virtualbox :remote-aws :plain)}
-    {:ide-platform (hash-set (s/enum :atom :idea :sql-client :uml))
+    {:ide-platform (hash-set (s/enum :atom :idea))
      (s/optional-key :git) git-domain/GitDomainConfig
      (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
      (s/optional-key :java) {}
@@ -105,14 +105,12 @@
       {:ide-user (keyword (:name user))
        :ide-settings #{:install-idea-inodes
                        :install-basics
-                       :install-asciinema}}
+                       :install-asciinema}
+       :basics {:argo-uml {:version "0.34"}
+                :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip"}
+                :dbvis {:version "10.0.13"}}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
-      (when (contains? ide-platform :uml)
-        {:basics {:argo-uml {:version "0.34"}
-                  :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip"}}})
-      (when (contains? ide-platform :sql)
-        {:basics {:dbvis {:version "10.0.13"}}})
       (when contains-clojure?
          {:clojure clojure})
       (when contains-java?

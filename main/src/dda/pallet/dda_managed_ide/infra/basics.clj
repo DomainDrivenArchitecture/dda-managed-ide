@@ -16,15 +16,17 @@
 
 (ns dda.pallet.dda-managed-ide.infra.basics
   (:require
+    [clojure.string :as string]
     [clojure.tools.logging :as logging]
     [schema.core :as s]
     [pallet.actions :as actions]
+    [dda.pallet.crate.util :as util]
     [dda.config.commons.user-home :as user-env]))
 
 (def ArgoUml
    {:version s/Str})
 
-(def YEd
+(def Yed
    {:download-url s/Str})
 
 (def Dbvis
@@ -32,21 +34,21 @@
 
 (def Basics
   {(s/optional-key :argo-uml) ArgoUml
-   (s/optional-key :y-ed) YEd
+   (s/optional-key :yed) Yed
    (s/optional-key :dbvis) Dbvis})
 
 (def Settings
    #{:install-basics
      :install-asciinema})
 
-(defn install-basics
+(s/defn install-basics
   [facility :- s/Keyword]
   (actions/as-action
     (logging/info (str facility "install system: install-basics")))
   (actions/packages
     :aptitude ["curl" "gnutls-bin" "apache2-utils" "meld" "whois" "make"]))
 
-(defn install-asciinema
+(s/defn install-asciinema
   [facility :- s/Keyword]
   (actions/as-action
     (logging/info (str facility "configure system: install-asciinema")))
@@ -90,7 +92,7 @@
   install-yed
   "get and install yed at /opt/yed"
   [facility :- s/Keyword
-   config :- YEd]
+   config :- Yed]
   (let [{:keys [download-url]} config]
     (actions/as-action
       (logging/info (str facility "configure system: install-yed")))
@@ -138,15 +140,15 @@
    ide-settings
    contains-basics? :- s/Bool
    basics :- Basics]
-  (let [{:keys [argo-uml y-ed dbvis]} basics])
-  (when (contains? ide-settings :install-basics)
-     (install-basics facility))
-  (when (contains? ide-settings :install-asciinema)
-     (install-asciinema facility))
-  (when contains-basics?
-    (when (contains? basics :argo-uml)
-      (install-argouml facility argo-uml))
-    (when (contains? basics :y-ed)
-      (install-argouml facility y-ed))
-    (when (contains? basics :dbvis)
-      (install-dbvis facility dbvis))))
+  (let [{:keys [argo-uml yed dbvis]} basics]
+    (when (contains? ide-settings :install-basics)
+       (install-basics facility))
+    (when (contains? ide-settings :install-asciinema)
+       (install-asciinema facility))
+    (when contains-basics?
+      (when (contains? basics :argo-uml)
+        (install-argouml facility argo-uml))
+      (when (contains? basics :yed)
+        (install-argouml facility yed))
+      (when (contains? basics :dbvis)
+        (install-dbvis facility dbvis)))))

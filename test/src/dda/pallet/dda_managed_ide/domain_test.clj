@@ -54,6 +54,15 @@
    :serverspec-domain {:package
                           '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
    :infra {:dda-managed-ide {:ide-user :test,
+                             :ide-settings #{:install-idea-inodes
+                                             :install-basics
+                                             :install-asciinema}
+                             :basics
+                                   {:argo-uml {:version "0.34"},
+                                    :yed
+                                    {:download-url
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip",}
+                                    :dbvis {:version "10.0.13"}}
                              :atom {:settings #{},
                                     :plugins ["ink"
                                               "minimap"
@@ -74,9 +83,7 @@
                                               "tree-view-git-status"
                                               "git-time-machine"
                                               "language-diff"
-                                              "split-diff"]}
-                             :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-asciinema}}}})
+                                              "split-diff"]}}}})
 
 (def config-set-2
   {:domain-input {:user {:name  "test"
@@ -116,6 +123,15 @@
                        :package
                        '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
    :infra {:dda-managed-ide {:ide-user :test,
+                             :ide-settings #{:install-idea-inodes
+                                             :install-basics
+                                             :install-asciinema}
+                             :basics
+                                   {:argo-uml {:version "0.34"},
+                                    :yed
+                                    {:download-url
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip",}
+                                    :dbvis {:version "10.0.13"}}
                              :atom {:settings #{},
                                     :plugins ["ink"
                                               "minimap"
@@ -144,9 +160,7 @@
                                               "linter-clojure"]}
                              :clojure {:lein-auth [{:repo "maven.my-repo.com"
                                                     :username "mvn-account"
-                                                    :password "mvn-password"}]}
-                             :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-asciinema}}}})
+                                                    :password "mvn-password"}]}}}})
 
 (def config-set-3
   {:domain-input {:user {:name  "test"
@@ -182,6 +196,16 @@
                 :os-user :test}
    :serverspec-domain {:file '()}
    :infra {:dda-managed-ide {:ide-user :test,
+                             :ide-settings #{:install-idea-inodes
+                                             :install-basics
+                                             :install-asciinema
+                                             :install-mfa :install-mach}
+                             :basics
+                                   {:argo-uml {:version "0.34"},
+                                    :yed
+                                    {:download-url
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip",}
+                                    :dbvis {:version "10.0.13"}}
                              :devops {:terraform
                                         {:version "0.11.7",
                                          :sha256-hash
@@ -215,10 +239,7 @@
                                               "language-diff"
                                               "split-diff"
                                               "language-terraform"
-                                              "terraform-fmt"]}
-                             :ide-settings #{:install-idea-inodes :install-basics
-                                             :install-mfa :install-asciinema
-                                             :install-mach}}}})
+                                              "terraform-fmt"]}}}})
 
 (deftest test-git-config
   (testing

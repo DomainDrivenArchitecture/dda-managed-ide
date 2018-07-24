@@ -79,7 +79,8 @@
 (s/defn
   install-gradle
   "get and install gradle at /opt/gradle"
-  [facility :- s/Keyword]
+  [facility :- s/Keyword
+   config :- Gradle]
   (let [{:keys [version]} config]
     (actions/as-action
       (logging/info (str facility " install system: install-gradle")))
