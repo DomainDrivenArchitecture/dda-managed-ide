@@ -72,6 +72,9 @@
   (let [{:keys [version]} config]
     (actions/as-action
       (logging/info (str facility "configure system: install-argouml")))
+    ; (actions/as-action
+    ;   (logging/info (str "http://argouml-downloads.tigris.org/nonav/argouml-"
+    ;                   version "/ArgoUML-" version ".tar.gz")))
     (actions/remote-directory
       "/opt/argouml"
       :owner "root"
@@ -149,6 +152,6 @@
       (when (contains? basics :argo-uml)
         (install-argouml facility argo-uml))
       (when (contains? basics :yed)
-        (install-argouml facility yed))
+        (install-yed facility yed))
       (when (contains? basics :dbvis)
         (install-dbvis facility dbvis)))))
