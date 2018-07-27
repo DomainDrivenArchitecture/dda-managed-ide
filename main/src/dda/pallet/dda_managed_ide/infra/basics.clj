@@ -72,9 +72,6 @@
   (let [{:keys [version]} config]
     (actions/as-action
       (logging/info (str facility "configure system: install-argouml")))
-    ; (actions/as-action
-    ;   (logging/info (str "http://argouml-downloads.tigris.org/nonav/argouml-"
-    ;                   version "/ArgoUML-" version ".tar.gz")))
     (actions/remote-directory
       "/opt/argouml"
       :owner "root"
@@ -121,7 +118,7 @@
    config :- Dbvis]
   (let [{:keys [version]} config]
     (actions/as-action
-      (logging/info (str facility "configure system: install-yed")))
+      (logging/info (str facility "configure system: install-dbvis")))
     (actions/remote-directory
       "/opt/dbvis"
       :owner "root"
@@ -129,7 +126,7 @@
       :recursive true
       :unpack :tar
       :url (str "http://www.dbvis.com/product_download/dbvis-" version
-                "/media/dbvis_unix_" (string/replace version #"." "_") ".tar.gz"))
+                "/media/dbvis_unix_" (string/replace version #"\." "_") ".tar.gz"))
     (actions/remote-file
       "/etc/profile.d/dbvis.sh"
       :literal true
