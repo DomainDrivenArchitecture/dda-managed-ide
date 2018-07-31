@@ -115,6 +115,9 @@
          {:clojure clojure})
       (when contains-java?
          {:java {:gradle {:version "4.9"}}})
+      (when contains-java-script?
+         {:java-script {:nodejs {:version "10.x"}}
+          :ide-settings #{:install-yarn}})
       (when contains-devops?
          (mu/deep-merge
            {:devops {:terraform {:version "0.11.7"

@@ -241,6 +241,91 @@
                                               "language-terraform"
                                               "terraform-fmt"]}}}})
 
+(def config-set-java
+  {:domain-input {:user {:name  "test"
+                         :password "pwd"}
+                  :target-type :virtualbox
+                  :java {}
+                  :ide-platform #{:atom}}
+   :serverspec-domain {:file '()}
+   :infra {:dda-managed-ide
+           {:ide-user :test,
+            :ide-settings
+            #{:install-basics :install-idea-inodes :install-asciinema},
+            :basics
+            {:argo-uml {:version "0.34"},
+             :yed
+             {:download-url
+              "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip"},
+             :dbvis {:version "10.0.13"}},
+            :atom
+            {:settings #{},
+             :plugins
+             ["ink"
+              "minimap"
+              "busy-signal"
+              "atom-toolbar"
+              "atom-meld"
+              "intentions"
+              "trailing-spaces"
+              "linter"
+              "linter-write-good"
+              "linter-ui-default"
+              "linter-jsonlint"
+              "linter-spell"
+              "linter-spell-html"
+              "linter-clojure"
+              "minimap-linter"
+              "teletype"
+              "tree-view-git-status"
+              "git-time-machine"
+              "language-diff"
+              "split-diff"]},
+            :java {:gradle {:version "4.9"}}}}})
+
+(def config-set-js
+  {:domain-input {:user {:name  "test"
+                         :password "pwd"}
+                  :target-type :virtualbox
+                  :java-script {}
+                  :ide-platform #{:atom}}
+   :serverspec-domain {:file '()}
+   :infra {:dda-managed-ide
+           {:ide-user :test,
+            :java-script
+              {:nodejs {:version "10.x"}}
+            :ide-settings
+            #{:install-basics :install-idea-inodes :install-asciinema :install-yarn},
+            :basics
+            {:argo-uml {:version "0.34"},
+             :yed
+             {:download-url
+              "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip"},
+             :dbvis {:version "10.0.13"}},
+            :atom
+            {:settings #{},
+             :plugins
+             ["ink"
+              "minimap"
+              "busy-signal"
+              "atom-toolbar"
+              "atom-meld"
+              "intentions"
+              "trailing-spaces"
+              "linter"
+              "linter-write-good"
+              "linter-ui-default"
+              "linter-jsonlint"
+              "linter-spell"
+              "linter-spell-html"
+              "linter-clojure"
+              "minimap-linter"
+              "teletype"
+              "tree-view-git-status"
+              "git-time-machine"
+              "language-diff"
+              "split-diff"]},}}})
+
 (deftest test-git-config
   (testing
     "test the git config creation"
@@ -277,4 +362,8 @@
     (is (= (:infra config-set-2)
            (sut/infra-configuration (:domain-input config-set-2))))
     (is (= (:infra config-set-3)
-           (sut/infra-configuration (:domain-input config-set-3))))))
+           (sut/infra-configuration (:domain-input config-set-3))))
+    (is (= (:infra config-set-java)
+           (sut/infra-configuration (:domain-input config-set-java))))
+    (is (= (:infra config-set-js)
+           (sut/infra-configuration (:domain-input config-set-js))))))
