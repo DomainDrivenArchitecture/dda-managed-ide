@@ -199,7 +199,8 @@
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
                                              :install-asciinema
-                                             :install-mfa :install-mach}
+                                             :install-mfa :install-mach
+                                             :install-ami-cleaner}
                              :basics
                                    {:argo-uml {:version "0.34"},
                                     :yed

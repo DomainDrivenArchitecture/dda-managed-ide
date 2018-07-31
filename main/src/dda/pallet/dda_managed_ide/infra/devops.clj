@@ -45,7 +45,8 @@
 (def Settings
    #{
      :install-mfa
-     :install-mach})
+     :install-mach
+     :install-ami-cleaner})
 
 (defn install-mach
   [facility]
@@ -70,6 +71,17 @@
   (actions/exec-checked-script
     "install mfa"
     ("pip" "install" "mfa")))
+
+(defn install-ami-cleaner
+  [facility]
+  (actions/as-action
+    (logging/info (str facility " install system: install-ami-cleaner")))
+  (actions/packages
+    :aptitude ["python-pip"])
+  (actions/exec-checked-script
+    "install ami-cleaner"
+    ("pip" "install" "future")
+    ("pip" "install" "aws-amicleaner")))
 
 (s/defn install-packer
   [facility :- s/Keyword
@@ -193,6 +205,8 @@
       (install-mach facility))
     (when (contains? settings :install-mfa)
        (install-mfa facility))
+    (when (contains? settings :install-ami-cleaner)
+       (install-ami-cleaner facility))
     (when contains-devops?
       (when (contains? devops :aws)
          (install-awscli facility))

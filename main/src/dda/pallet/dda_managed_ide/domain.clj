@@ -129,4 +129,5 @@
               :ide-settings #{}}
            {:devops devops
             :ide-settings #{:install-mach
-                            :install-mfa}})))}))
+                            :install-mfa
+                            :install-ami-cleaner}})))}))
