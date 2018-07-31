@@ -59,8 +59,6 @@
   (actions/package-source "yarn"
     :aptitude
     {:url "https://dl.yarnpkg.com/debian/"
-     :release "bionic"
-     :scopes ["main"]
      :key-url "https://dl.yarnpkg.com/debian/pubkey.gpg"})
   (actions/package-manager :update)
   (actions/packages :aptitude ["nodejs"]))

@@ -85,7 +85,7 @@
                                               "language-diff"
                                               "split-diff"]}}}})
 
-(def config-set-2
+(def config-set-clojure
   {:domain-input {:user {:name  "test"
                          :password "pwd"}
                   :target-type :virtualbox
@@ -162,7 +162,7 @@
                                                     :username "mvn-account"
                                                     :password "mvn-password"}]}}}})
 
-(def config-set-3
+(def config-set-devops
   {:domain-input {:user {:name  "test"
                          :password "pwd"}
                   :bookmarks [{:name "Bookmarks Toolbar"
@@ -199,7 +199,9 @@
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
                                              :install-asciinema
-                                             :install-mfa :install-mach
+                                             :install-ubuntu-npm
+                                             :install-mfa
+                                             :install-mach
                                              :install-ami-cleaner}
                              :basics
                                    {:argo-uml {:version "0.34"},
@@ -333,8 +335,8 @@
     (is (thrown? Exception (sut/ide-git-config {})))
     (is (= (:git-domain config-set-1)
            (sut/ide-git-config (:domain-input config-set-1))))
-   (is (= (:git-domain config-set-2)
-          (sut/ide-git-config (:domain-input config-set-2))))))
+   (is (= (:git-domain config-set-clojure)
+          (sut/ide-git-config (:domain-input config-set-clojure))))))
 
 (deftest test-serverspec-config
   (testing
@@ -342,8 +344,8 @@
     (is (thrown? Exception (sut/ide-serverspec-config {})))
     (is (= (:serverspec-domain config-set-1)
            (sut/ide-serverspec-config (:domain-input config-set-1))))
-    (is (= (:serverspec-domain config-set-2)
-           (sut/ide-serverspec-config (:domain-input config-set-2))))))
+    (is (= (:serverspec-domain config-set-clojure)
+           (sut/ide-serverspec-config (:domain-input config-set-clojure))))))
 
 (deftest test-dda-vm-domain-config
   (testing
@@ -351,8 +353,8 @@
     (is (thrown? Exception (sut/ide-serverspec-config {})))
     (is (= (:dda-vm-domain config-set-1)
            (sut/dda-vm-domain-configuration (:domain-input config-set-1))))
-    (is (= (:dda-vm-domain config-set-2)
-           (sut/dda-vm-domain-configuration (:domain-input config-set-2))))))
+    (is (= (:dda-vm-domain config-set-clojure)
+           (sut/dda-vm-domain-configuration (:domain-input config-set-clojure))))))
 
 (deftest test-infra-configuration
   (testing
@@ -360,10 +362,10 @@
     (is (thrown? Exception (sut/infra-configuration {})))
     (is (= (:infra config-set-1)
            (sut/infra-configuration (:domain-input config-set-1))))
-    (is (= (:infra config-set-2)
-           (sut/infra-configuration (:domain-input config-set-2))))
-    (is (= (:infra config-set-3)
-           (sut/infra-configuration (:domain-input config-set-3))))
+    (is (= (:infra config-set-clojure)
+           (sut/infra-configuration (:domain-input config-set-clojure))))
+    (is (= (:infra config-set-devops)
+           (sut/infra-configuration (:domain-input config-set-devops))))
     (is (= (:infra config-set-java)
            (sut/infra-configuration (:domain-input config-set-java))))
     (is (= (:infra config-set-js)

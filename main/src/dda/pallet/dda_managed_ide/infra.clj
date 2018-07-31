@@ -63,11 +63,11 @@
        :script-dir "/root/"
        :script-env {:HOME (str "/root")}}
       (basics/install-system facility ide-settings contains-basics? basics)
-      (idea/install-system facility ide-settings)
       (clojure/install-system facility contains-clojure? clojure)
-      (devops/install-system facility ide-settings contains-devops? devops)
       (java/install-system facility contains-java? java)
       (js/install-system facility contains-java-script? java-script ide-settings)
+      (devops/install-system facility ide-settings contains-devops? devops)
+      (idea/install-system facility ide-settings)
       (when (contains? config :atom)
         (actions/as-action
             (logging/info (str facility "-install system: atom")))
