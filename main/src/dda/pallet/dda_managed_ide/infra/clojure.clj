@@ -59,20 +59,6 @@
     (util/create-file-content
       ["PATH=$PATH:/opt/leiningen"])))
 
-(defn install-mach
-  [facility]
-  (actions/as-action
-    (logging/info (str facility "install system: install-mach")))
-  (actions/packages
-    :aptitude ["npm"])
-  (actions/exec-checked-script
-    "install mach"
-    ("npm" "install" "-g" "@juxt/mach")
-    ("cd" "/usr/local/bin")
-    ("curl" "-fsSLo" "boot"
-            "https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh")
-    ("chmod" "755" "boot")))
-
 (s/defn lein-user-profile
   [lein-config :- Clojure]
   (selmer/render-file "lein_profiles.template" lein-config))
