@@ -63,8 +63,7 @@
                                     {:download-url
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip",}
                                     :dbvis {:version "10.0.13"}}
-                             :atom {:settings #{},
-                                    :plugins ["ink"
+                             :atom {:plugins ["ink"
                                               "minimap"
                                               "busy-signal"
                                               "atom-toolbar"
@@ -132,8 +131,7 @@
                                     {:download-url
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip",}
                                     :dbvis {:version "10.0.13"}}
-                             :atom {:settings #{},
-                                    :plugins ["ink"
+                             :atom {:plugins ["ink"
                                               "minimap"
                                               "busy-signal"
                                               "atom-toolbar"
@@ -220,8 +218,7 @@
                                       :docker {:bip "192.168.1.1/24"}
                                       :aws {:simple {:id "ACCESS_KEY"
                                                      :secret "SECRET_KEY"}}}
-                             :atom {:settings #{},
-                                    :plugins ["ink"
+                             :atom {:plugins ["ink"
                                               "minimap"
                                               "busy-signal"
                                               "atom-toolbar"
@@ -262,8 +259,7 @@
               "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip"},
              :dbvis {:version "10.0.13"}},
             :atom
-            {:settings #{},
-             :plugins
+            {:plugins
              ["ink"
               "minimap"
               "busy-signal"
@@ -306,8 +302,7 @@
               "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip"},
              :dbvis {:version "10.0.13"}},
             :atom
-            {:settings #{},
-             :plugins
+            {:plugins
              ["ink"
               "minimap"
               "busy-signal"

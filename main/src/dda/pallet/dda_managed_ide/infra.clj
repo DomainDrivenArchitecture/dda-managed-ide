@@ -39,25 +39,26 @@
    (s/optional-key :java) java/Java
    (s/optional-key :java-script) js/JavaScript
    (s/optional-key :devops) devops/Devops
-   (s/optional-key :atom) {:settings (hash-set (s/enum :install-aws-workaround))
-                           (s/optional-key :plugins) [s/Str]}
+   (s/optional-key :atom) atom/Atom
    :ide-settings
    (hash-set (apply s/enum
                     (clojure.set/union
                       basics/Settings
-                      idea/Settings
                       clojure/Settings
                       devops/Settings
-                      js/Settings)))})
+                      js/Settings
+                      atom/Settings
+                      idea/Settings)))})
 
 (s/defn install-system
   [config :- DdaIdeConfig]
-  (let [{:keys [ide-settings basics clojure devops java java-script]} config
+  (let [{:keys [ide-settings basics clojure devops java java-script atom]} config
           contains-clojure? (contains? config :clojure)
           contains-devops? (contains? config :devops)
           contains-java? (contains? config :java)
           contains-java-script? (contains? config :java-script)
-          contains-basics? (contains? config :basics)]
+          contains-basics? (contains? config :basics)
+          contains-atom? (contains? config :atom)]
     (pallet.action/with-action-options
       {:sudo-user "root"
        :script-dir "/root/"
@@ -67,11 +68,8 @@
       (java/install-system facility contains-java? java)
       (js/install-system facility contains-java-script? java-script ide-settings)
       (devops/install-system facility ide-settings contains-devops? devops)
-      (idea/install-system facility ide-settings)
-      (when (contains? config :atom)
-        (actions/as-action
-            (logging/info (str facility "-install system: atom")))
-        (atom/install config)))))
+      (atom/install-system facility ide-settings contains-atom? atom)
+      (idea/install-system facility ide-settings))))
 
 (s/defn configure-system
   [config :- DdaIdeConfig]
@@ -84,21 +82,18 @@
 
 (s/defn configure-user
   [config :- DdaIdeConfig]
-  (let [{:keys [ide-user clojure devops]} config
+  (let [{:keys [ide-user clojure devops atom]} config
         os-user-name (name ide-user)
         contains-clojure? (contains? config :clojure)
-        contains-devops? (contains? config :devops)]
+        contains-devops? (contains? config :devops)
+        contains-atom? (contains? config :atom)]
     (pallet.action/with-action-options
       {:sudo-user os-user-name
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
       (clojure/configure-user facility os-user-name contains-clojure? clojure)
       (devops/configure-user facility os-user-name contains-devops? devops)
-      (when (contains? config :atom)
-        (actions/as-action
-          (logging/info (str facility "-configure user: atom")))
-        (atom/install-user-plugins config)))))
-
+      (atom/configure-user facility contains-atom? atom))))
 
 (s/defmethod core-infra/dda-install facility
   [dda-crate config]

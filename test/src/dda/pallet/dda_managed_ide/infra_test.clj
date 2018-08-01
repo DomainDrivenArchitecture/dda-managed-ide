@@ -29,13 +29,11 @@
 
 (def basic-atom-config
    {:atom
-    {:settings (hash-set :install-aws-workaround)
-     :plugins ["proto-repl"]}})
+    {:plugins ["proto-repl"]}})
 
 (def wrong-atom-config
    {:atom
-    {:settings (hash-set :install-aws-workaround)
-     :plugins [:proto-repl]}})
+    {:plugins [:proto-repl]}})
 
 
 (deftest test-schema

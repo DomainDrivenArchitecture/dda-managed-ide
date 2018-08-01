@@ -22,29 +22,65 @@
     [pallet.actions :as actions]
     [dda.config.commons.map-utils :as map-utils]))
 
-(defn install [config]
-  (let [atom-config (-> config :atom)
-        settings (-> atom-config :settings)]
-    (actions/packages :aptitude ["python" "gvfs-bin" "gconf2" "gconf-service"])
-    (actions/remote-file
-      "/tmp/atom.deb"
-      :owner "root"
-      :group "users"
-      :mode "600"
-      :url "https://atom.io/download/deb")
-    (actions/exec-script ("dpkg" "-i" "/tmp/atom.deb"))
-    (when (contains? settings :install-aws-workaround)
-      (actions/exec-checked-script
-        "aws-atom-workaround"
-        ("cp" "/usr/lib/x86_64-linux-gnu/libxcb.so.1" "/usr/share/atom/")
-        ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1")))))
+(def Atom {(s/optional-key :plugins) [s/Str]})
 
-(defn install-user-plugins [config]
-  (let [atom-config (-> config :atom)]
-    (when (contains? atom-config :plugins)
-      (let [plugins (-> atom-config :plugins)]
-        (doseq [plugin plugins]
-          (action/with-action-options {:script-prefix :sudo}
-            (actions/exec-checked-script
-              (str "install-apm-plugin-" plugin)
-              ("apm install" ~plugin))))))))
+(def Settings
+   #{:install-aws-workaround})
+
+(s/defn
+  install-atom
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-install system: install-atom")))
+  (actions/packages :aptitude ["python" "gvfs-bin" "gconf2" "gconf-service"])
+  (actions/remote-file
+    "/tmp/atom.deb"
+    :owner "root"
+    :group "users"
+    :mode "600"
+    :url "https://atom.io/download/deb")
+  (actions/exec-script ("dpkg" "-i" "/tmp/atom.deb")))
+
+(s/defn
+  install-aws-workaround
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-install system: install-aws-workaround")))
+  (actions/exec-checked-script
+    "aws-atom-workaround"
+    ("cp" "/usr/lib/x86_64-linux-gnu/libxcb.so.1" "/usr/share/atom/")
+    ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1")))
+
+(s/defn
+  install-user-plugins
+  [facility
+   atom :- Atom]
+  (let [{:keys [plugins]} atom]
+    (actions/as-action
+      (logging/info (str facility "-configure user: install-user-plugins")))
+    (when (contains? atom :plugins)
+      (doseq [plugin plugins]
+        (action/with-action-options {:script-prefix :sudo}
+          (actions/exec-checked-script
+            (str "install-apm-plugin-" plugin)
+            ("apm" "install" ~plugin)))))))
+
+(s/defn
+  install-system
+  [facility :- s/Keyword
+   settings
+   contains-atom? :- s/Bool
+   atom :- Atom]
+  (let [{:keys [plugins]} atom]
+    (when contains-atom?
+      (install-atom facility)
+      (when (contains? settings :install-aws-workaround)
+         (install-aws-workaround facility)))))
+
+(s/defn configure-user
+  [facility :- s/Keyword
+   os-user-name :- s/Str
+   contains-atom? :- s/Bool
+   atom :- Atom]
+  (when contains-atom?
+    (install-user-plugins facility atom)))
