@@ -26,28 +26,29 @@ The following software/packages are installed additionally by dda-managed-ide:
  * clojure
   * lein with profiles & credentials
  * java
+   * custom jdk & gradle
  * java-script
-   * custom nodejs, npm & yarn
+    * custom nodejs, npm & yarn
  * devops
-  * docker-host with configuration for bridge networking
-  * aws-cli with simple credentials configuration
-  * mfa tool
-  * terraform
-  * packer
-  * mach for terraform & dda-pallet integration
-  * aws-amicleaner
+   * docker-host with configuration for bridge networking
+   * aws-cli with simple credentials configuration
+   * mfa tool
+   * terraform
+   * packer
+   * mach for terraform & dda-pallet integration
+   * aws-amicleaner
  * atom with plugins for
-  * clojure language & repl
-  * java language
-  * terraform, packer, json
+   * clojure language & repl
+   * java language
+   * terraform, packer, json
  * intellij
-  * configure inodes for idea
+   * configure inodes for idea
  * others
-  * git with configuration
-  * yed, argouml (uml / diagram)
-  * dbvis (sql)
-  * asciinema & animated gif generation
-  * many more os-level tools like strace, iotop ...
+   * git with configuration
+   * yed, argouml (uml / diagram)
+   * dbvis (sql)
+   * asciinema & animated gif generation
+   * many more os-level tools like strace, iotop ...
 
 ## Usage documentation
 This crate installs and configures software on your target system. You can provision pre-created virtual machines (see paragraph "Prepare vm" below), standalone systems or cloud instances.
