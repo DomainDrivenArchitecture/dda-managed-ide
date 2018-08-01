@@ -59,7 +59,7 @@
      :scopes ["main"]
      :key-url "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9D2E234C0F833EAD"})
   (actions/package-manager :update)
-  (actions/packages :aptitude ["npm" "asciinema" "nodejs" "phantomjs" "imagemagick" "gifsicle"])
+  (actions/packages :aptitude ["asciinema" "phantomjs" "imagemagick" "gifsicle"])
   (actions/exec-checked-script
     "install asciicast2gif"
     ("npm" "install" "--global" "asciicast2gif")))
