@@ -30,8 +30,16 @@
    {(s/optional-key :nodejs) NodeJs})
 
 (def Settings
-   #{:install-yarn})
+   #{:install-yarn
+     :install-ubuntu-npm
+     :install-asciinema})
 
+(defn install-ubuntu-npm
+  [facility]
+  (actions/as-action
+    (logging/info (str facility " install system: install-ubuntu-npm")))
+  (actions/packages
+    :aptitude ["npm"]))
 
 (s/defn
   install-nodejs
@@ -65,6 +73,22 @@
   (actions/package-manager :update)
   (actions/packages :aptitude ["nodejs"]))
 
+(s/defn install-asciinema
+  [facility :- s/Keyword]
+  (actions/as-action
+    (logging/info (str facility "configure system: install-asciinema")))
+  (actions/package-source "asciinema"
+    :aptitude
+    {:url "http://ppa.launchpad.net/zanchey/asciinema/ubuntu "
+     :release "bionic"
+     :scopes ["main"]
+     :key-url "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9D2E234C0F833EAD"})
+  (actions/package-manager :update)
+  (actions/packages :aptitude ["asciinema" "phantomjs" "imagemagick" "gifsicle"])
+  (actions/exec-checked-script
+    "install asciicast2gif"
+    ("npm" "install" "--global" "asciicast2gif")))
+
 
 (s/defn install-system
   [facility :- s/Keyword
@@ -72,8 +96,12 @@
    js :- JavaScript
    settings]
   (let [{:keys [nodejs]} js]
+    (when (contains? settings :install-ubuntu-npm)
+      (install-ubuntu-npm facility))
     (when contains-java-script?
       (when (contains? js :nodejs)
         (install-nodejs facility nodejs)))
+    (when (contains? settings :install-asciinema)
+       (install-asciinema facility))
     (when (contains? settings :install-yarn)
       (install-yarn facility))))

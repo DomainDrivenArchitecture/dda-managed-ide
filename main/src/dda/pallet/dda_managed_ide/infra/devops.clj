@@ -43,17 +43,9 @@
              (s/optional-key :packer) Packer})
 
 (def Settings
-   #{:install-ubuntu-npm
-     :install-mfa
+   #{:install-mfa
      :install-mach
      :install-ami-cleaner})
-
-(defn install-ubuntu-npm
-  [facility]
-  (actions/as-action
-    (logging/info (str facility " install system: install-ubuntu-npm")))
-  (actions/packages
-    :aptitude ["npm"]))
 
 (defn install-mach
   [facility]
@@ -206,8 +198,6 @@
    contains-devops? :- s/Bool
    devops :- Devops]
   (let [{:keys [terraform packer]} devops]
-    (when (contains? settings :install-ubuntu-npm)
-      (install-ubuntu-npm facility))
     (when (contains? settings :install-mach)
       (install-mach facility))
     (when (contains? settings :install-mfa)

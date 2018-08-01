@@ -38,8 +38,7 @@
    (s/optional-key :dbvis) Dbvis})
 
 (def Settings
-   #{:install-basics
-     :install-asciinema})
+   #{:install-basics})
 
 (s/defn install-basics
   [facility :- s/Keyword]
@@ -47,22 +46,6 @@
     (logging/info (str facility "install system: install-basics")))
   (actions/packages
     :aptitude ["curl" "gnutls-bin" "apache2-utils" "meld" "whois" "make"]))
-
-(s/defn install-asciinema
-  [facility :- s/Keyword]
-  (actions/as-action
-    (logging/info (str facility "configure system: install-asciinema")))
-  (actions/package-source "asciinema"
-    :aptitude
-    {:url "http://ppa.launchpad.net/zanchey/asciinema/ubuntu "
-     :release "bionic"
-     :scopes ["main"]
-     :key-url "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9D2E234C0F833EAD"})
-  (actions/package-manager :update)
-  (actions/packages :aptitude ["asciinema" "phantomjs" "imagemagick" "gifsicle"])
-  (actions/exec-checked-script
-    "install asciicast2gif"
-    ("npm" "install" "--global" "asciicast2gif")))
 
 (s/defn
   install-argouml
@@ -143,8 +126,6 @@
   (let [{:keys [argo-uml yed dbvis]} basics]
     (when (contains? ide-settings :install-basics)
        (install-basics facility))
-    (when (contains? ide-settings :install-asciinema)
-       (install-asciinema facility))
     (when contains-basics?
       (when (contains? basics :argo-uml)
         (install-argouml facility argo-uml))

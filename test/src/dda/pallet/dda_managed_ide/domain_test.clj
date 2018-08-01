@@ -56,6 +56,7 @@
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
+                                             :install-ubuntu-npm
                                              :install-asciinema}
                              :basics
                                    {:argo-uml {:version "0.34"},
@@ -124,6 +125,7 @@
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
+                                             :install-ubuntu-npm
                                              :install-asciinema}
                              :basics
                                    {:argo-uml {:version "0.34"},
@@ -251,7 +253,7 @@
    :infra {:dda-managed-ide
            {:ide-user :test,
             :ide-settings
-            #{:install-basics :install-idea-inodes :install-asciinema},
+            #{:install-basics :install-idea-inodes :install-ubuntu-npm :install-asciinema},
             :basics
             {:argo-uml {:version "0.34"},
              :yed
