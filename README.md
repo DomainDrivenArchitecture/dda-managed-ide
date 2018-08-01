@@ -68,7 +68,7 @@ sudo apt-get install openjdk-11-jre-headless
 ```
 
 ### Usage Summary
-1. Download the jar-file from the releases page of this repository (e.g. `curl -L -o managed-ide.jar https://github.com/DomainDrivenArchitecture/dda-managed-ide/releases/download/1.0.2/dda-managed-ide-1.0.2-standalone.jar`).
+1. Download the jar-file from the releases page of this repository (e.g. `curl -L -o managed-ide.jar https://github.com/DomainDrivenArchitecture/dda-managed-ide/releases/download/2.0.0/dda-managed-ide-2.0.0-standalone.jar`).
 2. Deploy the jar-file on the source machine
 3. Create the files `example-ide.edn` (Domain-Schema for your desktop) and `target.edn` (Schema for Targets to be provisioned) according to the reference and our example configurations. Please create them in the same folder where you've saved the jar-file. For more information about these files refer to the corresponding information below.
 4. Start the installation:
