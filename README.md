@@ -24,7 +24,7 @@ As this crate is build on top of the dda-managed-vm, all the software and tools 
 The following software/packages are installed additionally by dda-managed-ide:
 
  * clojure
-  * lein with profiles & credentials
+   * lein with profiles & credentials
  * java
    * custom jdk & gradle
  * java-script
