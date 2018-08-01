@@ -86,8 +86,8 @@ The configuration consists of two files defining both WHERE to install the softw
 * `example-ide.edn`: describes which software/packages will be installed
 
 You can download examples of these configuration files from  
-[example-targets.edn](https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/master/example-targets.edn) and
-[example-ide.edn](https://github.com/DomainDrivenArchitecture/dda-managed-ide/blob/master/example-ide.edn) respectively.
+[example-targets.edn](example-targets.edn) and
+[example-ide.edn](example-ide.edn) respectively.
 
 #### Targets config example
 Example content of the file, `example-targets.edn`:
