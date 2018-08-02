@@ -56,7 +56,7 @@
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
-                                             :install-ubuntu-npm
+                                             :install-npm
                                              :install-asciinema}
                              :basics
                                    {:argo-uml {:version "0.34"},
@@ -125,7 +125,7 @@
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
-                                             :install-ubuntu-npm
+                                             :install-npm
                                              :install-asciinema}
                              :basics
                                    {:argo-uml {:version "0.34"},
@@ -199,7 +199,7 @@
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
                                              :install-asciinema
-                                             :install-ubuntu-npm
+                                             :install-npm
                                              :install-mfa
                                              :install-mach
                                              :install-ami-cleaner}
@@ -253,7 +253,7 @@
    :infra {:dda-managed-ide
            {:ide-user :test,
             :ide-settings
-            #{:install-basics :install-idea-inodes :install-ubuntu-npm :install-asciinema},
+            #{:install-basics :install-idea-inodes :install-npm :install-asciinema},
             :basics
             {:argo-uml {:version "0.34"},
              :yed
@@ -296,7 +296,7 @@
             :java-script
               {:nodejs {:version "10.x"}}
             :ide-settings
-            #{:install-basics :install-idea-inodes :install-asciinema :install-yarn},
+            #{:install-basics :install-idea-inodes :install-npm :install-asciinema :install-yarn},
             :basics
             {:argo-uml {:version "0.34"},
              :yed

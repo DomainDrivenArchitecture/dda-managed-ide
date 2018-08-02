@@ -83,7 +83,7 @@ For installation & configuration with the dda-managed-ide the schema is:
              (s/optional-key :packer) Packer})
 
 (def DevopsSettings
-   #{:install-ubuntu-npm
+   #{:install-npm
      :install-mfa
      :install-mach
      :install-ami-cleaner})

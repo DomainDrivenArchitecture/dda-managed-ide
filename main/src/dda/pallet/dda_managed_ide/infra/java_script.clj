@@ -31,13 +31,13 @@
 
 (def Settings
    #{:install-yarn
-     :install-ubuntu-npm
+     :install-npm
      :install-asciinema})
 
-(defn install-ubuntu-npm
+(defn install-npm
   [facility]
   (actions/as-action
-    (logging/info (str facility " install system: install-ubuntu-npm")))
+    (logging/info (str facility " install system: install-npm")))
   (actions/packages
     :aptitude ["npm"]))
 
@@ -96,12 +96,12 @@
    js :- JavaScript
    settings]
   (let [{:keys [nodejs]} js]
-    (when (contains? settings :install-ubuntu-npm)
-      (install-ubuntu-npm facility))
     (when contains-java-script?
       (when (contains? js :nodejs)
         (install-nodejs facility nodejs)))
-    (when (contains? settings :install-asciinema)
-       (install-asciinema facility))
+    (when (contains? settings :install-npm)
+      (install-npm facility))
     (when (contains? settings :install-yarn)
-      (install-yarn facility))))
+      (install-yarn facility))
+    (when (contains? settings :install-asciinema)
+       (install-asciinema facility))))

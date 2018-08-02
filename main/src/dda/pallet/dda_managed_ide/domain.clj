@@ -117,8 +117,8 @@
          {:java {:gradle {:version "4.9"}}})
       (if contains-java-script?
          {:java-script {:nodejs {:version "10.x"}}
-          :ide-settings #{:install-yarn :install-asciinema}}
-         {:ide-settings #{:install-ubuntu-npm :install-asciinema}})
+          :ide-settings #{:install-npm :install-yarn :install-asciinema}}
+         {:ide-settings #{:install-npm :install-asciinema}})
       (when contains-devops?
          (mu/deep-merge
            {:devops {:terraform {:version "0.11.7"
