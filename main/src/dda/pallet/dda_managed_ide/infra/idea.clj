@@ -27,7 +27,7 @@
 (defn install-idea-inodes
   [facility]
   (actions/as-action
-    (logging/info (str facility "configure system: install-idea-inodes")))
+    (logging/info (str facility "-configure system: install-idea-inodes")))
   (actions/exec-checked-script
     "adjust inodes for idea"
     ("echo" "\"fs.inotify.max_user_watches = 524288\"" ">" "/etc/sysctl.conf")

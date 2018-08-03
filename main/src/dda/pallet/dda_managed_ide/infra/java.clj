@@ -46,7 +46,7 @@
    config :- CustomJava]
   (let [{:keys [tar-download-url jdk-filesystem-name md5-hash]} config]
     (actions/as-action
-      (logging/info (str facility " install system: install-custom-java")))
+      (logging/info (str facility "-install system: install-custom-java")))
     (actions/directory "/opt/java"
       :owner "root"
       :group "root"
@@ -83,7 +83,7 @@
    config :- Gradle]
   (let [{:keys [version]} config]
     (actions/as-action
-      (logging/info (str facility " install system: install-gradle")))
+      (logging/info (str facility "-install system: install-gradle")))
     (actions/remote-directory
       "/opt/gradle"
       :owner "root"

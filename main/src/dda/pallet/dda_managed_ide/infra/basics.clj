@@ -43,7 +43,7 @@
 (s/defn install-basics
   [facility :- s/Keyword]
   (actions/as-action
-    (logging/info (str facility "install system: install-basics")))
+    (logging/info (str facility "-install system: install-basics")))
   (actions/packages
     :aptitude ["curl" "gnutls-bin" "apache2-utils" "meld" "whois" "make"]))
 
@@ -54,7 +54,7 @@
    config :- ArgoUml]
   (let [{:keys [version]} config]
     (actions/as-action
-      (logging/info (str facility "configure system: install-argouml")))
+      (logging/info (str facility "-configure system: install-argouml")))
     (actions/remote-directory
       "/opt/argouml"
       :owner "root"
@@ -78,7 +78,7 @@
    config :- Yed]
   (let [{:keys [download-url]} config]
     (actions/as-action
-      (logging/info (str facility "configure system: install-yed")))
+      (logging/info (str facility "-configure system: install-yed")))
     (actions/remote-directory
       "/opt/yed"
       :owner "root"
@@ -101,7 +101,7 @@
    config :- Dbvis]
   (let [{:keys [version]} config]
     (actions/as-action
-      (logging/info (str facility "configure system: install-dbvis")))
+      (logging/info (str facility "-configure system: install-dbvis")))
     (actions/remote-directory
       "/opt/dbvis"
       :owner "root"
