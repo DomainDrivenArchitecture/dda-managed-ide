@@ -7,7 +7,7 @@
              [lein-ancient "0.6.15"]
              [lein-collisions "0.1.4"]
              [lein-idefiles "0.2.1"]
-             [org.timmc/nephila "0.3.0"]
+             [org.timmc/nephila "0.3.0"]]
   :dependencies [[pjstadig/humane-test-output "0.8.3"]
                  [proto-repl "0.3.1"]]
   :injections [(require 'pjstadig.humane-test-output)
