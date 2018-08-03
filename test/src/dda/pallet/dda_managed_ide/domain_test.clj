@@ -296,7 +296,7 @@
             :java-script
               {:nodejs {:version "10.x"}}
             :ide-settings
-            #{:install-basics :install-idea-inodes :install-npm :install-asciinema :install-yarn},
+            #{:install-basics :install-idea-inodes :install-asciinema :install-yarn},
             :basics
             {:argo-uml {:version "0.34"},
              :yed
