@@ -43,6 +43,20 @@
     :aptitude ["npm"]))
 
 (s/defn
+  init-nodejs
+  [facility :- s/Keyword
+   config :- NodeJs]
+  (let [{:keys [version]} config]
+    (actions/as-action
+      (logging/info (str facility "-init system: init-nodejs")))
+    (actions/package-source (str "nodejs_" version)
+      :aptitude
+      {:url (str "https://deb.nodesource.com/node_" version)
+       :release "bionic"
+       :scopes ["main"]
+       :key-url "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"})))
+
+(s/defn
   install-nodejs
   "get and install install-nodejs"
   [facility :- s/Keyword
@@ -50,14 +64,19 @@
   (let [{:keys [version]} config]
     (actions/as-action
       (logging/info (str facility "-install system: install-nodejs")))
-    (actions/package-source (str "nodejs_" version)
-      :aptitude
-      {:url (str "https://deb.nodesource.com/node_" version)
-       :release "bionic"
-       :scopes ["main"]
-       :key-url "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"})
-    (actions/package-manager :update)
     (actions/packages :aptitude ["nodejs"])))
+
+(s/defn
+  init-yarn
+  [facility :- s/Keyword]
+  (actions/as-action
+    (logging/info (str facility "-init system: init-yarn")))
+  (actions/package-source "yarn"
+    :aptitude
+    {:url "https://dl.yarnpkg.com/debian/"
+     :release "stable"
+     :scopes ["main"]
+     :key-url "https://dl.yarnpkg.com/debian/pubkey.gpg"}))
 
 (s/defn
   install-yarn
@@ -65,26 +84,23 @@
   [facility :- s/Keyword]
   (actions/as-action
     (logging/info (str facility "-install system: install-yarn")))
-  (actions/package-source "yarn"
-    :aptitude
-    {:url "https://dl.yarnpkg.com/debian/"
-     :release "stable"
-     :scopes ["main"]
-     :key-url "https://dl.yarnpkg.com/debian/pubkey.gpg"})
-  (actions/package-manager :update)
   (actions/packages :aptitude ["nodejs"]))
 
-(s/defn install-asciinema
+(s/defn init-asciinema
   [facility :- s/Keyword]
   (actions/as-action
-    (logging/info (str facility "-install-system: install-asciinema")))
+    (logging/info (str facility "-init system: init-asciinema")))
   (actions/package-source "asciinema"
     :aptitude
     {:url "http://ppa.launchpad.net/zanchey/asciinema/ubuntu "
      :release "bionic"
      :scopes ["main"]
-     :key-url "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9D2E234C0F833EAD"})
-  (actions/package-manager :update)
+     :key-url "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9D2E234C0F833EAD"}))
+
+(s/defn install-asciinema
+  [facility :- s/Keyword]
+  (actions/as-action
+    (logging/info (str facility "-install-system: install-asciinema")))
   (actions/packages :aptitude ["asciinema" "imagemagick" "gifsicle"])
   (actions/exec-checked-script
     "install asciicast2gif"
@@ -102,6 +118,20 @@
     ("curl" "-fsSLo" "boot"
             "https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh")
     ("chmod" "755" "boot")))
+
+(s/defn init-system
+  [facility :- s/Keyword
+   contains-java-script? :- s/Bool
+   js :- JavaScript
+   settings]
+  (let [{:keys [nodejs]} js]
+    (when contains-java-script?
+      (when (contains? js :nodejs)
+        (init-nodejs facility nodejs)))
+    (when (contains? settings :install-yarn)
+      (init-yarn facility))
+    (when (contains? settings :install-asciinema)
+       (init-asciinema facility))))
 
 (s/defn install-system
   [facility :- s/Keyword
