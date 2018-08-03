@@ -19,6 +19,7 @@
     [clojure.tools.logging :as logging]
     [schema.core :as s]
     [selmer.parser :as selmer]
+    [pallet.action :as action]
     [pallet.actions :as actions]
     [dda.config.commons.user-home :as user-env]))
 
@@ -104,7 +105,7 @@
   [facility :- s/Keyword
    docker :- Docker]
   (actions/as-action
-    (logging/info (str facility "-install system: configure-system-docker")))
+    (logging/info (str facility "-configure system: configure-system-docker")))
   (actions/directory
     "/etc/docker"
     :owner "root"
@@ -118,6 +119,15 @@
     :literal true
     :content
     (selmer/render-file "docker_deamon.json.template" docker)))
+
+(s/defn configure-user-docker
+  [facility :- s/Keyword
+   user-name :- s/Str]
+  (actions/as-action
+    (logging/info (str facility "-configure user: configure-user-docker")))
+  (actions/exec-checked-script
+    "add user to docker group"
+    ("usermod" "-a" "-G" "docker" ~user-name)))
 
 (defn install-awscli
   [facility]
@@ -202,11 +212,14 @@
 (s/defn configure-system
   [facility :- s/Keyword
    contains-devops? :- s/Bool
-   devops :- Devops]
+   devops :- Devops
+   os-user-name :- s/Str]
   (let [{:keys [docker]} devops]
     (when contains-devops?
       (when (contains? devops :docker)
-        (configure-system-docker facility docker)))))
+        (do
+          (configure-system-docker facility docker)
+          (configure-user-docker facility os-user-name))))))
 
 (s/defn configure-user
   [facility :- s/Keyword

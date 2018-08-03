@@ -52,7 +52,7 @@
     ("sed" "-i" "'s/BIG-REQUESTS/_IG-REQUESTS/'" "/usr/share/atom/libxcb.so.1")))
 
 (s/defn
-  install-user-plugins
+  install-plugins
   [facility
    atom :- Atom]
   (let [{:keys [plugins]} atom]
@@ -79,8 +79,8 @@
 
 (s/defn configure-user
   [facility :- s/Keyword
-   os-user-name :- s/Str
+   user-name :- s/Str
    contains-atom? :- s/Bool
    atom :- Atom]
   (when contains-atom?
-    (install-user-plugins facility atom)))
+    (install-plugins facility atom)))
