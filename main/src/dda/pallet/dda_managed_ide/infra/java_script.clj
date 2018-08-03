@@ -32,12 +32,13 @@
 (def Settings
    #{:install-yarn
      :install-npm
+     :install-mach
      :install-asciinema})
 
 (defn install-npm
   [facility]
   (actions/as-action
-    (logging/info (str facility " install system: install-npm")))
+    (logging/info (str facility "-install system: install-npm")))
   (actions/packages
     :aptitude ["npm"]))
 
@@ -48,7 +49,7 @@
    config :- NodeJs]
   (let [{:keys [version]} config]
     (actions/as-action
-      (logging/info (str facility " install system: install-nodejs")))
+      (logging/info (str facility "-install system: install-nodejs")))
     (actions/package-source (str "nodejs_" version)
       :aptitude
       {:url (str "https://deb.nodesource.com/node_" version)
@@ -63,7 +64,7 @@
   "get and install install-yarn"
   [facility :- s/Keyword]
   (actions/as-action
-    (logging/info (str facility " install system: install-yarn")))
+    (logging/info (str facility "-install system: install-yarn")))
   (actions/package-source "yarn"
     :aptitude
     {:url "https://dl.yarnpkg.com/debian/"
@@ -76,7 +77,7 @@
 (s/defn install-asciinema
   [facility :- s/Keyword]
   (actions/as-action
-    (logging/info (str facility "configure system: install-asciinema")))
+    (logging/info (str facility "-install-system: install-asciinema")))
   (actions/package-source "asciinema"
     :aptitude
     {:url "http://ppa.launchpad.net/zanchey/asciinema/ubuntu "
@@ -84,11 +85,23 @@
      :scopes ["main"]
      :key-url "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9D2E234C0F833EAD"})
   (actions/package-manager :update)
-  (actions/packages :aptitude ["asciinema" "phantomjs" "imagemagick" "gifsicle"])
+  (actions/packages :aptitude ["asciinema" "imagemagick" "gifsicle"])
   (actions/exec-checked-script
     "install asciicast2gif"
-    ("npm" "install" "--global" "asciicast2gif")))
+    ("npm" "install" "--global" "phantomjs-prebuilt" "--unsafe-perm=true" "--allow-root")
+    ("npm" "install" "--global" "asciicast2gif" "--unsafe-perm=true" "--allow-root")))
 
+(defn install-mach
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-install system: install-mach")))
+  (actions/exec-checked-script
+    "install mach"
+    ("npm" "install" "--global" "@juxt/mach" "--unsafe-perm=true" "--allow-root")
+    ("cd" "/usr/local/bin")
+    ("curl" "-fsSLo" "boot"
+            "https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh")
+    ("chmod" "755" "boot")))
 
 (s/defn install-system
   [facility :- s/Keyword
@@ -104,4 +117,6 @@
     (when (contains? settings :install-yarn)
       (install-yarn facility))
     (when (contains? settings :install-asciinema)
-       (install-asciinema facility))))
+       (install-asciinema facility))
+    (when (contains? settings :install-mach)
+      (install-mach facility))))

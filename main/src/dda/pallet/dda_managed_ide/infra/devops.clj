@@ -44,25 +44,12 @@
 
 (def Settings
    #{:install-mfa
-     :install-mach
      :install-ami-cleaner})
-
-(defn install-mach
-  [facility]
-  (actions/as-action
-    (logging/info (str facility " install system: install-mach")))
-  (actions/exec-checked-script
-    "install mach"
-    ("npm" "install" "-g" "@juxt/mach")
-    ("cd" "/usr/local/bin")
-    ("curl" "-fsSLo" "boot"
-            "https://github.com/boot-clj/boot-bin/releases/download/latest/boot.sh")
-    ("chmod" "755" "boot")))
 
 (defn install-mfa
   [facility]
   (actions/as-action
-    (logging/info (str facility " install system: install-mfa")))
+    (logging/info (str facility "-install system: install-mfa")))
   (actions/packages
     :aptitude ["clipit" "python-pip"])
   (actions/exec-checked-script
@@ -72,7 +59,7 @@
 (defn install-ami-cleaner
   [facility]
   (actions/as-action
-    (logging/info (str facility " install system: install-ami-cleaner")))
+    (logging/info (str facility "-install system: install-ami-cleaner")))
   (actions/packages
     :aptitude ["python-pip"])
   (actions/exec-checked-script
@@ -87,7 +74,7 @@
         file-name (str "packer_" version "_linux_amd64.zip")
         sum-name (str file-name "SHA256SUM")]
     (actions/as-action
-      (logging/info (str facility " install system: install-packer")))
+      (logging/info (str facility "-install system: install-packer")))
     (when (contains? config :sha256-hash)
       (actions/remote-file
         (str "/tmp/" sum-name)
@@ -109,7 +96,7 @@
 (defn install-docker
   [facility]
   (actions/as-action
-    (logging/info (str facility " install system: install-docker")))
+    (logging/info (str facility "-install system: install-docker")))
   (actions/packages
     :aptitude ["docker.io"]))
 
@@ -117,7 +104,7 @@
   [facility :- s/Keyword
    docker :- Docker]
   (actions/as-action
-    (logging/info (str facility "  install system: configure-system-docker")))
+    (logging/info (str facility "-install system: configure-system-docker")))
   (actions/directory
     "/etc/docker"
     :owner "root"
@@ -135,7 +122,7 @@
 (defn install-awscli
   [facility]
   (actions/as-action
-    (logging/info (str facility " install system: install-awscli")))
+    (logging/info (str facility "-install system: install-awscli")))
   (actions/packages
     :aptitude ["awscli"]))
 
@@ -150,7 +137,7 @@
    aws :- Aws]
   (let [path (str (user-env/user-home-dir os-user-name) "/.aws/")]
     (actions/as-action
-      (logging/info (str facility " configure user: configure-aws")))
+      (logging/info (str facility "-configure user: configure-aws")))
     (actions/directory
       path
       :owner os-user-name
@@ -173,7 +160,7 @@
         terraform-file-name (str "terraform_" version "_linux_amd64.zip")
         terraform-sum-name (str terraform-file-name "SHA256SUM")]
     (actions/as-action
-      (logging/info (str facility " install system: install-terraform")))
+      (logging/info (str facility "-install system: install-terraform")))
     (when (contains? terraform-config :sha256-hash)
       (actions/remote-file
         (str "/tmp/" terraform-sum-name)
@@ -198,8 +185,6 @@
    contains-devops? :- s/Bool
    devops :- Devops]
   (let [{:keys [terraform packer]} devops]
-    (when (contains? settings :install-mach)
-      (install-mach facility))
     (when (contains? settings :install-mfa)
        (install-mfa facility))
     (when (contains? settings :install-ami-cleaner)
