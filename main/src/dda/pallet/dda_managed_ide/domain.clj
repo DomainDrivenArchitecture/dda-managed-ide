@@ -23,6 +23,7 @@
     [dda.pallet.dda-git-crate.domain :as git-domain]
     [dda.pallet.dda-managed-ide.domain.git :as git]
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
+    [dda.pallet.dda-managed-ide.domain.idea :as idea]
     [dda.pallet.dda-managed-ide.infra :as infra]))
 
 (def InfraResult {infra/facility infra/DdaIdeConfig})
@@ -38,7 +39,7 @@
     vm-domain/DdaVmBookmarks
     vm-domain/DdaVmTargetType
     {:target-type (s/enum :virtualbox :remote-aws :plain)}
-    {:ide-platform (hash-set (s/enum :atom :idea))
+    {:ide-platform (hash-set (s/enum :atom :idea :pycharm))
      (s/optional-key :git) git-domain/GitDomainConfig
      (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
      (s/optional-key :java) {}
@@ -111,6 +112,10 @@
                 :dbvis {:version "10.0.13"}}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
+      (when (contains? ide-platform :idea)
+        {:idea (idea/idea-config vm-type contains-clojure? contains-devops?)})
+      (when (contains? ide-platform :pycharm)
+        {:pycharm (idea/pycharm-config)})
       (when contains-clojure?
          {:clojure clojure})
       (when contains-java?

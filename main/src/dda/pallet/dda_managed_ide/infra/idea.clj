@@ -21,6 +21,43 @@
     [pallet.actions :as actions]
     [dda.config.commons.user-home :as user-env]))
 
+(def Idea {(s/optional-key :plugins) [{:plugin-name s/Str :plugin-config s/Any}]})
+
+(def Pycharm {(s/optional-key :plugins) [{:plugin-name s/Str :plugin-config s/Any}]})
+
+(defmulti install-idea-plugin
+          (fn [plugin-config] (:plugin-name plugin-config)))
+
+(defmethod install-idea-plugin "cursive"
+  []
+  (actions/as-action
+    (logging/info (str  "-configure system: install idea cursive plugin"))))
+
+(defn install-umake
+  []
+  ;install umake to make for easier installation for idea
+  (actions/packages :aptitude ["ubuntu-make"]))
+
+(defn install-idea
+  ; Installs the Intellij Idea community edition IDE through umake.
+  ; Install location is ~/.<Product><Version> e.g. ~/.IdeaIC2018.1
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-configure system: install idea community edition")))
+  (actions/exec-checked-script
+      "install idea community edition"
+      ("umake" "ide" "idea" "~/.idea/")))
+
+(defn install-pycharm
+  ; Installs the Intellij Idea community edition IDE through umake.
+  ; Install location is ~/.<Product><Version> e.g. ~/.IdeaIC2018.1
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-configure system: install pycharm community edition")))
+  (actions/exec-checked-script
+    "install pycharm community edition"
+    ("umake" "ide" "pycharm" "~/.pycharm/")))
+
 (def Settings
    #{:install-idea-inodes})
 
@@ -34,6 +71,11 @@
     ("sysctl" "-p")))
 
 (s/defn install-system
-  [facility ide-settings]
+  [facility ide-settings contains-idea? contains-pycharm? idea-config]
   (when (contains? ide-settings :install-idea-inodes)
-     (install-idea-inodes facility)))
+     (install-idea-inodes facility))
+  (install-umake)
+  (when contains-idea?
+    (install-idea facility))
+  (when contains-pycharm?
+    (install-pycharm facility)))

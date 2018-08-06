@@ -40,6 +40,8 @@
    (s/optional-key :java-script) js/JavaScript
    (s/optional-key :devops) devops/Devops
    (s/optional-key :atom) atom/Atom
+   (s/optional-key :idea) idea/Idea
+   (s/optional-key :pycharm) idea/Pycharm
    :ide-settings
    (hash-set (apply s/enum
                     (clojure.set/union
@@ -67,13 +69,15 @@
 
 (s/defn install-system
   [config :- DdaIdeConfig]
-  (let [{:keys [ide-settings basics clojure devops java java-script atom]} config
+  (let [{:keys [ide-settings basics clojure devops java java-script atom idea pycharm]} config
           contains-clojure? (contains? config :clojure)
           contains-devops? (contains? config :devops)
           contains-java? (contains? config :java)
           contains-java-script? (contains? config :java-script)
           contains-basics? (contains? config :basics)
-          contains-atom? (contains? config :atom)]
+          contains-atom? (contains? config :atom)
+          contains-idea? (contains? config :idea)
+          contains-pycharm? (contains? config :pycharm)]
     (pallet.action/with-action-options
       {:sudo-user "root"
        :script-dir "/root/"
@@ -85,7 +89,7 @@
     (js/install-system facility contains-java-script? java-script ide-settings)
     (devops/install-system facility ide-settings contains-devops? devops)
     (atom/install-system facility ide-settings contains-atom? atom)
-    (idea/install-system facility ide-settings)))
+    (idea/install-system facility ide-settings contains-idea? contains-pycharm? idea)))
 
 (s/defn configure-system
   [config :- DdaIdeConfig]
