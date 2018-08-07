@@ -86,7 +86,6 @@
     "configure-java-default-to"
     ("update-alternatives" "--set" "java" ~java-default-to)))
 
-
 (s/defn
   install-gradle
   "get and install gradle at /opt/gradle"
