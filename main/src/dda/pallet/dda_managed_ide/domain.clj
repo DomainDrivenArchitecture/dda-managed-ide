@@ -87,7 +87,7 @@
     (merge
       {:user user
        :target-type target-type
-       :usage-type :desktop-base}
+       :usage-type :desktop-ide}
       (when (contains? ide-config :bookmarks)
         {:bookmarks bookmarks}))))
 
@@ -112,7 +112,8 @@
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
       (when contains-clojure?
-         {:clojure clojure})
+         {:clojure clojure
+          :java {:java-default-to "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"}})
       (when contains-java?
          {:java {:gradle {:version "4.9"}}})
       (if contains-java-script?

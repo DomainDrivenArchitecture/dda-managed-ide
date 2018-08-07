@@ -89,12 +89,14 @@
 
 (s/defn configure-system
   [config :- DdaIdeConfig]
-  (let [{:keys [ide-user clojure devops atom]} config
+  (let [{:keys [ide-user clojure devops atom java]} config
         contains-clojure? (contains? config :clojure)
         contains-devops? (contains? config :devops)
-        contains-atom? (contains? config :atom)]
+        contains-atom? (contains? config :atom)
+        contains-java? (contains? config :java)]
     (pallet.action/with-action-options
       {:sudo-user "root"}
+      (java/configure-system facility contains-java? java)
       (devops/configure-system facility contains-devops? devops (name ide-user)))))
 
 (s/defn configure-user
