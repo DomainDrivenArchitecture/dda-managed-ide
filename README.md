@@ -59,28 +59,28 @@ This crate installs and configures software on your target system. You can provi
 In order to use this crate you need a running opennssh-server. If you do not already have a running ssh service use the steps below to install it
 1. Install xubuntu18.04
 2. Login with your initial user and use:
-'''
+```
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install openssh-server
-'''
+```
 If you want to provision by a local jar file you need a java runtime environment installed on your target system. If you do not already have java installed you can follow the steps below to install it:
-'''
+```
 sudo apt-get install openjdk-11-jre-headless
-'''
+```
 
 ### Usage Summary
 1. Download the jar-file from the releases page of this repository (e.g. 'curl -L -o managed-ide.jar https://github.com/DomainDrivenArchitecture/dda-managed-ide/releases/download/2.0.0/dda-managed-ide-2.0.0-standalone.jar').
 2. Deploy the jar-file on the source machine
 3. Create the files 'example-ide.edn' (Domain-Schema for your desktop) and 'target.edn' (Schema for Targets to be provisioned) according to the reference and our example configurations. Please create them in the same folder where you have saved the jar-file. For more information about these files refer to the corresponding information below.
 4. Start the installation:
-'''bash
+```bash
 java -jar managed-ide.jar --targets example-targets.edn example-ide.edn
-'''
+```
 If you want to install the ide on your localhost you don't need a target config.
-'''bash
+```bash
 java -jar managed-ide.jar example-ide.edn
-'''
+```
 
 ### Configuration
 The configuration consists of two files defining both WHERE to install the software and WHAT to install.
@@ -93,17 +93,17 @@ You can download examples of these configuration files from
 
 #### Targets config example
 Example content of the file 'example-targets.edn':
-'''clojure
+```clojure
 {:existing [{:node-name "test-vm1" ; semantic name
 :node-ip "35.157.19.218"}] ; the ip4 address of the machine to be provisioned
 :provisioning-user
 {:login "initial" ; account used to provision
 :password {:plain "secure1234"}}} ; optional password, if no ssh key is authorized
-'''
+```
 
 #### IDE config example
 Example content of the file, 'example-ide.edn':
-'''clojure
+```clojure
 {:target-type :virtualbox
 :clojure {:lein-auth [{:repo "maven.my-repo.com"
 :username {:plain "mvn-account"}
@@ -123,7 +123,7 @@ Example content of the file, 'example-ide.edn':
 :gpg-private-key
 {:plain "-----BEGIN PGP ...."}
 :gpg-passphrase {:plain "passphrase"}}}}
-'''
+```
 
 The ide config creates a new user with the provided credentials and installs the defined software and packages for the new user.
 
