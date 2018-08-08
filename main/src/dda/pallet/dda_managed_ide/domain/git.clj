@@ -27,11 +27,7 @@
     {:os-user (keyword name)
      :user-email email
      :repos
-     {:books
-      ["https://github.com/DomainDrivenArchitecture/ddaArchitecture.git"]
-      :password-store
-      ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]
-      :dda-pallet
+     {:dda-pallet
       ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
        "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
        "https://github.com/DomainDrivenArchitecture/dda-pallet.git"

@@ -32,12 +32,12 @@
    {:version s/Str})
 
 (def Java
-  {(s/optional-key :custom-java) CustomJava
+  {(s/optional-key :java-default-to) s/Str
+   (s/optional-key :custom-java) CustomJava
    (s/optional-key :gradle) Gradle})
 
 (def Settings
    #{})
-
 
 (s/defn
   install-custom-java
@@ -77,6 +77,16 @@
          "export PATH"]))))
 
 (s/defn
+  configure-java-default-to
+  [facility :- s/Keyword
+   java-default-to :- s/Str]
+  (actions/as-action
+    (logging/info (str facility "-configure system: configure-java-default-to")))
+  (actions/exec-checked-script
+    "configure-java-default-to"
+    ("update-alternatives" "--set" "java" ~java-default-to)))
+
+(s/defn
   install-gradle
   "get and install gradle at /opt/gradle"
   [facility :- s/Keyword
@@ -99,6 +109,15 @@
         [(str "export GRADLE_HOME=/opt/gradle/gradle-" version)
          "PATH=$PATH:$GRADLE_HOME/bin"
          "export PATH"]))))
+
+(s/defn configure-system
+  [facility :- s/Keyword
+   contains-java? :- s/Bool
+   java :- Java]
+  (let [{:keys [java-default-to]} java]
+    (when contains-java?
+      (when (contains? java :java-default-to)
+        (configure-java-default-to facility java-default-to)))))
 
 (s/defn install-system
   [facility :- s/Keyword

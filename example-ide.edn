@@ -10,6 +10,8 @@
  :user          {:name "test-user"
                  :password {:plain "xxx"}
                  :email "test-user@mydomain.org"
+                 :credentials []
+                 :desktop-wiki []
                  :ssh {:ssh-public-key {:plain "rsa-ssh kfjri5r8irohgn...test.key comment"}
                        :ssh-private-key {:plain "123Test"}}
                  :gpg {:gpg-public-key

@@ -23,6 +23,7 @@
     [dda.pallet.dda-git-crate.domain :as git-domain]
     [dda.pallet.dda-managed-ide.domain.git :as git]
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
+    [dda.pallet.dda-managed-ide.domain.idea :as idea]
     [dda.pallet.dda-managed-ide.infra :as infra]))
 
 (def InfraResult {infra/facility infra/DdaIdeConfig})
@@ -38,7 +39,7 @@
     vm-domain/DdaVmBookmarks
     vm-domain/DdaVmTargetType
     {:target-type (s/enum :virtualbox :remote-aws :plain)}
-    {:ide-platform (hash-set (s/enum :atom :idea))
+    {:ide-platform (hash-set (s/enum :atom :idea :pycharm))
      (s/optional-key :git) git-domain/GitDomainConfig
      (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
      (s/optional-key :java) {}
@@ -87,7 +88,7 @@
     (merge
       {:user user
        :target-type target-type
-       :usage-type :desktop-base}
+       :usage-type :desktop-ide}
       (when (contains? ide-config :bookmarks)
         {:bookmarks bookmarks}))))
 
@@ -107,12 +108,18 @@
                        :install-basics
                        :install-asciinema}
        :basics {:argo-uml {:version "0.34"}
-                :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip"}
+                :yed {:download-url
+                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.1.zip"}
                 :dbvis {:version "10.0.13"}}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
+      (when (contains? ide-platform :idea)
+        {:idea (idea/idea-config vm-type contains-clojure? contains-devops?)})
+      (when (contains? ide-platform :pycharm)
+        {:pycharm (idea/pycharm-config)})
       (when contains-clojure?
-         {:clojure clojure})
+         {:clojure clojure
+          :java {:java-default-to "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"}})
       (when contains-java?
          {:java {:gradle {:version "4.9"}}})
       (if contains-java-script?

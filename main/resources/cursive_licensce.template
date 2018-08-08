@@ -1,0 +1,5 @@
+<application>
+  <component name="LicenceSettings">
+    <option name="licence" value={{licensce}} />
+  </component>
+</application>

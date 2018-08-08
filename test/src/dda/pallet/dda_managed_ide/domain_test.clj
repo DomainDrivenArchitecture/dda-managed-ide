@@ -30,10 +30,9 @@
                   :ide-platform #{:atom}}
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :remote-aws,
-                   :usage-type :desktop-base}
+                   :usage-type :desktop-ide}
    :git-domain {:user-email "test@mydomain",
-                :repos {:books ["https://github.com/DomainDrivenArchitecture/ddaArchitecture.git"],
-                        :dda-pallet ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
+                :repos {:dda-pallet ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
@@ -48,8 +47,7 @@
                                      "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git",]
-                        :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
+                                     "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git",]}
                 :os-user :test}
    :serverspec-domain {:package
                           '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
@@ -95,27 +93,7 @@
                                          :password "mvn-password"}]}}
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
-                   :usage-type :desktop-base}
-   :git-domain {:user-email "test@mydomain",
-                :repos {:books ["https://github.com/DomainDrivenArchitecture/ddaArchitecture.git"],
-                        :dda-pallet ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-git-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git",]
-                        :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
-                :os-user :test}
+                   :usage-type :desktop-ide}
    :serverspec-domain {:file
                        '({:path "/home/test/.lein/profiles.clj"}
                          {:path "/opt/leiningen/lein"}
@@ -133,6 +111,8 @@
                                     {:download-url
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.zip",}
                                     :dbvis {:version "10.0.13"}}
+                             :java {:java-default-to
+                                    "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"}
                              :atom {:plugins ["ink"
                                               "minimap"
                                               "busy-signal"
@@ -173,27 +153,7 @@
                   :ide-platform #{:atom}}
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
-                   :usage-type :desktop-base}
-   :git-domain {:user-email "test@mydomain",
-                :repos {:books ["https://github.com/DomainDrivenArchitecture/ddaArchitecture.git"],
-                        :dda-pallet ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-git-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git",]
-                        :password-store ["https://github.com/DomainDrivenArchitecture/password-store-for-teams.git"]},
-                :os-user :test}
+                   :usage-type :desktop-ide}
    :serverspec-domain {:file '()}
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
@@ -331,9 +291,7 @@
     "test the git config creation"
     (is (thrown? Exception (sut/ide-git-config {})))
     (is (= (:git-domain config-set-1)
-           (sut/ide-git-config (:domain-input config-set-1))))
-   (is (= (:git-domain config-set-clojure)
-          (sut/ide-git-config (:domain-input config-set-clojure))))))
+           (sut/ide-git-config (:domain-input config-set-1))))))
 
 (deftest test-serverspec-config
   (testing
