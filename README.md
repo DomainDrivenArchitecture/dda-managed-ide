@@ -26,37 +26,40 @@ We abstracted away some configuration in our domain layer to use :virtualbox as 
 The dda-managed-ide installs the following packages in addition to the packages of the managed-vm:
 
 * clojure
-* lein with profiles & credentials
+  * lein with profiles & credentials
 * java
-* custom jdk & gradle
+  * custom jdk & gradle
 * java-script
-* custom nodejs, npm & yarn
+  * custom nodejs, npm & yarn
 * devops
-* docker-host with configuration for bridge networking
-* aws-cli with simple credentials configuration
-* mfa tool
-* terraform
-* packer
-* mach for terraform & dda-pallet integration
-* aws-amicleaner
+  * docker-host with configuration for bridge networking
+  * aws-cli with simple credentials configuration
+  * mfa tool
+  * terraform
+  * packer
+  * mach for terraform & dda-pallet integration
+  * aws-amicleaner
 * atom with plugins for
-* clojure language & repl
-* java language
-* terraform, packer, json
+  * clojure language & repl
+  * java language
+  * terraform, packer, json
 * intellij
-* configure inodes for idea
+  * configure inodes for idea
+  * cursive
+  * pycharme
 * others
-* git with configuration
-* yed, argouml (uml / diagram)
-* dbvis (sql)
-* asciinema & animated gif generation
-* many more os-level tools like strace, iotop ...
+  * git with configuration
+  * yed, argouml (uml / diagram)
+  * dbvis (sql)
+  * asciinema & animated gif generation
+  * many more os-level tools like strace, iotop ...
 
 ## Usage documentation
 This crate installs and configures software on your target system. You can provision pre-created virtual machines (see paragraph "Prepare vm" below), standalone systems or cloud instances.
 
 ### Prepare vm
-In order to use this crate you need a running opennssh-server. If you do not already have a running ssh service use the steps below to install it
+There are to options to provision dda-managed-ide. You can provision remote over ssh or localy. 
+In order to provision over ssh you need a running opennssh-server on your target. If you do not already have a running ssh service use the steps below to install it
 1. Install xubuntu18.04
 2. Login with your initial user and use:
 ```
@@ -94,35 +97,35 @@ You can download examples of these configuration files from
 #### Targets config example
 Example content of the file 'example-targets.edn':
 ```clojure
-{:existing [{:node-name "test-vm1" ; semantic name
-:node-ip "35.157.19.218"}] ; the ip4 address of the machine to be provisioned
-:provisioning-user
-{:login "initial" ; account used to provision
-:password {:plain "secure1234"}}} ; optional password, if no ssh key is authorized
+{:existing [{:node-name "test-vm1"      ; semantic name
+             :node-ip "35.157.19.218"}] ; the ip4 address of the machine to be provisioned
+ :provisioning-user
+ {:login "initial"                      ; account used to provision
+  :password {:plain "secure1234"}}}     ; optional password, if no ssh key is authorized
 ```
 
 #### IDE config example
 Example content of the file, 'example-ide.edn':
 ```clojure
 {:target-type :virtualbox
-:clojure {:lein-auth [{:repo "maven.my-repo.com"
-:username {:plain "mvn-account"}
-:password {:plain "mvn-password"}}]}
-:java {}
-:java-script {}
-:devops {:aws {:simple {:id {:plain "ACCESS_KEY"}
-:secret {:plain "SECRET_KEY"}}}}
-:ide-platform #{:atom}
-:user {:name "test-user"
-:password {:plain "xxx"}
-:email "test-user@mydomain.org"
-:ssh {:ssh-public-key {:plain "rsa-ssh kfjri5r8irohgn...test.key comment"}
-:ssh-private-key {:plain "123Test"}}}
-:gpg {:gpg-public-key
-{:plain "-----BEGIN PGP ...."
-:gpg-private-key
-{:plain "-----BEGIN PGP ...."}
-:gpg-passphrase {:plain "passphrase"}}}}
+ :clojure {:lein-auth [{:repo "maven.my-repo.com"
+                        :username {:plain "mvn-account"}
+                        :password {:plain "mvn-password"}}]}
+ :java {}
+ :java-script {}
+ :devops {:aws {:simple {:id {:plain "ACCESS_KEY"}
+                         :secret {:plain "SECRET_KEY"}}}}
+ :ide-platform #{:atom}
+ :user {:name "test-user"
+        :password {:plain "xxx"}
+        :email "test-user@mydomain.org"
+        :ssh {:ssh-public-key {:plain "rsa-ssh kfjri5r8irohgn...test.key comment"}
+        :ssh-private-key {:plain "123Test"}}}
+        :gpg {:gpg-public-key
+              {:plain "-----BEGIN PGP ...."
+              :gpg-private-key
+              {:plain "-----BEGIN PGP ...."}
+              :gpg-passphrase {:plain "passphrase"}}}}
 ```
 
 The ide config creates a new user with the provided credentials and installs the defined software and packages for the new user.
