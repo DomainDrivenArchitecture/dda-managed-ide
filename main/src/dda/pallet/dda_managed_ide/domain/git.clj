@@ -16,31 +16,34 @@
 
 (ns dda.pallet.dda-managed-ide.domain.git
   (:require
-    [schema.core :as s]))
+    [schema.core :as s]
+    [dda.config.commons.map-utils :as mu]))
 
 (s/defn
   ide-git-config
   [ide-config]
-  (let [{:keys [user type]} ide-config
+  (let [{:keys [user type git]} ide-config
         {:keys [name email]
          :or {email (str name "@mydomain")}} user]
-    {:os-user (keyword name)
-     :user-email email
-     :repos
-     {:dda-pallet
-      ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
-       "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
-       "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
-       "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-git-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-       "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
-       "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-       "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
-       "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git"]}}))
+    (mu/deep-merge
+      git
+      {:os-user (keyword name)
+       :user-email email
+       :repos
+       {:dda-pallet
+        ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
+         "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
+         "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
+         "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
+         "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
+         "https://github.com/DomainDrivenArchitecture/dda-git-crate.git"
+         "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
+         "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
+         "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
+         "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
+         "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
+         "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
+         "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
+         "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
+         "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
+         "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git"]}})))

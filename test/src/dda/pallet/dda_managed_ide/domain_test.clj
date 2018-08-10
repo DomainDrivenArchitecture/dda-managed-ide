@@ -23,16 +23,20 @@
 
 (s/set-fn-validation! true)
 
-(def config-set-1
+(def config-repo
   {:domain-input {:user {:name  "test"
                          :password "pwd"}
                   :target-type :remote-aws
-                  :ide-platform #{:atom}}
+                  :ide-platform #{:atom}
+                  :git   {:os-user :test
+                          :user-email "email"
+                          :repos {:mytest ["https://github.com:my/test.git"]}}}
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :remote-aws,
                    :usage-type :desktop-ide}
    :git-domain {:user-email "test@mydomain",
-                :repos {:dda-pallet ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
+                :repos {:mytest ["https://github.com:my/test.git"]
+                        :dda-pallet ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
                                      "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
@@ -290,15 +294,15 @@
   (testing
     "test the git config creation"
     (is (thrown? Exception (sut/ide-git-config {})))
-    (is (= (:git-domain config-set-1)
-           (sut/ide-git-config (:domain-input config-set-1))))))
+    (is (= (:git-domain config-repo)
+           (sut/ide-git-config (:domain-input config-repo))))))
 
 (deftest test-serverspec-config
   (testing
     "test the serverspec config creation"
     (is (thrown? Exception (sut/ide-serverspec-config {})))
-    (is (= (:serverspec-domain config-set-1)
-           (sut/ide-serverspec-config (:domain-input config-set-1))))
+    (is (= (:serverspec-domain config-repo)
+           (sut/ide-serverspec-config (:domain-input config-repo))))
     (is (= (:serverspec-domain config-set-clojure)
            (sut/ide-serverspec-config (:domain-input config-set-clojure))))))
 
@@ -306,8 +310,8 @@
   (testing
     "test the serverspec config creation"
     (is (thrown? Exception (sut/ide-serverspec-config {})))
-    (is (= (:dda-vm-domain config-set-1)
-           (sut/dda-vm-domain-configuration (:domain-input config-set-1))))
+    (is (= (:dda-vm-domain config-repo)
+           (sut/dda-vm-domain-configuration (:domain-input config-repo))))
     (is (= (:dda-vm-domain config-set-clojure)
            (sut/dda-vm-domain-configuration (:domain-input config-set-clojure))))))
 
@@ -315,8 +319,8 @@
   (testing
     "test the serverspec config creation"
     (is (thrown? Exception (sut/infra-configuration {})))
-    (is (= (:infra config-set-1)
-           (sut/infra-configuration (:domain-input config-set-1))))
+    (is (= (:infra config-repo)
+           (sut/infra-configuration (:domain-input config-repo))))
     (is (= (:infra config-set-clojure)
            (sut/infra-configuration (:domain-input config-set-clojure))))
     (is (= (:infra config-set-devops)
