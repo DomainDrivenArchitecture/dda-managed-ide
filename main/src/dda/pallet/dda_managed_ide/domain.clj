@@ -36,7 +36,7 @@
 (def DdaIdeDomainConfig
   (merge
     vm-domain/DdaVmUser
-    vm-domain/DdaVmBookmarks
+    vm-domain/DdaVmDomainBookmarks
     vm-domain/DdaVmTargetType
     {:target-type (s/enum :virtualbox :remote-aws :plain)}
     {:ide-platform (hash-set (s/enum :atom :idea :pycharm))
