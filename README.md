@@ -19,9 +19,7 @@ This crate builds on top of the dda-managed-vm and therefore provides a developm
 
 This crate automatically installs software on a Linux system. The target can be a standalone system but in most cases we prefer virtual machines as they offer snapshots and easy relocation.
 
-We abstracted away some configuration in our domain layer to use :virtualbox as the target type for the installation. If you wish to use another target type or different defaults you can define your own domain convention rather easily.
-
-
+We separated our configuration conventions in a layer called "domain-layer". As conventions are simple data-transformation adjusting this domain layer to your own conventions will be very easy.
 
 The dda-managed-ide installs the following packages in addition to the packages of the managed-vm:
 
@@ -58,7 +56,7 @@ The dda-managed-ide installs the following packages in addition to the packages 
 This crate installs and configures software on your target system. You can provision pre-created virtual machines (see paragraph "Prepare vm" below), standalone systems or cloud instances.
 
 ### Prepare vm
-There are to options to provision dda-managed-ide. You can provision remote over ssh or localy. 
+There are two options to provision dda-managed-ide. You can provision remote over ssh or localy.
 In order to provision over ssh you need a running opennssh-server on your target. If you do not already have a running ssh service use the steps below to install it
 1. Install xubuntu18.04
 2. Login with your initial user and use:
@@ -149,4 +147,5 @@ Or you can build your own conventions using our low level infra API. We will kee
 [see infra reference](doc/reference_infra.md)
 
 ## License
+Copyright © 2015, 2016, 2017, 2018 meissa GmbH
 Published under [apache2.0 license](LICENSE.md)
