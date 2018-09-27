@@ -40,7 +40,7 @@
     vm-domain/DdaVmTargetType
     {:target-type (s/enum :virtualbox :remote-aws :plain)}
     {:ide-platform (hash-set (s/enum :atom :idea :pycharm))
-     (s/optional-key :git) git-domain/GitDomainConfig
+     (s/optional-key :git) git-domain/GitDomain
      (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
      (s/optional-key :java) {}
      (s/optional-key :java-script) {}
