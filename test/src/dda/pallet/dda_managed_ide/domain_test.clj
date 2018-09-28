@@ -28,9 +28,13 @@
                          :password "pwd"}
                   :target-type :remote-aws
                   :ide-platform #{:atom}
-                  :git   {:os-user :test
-                          :user-email "email"
-                          :repos {:mytest ["https://github.com:my/test.git"]}}}
+                  :git   {:test
+                          {:user-email "email"
+                           :repo {:mytest [{:host "github.com"
+                                            :protocol :https
+                                            :orga-path "my"
+                                            :repo-name "test"
+                                            :server-type :github}]}}}}
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :remote-aws,
                    :usage-type :desktop-ide}
