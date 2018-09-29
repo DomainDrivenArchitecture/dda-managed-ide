@@ -61,7 +61,9 @@
 (s/defn ^:always-validate
   ide-git-config
   [ide-config :- DdaIdeDomainResolvedConfig]
-  (git/ide-git-config ide-config))
+  (let [{:keys [user]} ide-config
+        {:keys [name email git-credentials desktop-wiki credential-store]} user]
+    (git/ide-git-config name email git-credentials desktop-wiki credential-store)))
 
 (s/defn ^:always-validate
   ide-serverspec-config

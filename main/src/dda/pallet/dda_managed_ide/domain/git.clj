@@ -17,33 +17,61 @@
 (ns dda.pallet.dda-managed-ide.domain.git
   (:require
     [schema.core :as s]
-    [dda.config.commons.map-utils :as mu]))
+    [dda.config.commons.map-utils :as mu]
+    [dda.pallet.commons.secret :as secret]
+    [dda.pallet.dda-git-crate.domain :as git-domain]
+    [dda.pallet.dda-managed-vm.domain.git :as git-repo]))
 
-(s/defn
-  ide-git-config
-  [ide-config]
-  (let [{:keys [user type git]} ide-config
-        {:keys [name email]
-         :or {email (str name "@mydomain")}} user]
-    (mu/deep-merge
-      git
-      {:os-user (keyword name)
-       :user-email email
-       :repos
-       {:dda-pallet
-        ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
-         "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
-         "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
-         "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-         "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-         "https://github.com/DomainDrivenArchitecture/dda-git-crate.git"
-         "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-         "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
-         "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-         "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-         "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
-         "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-         "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
-         "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
-         "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
-         "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git"]}})))
+(def ServerIdentity git-domain/ServerIdentity)
+(def Repository git-domain/Repository)
+(def Repositories [Repository])
+(def GitCredential git-domain/GitCredential)
+(def GitCredentials git-domain/GitCredentials)
+(def GitCredentialsResolved git-domain/GitCredentialsResolved)
+
+(def repo-names
+  ["dda-config-commons", "dda-pallet-commons" ,"dda-pallet","dda-user-crate", "dda-backup-crate" ,"dda-git-crate",
+   "dda-hardening-crate", "httpd-crate", "dda-httpd-crate", "dda-liferay-crate", "dda-managed-vm", "dda-managed-ide",
+   "dda-mariadb-crate", "dda-serverspec-crate", "dda-tomcat-crate", "dda-cloudspec"])
+
+(s/defn ide-git-config
+ [name :- s/Str
+  email :- s/Str
+  git-credentials :- GitCredentials
+  desktop-wiki :- Repositories
+  credential-store :- Repositories]
+ (let [email (if (some? email) email (str name "@mydomain"))
+       protocol-type (git-repo/protocol-type git-credentials)]
+   {(keyword name)
+    (merge
+      {:user-email email}
+      (when (some? git-credentials)
+        {:credential git-credentials})
+      {:repo {:books
+              [{:host "github.com"
+                :orga-path "DomainDrivenArchitecture"
+                :repo-name "ddaArchitecture"
+                :protocol protocol-type
+                :server-type :github}]
+              :dda-pallet
+               (into []
+                (for [repo-name repo-names]
+                  (merge {:repo-name repo-name}
+                         {:host "github.com"
+                           :orga-path "DomainDrivenArchitecture"
+                           :protocol protocol-type
+                           :server-type :github})))}}
+      {:synced-repo
+       (merge
+         {:credential-store
+          (into [] (concat
+                     [{:host "github.com"
+                       :orga-path "DomainDrivenArchitecture"
+                       :repo-name "password-store-for-teams"
+                       :protocol protocol-type
+                       :server-type :github}]
+                     (when (some? credential-store)
+                       credential-store)))}
+         (when (some? desktop-wiki)
+          {:desktop-wiki desktop-wiki}))}
+      {})}))
