@@ -24,8 +24,11 @@
 (s/set-fn-validation! true)
 
 (def config-repo
-  {:domain-input {:user {:name  "test"
-                         :password "pwd"}
+  {:domain-input {:user {:name "test"
+                         :password "pwd"
+                         :email "test-user@mydomain.org"
+                         :credential-store []
+                         :desktop-wiki []}
                   :target-type :remote-aws
                   :ide-platform #{:atom}
                   :git   {:test
@@ -35,28 +38,111 @@
                                             :orga-path "my"
                                             :repo-name "test"
                                             :server-type :github}]}}}}
-   :dda-vm-domain {:user {:name "test", :password "pwd"},
+   :dda-vm-domain {:user {:name "test"
+                          :password "pwd"
+                          :email "test-user@mydomain.org"
+                          :credential-store []
+                          :desktop-wiki []},
                    :target-type :remote-aws,
                    :usage-type :desktop-ide}
-   :git-domain {:user-email "test@mydomain",
-                :repos {:mytest ["https://github.com:my/test.git"]
-                        :dda-pallet ["https://github.com/DomainDrivenArchitecture/dda-config-commons.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-pallet-commons.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-pallet.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-user-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-backup-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-git-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-hardening-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/httpd-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-httpd-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-liferay-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-managed-vm.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-managed-ide.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-mariadb-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-serverspec-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-tomcat-crate.git"
-                                     "https://github.com/DomainDrivenArchitecture/dda-cloudspec.git",]}
-                :os-user :test}
+   :git-domain {:test
+                {:user-email "test-user@mydomain.org",
+                 :repo
+                 {:books
+                  [{:host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :repo-name "ddaArchitecture",
+                    :protocol :https,
+                    :server-type :github}],
+                  :dda-pallet
+                  [{:repo-name "dda-config-commons",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-pallet-commons",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-pallet",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-user-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-backup-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-git-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-hardening-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "httpd-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-httpd-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-liferay-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-managed-vm",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-managed-ide",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-mariadb-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-serverspec-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-tomcat-crate",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}
+                   {:repo-name "dda-cloudspec",
+                    :host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :protocol :https,
+                    :server-type :github}]}
+                 :synced-repo
+                 {:credential-store
+                  [{:host "github.com",
+                    :orga-path "DomainDrivenArchitecture",
+                    :repo-name "password-store-for-teams",
+                    :protocol :https,
+                    :server-type :github}],
+                  :desktop-wiki []}}}
    :serverspec-domain {:package
                           '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
    :infra {:dda-managed-ide {:ide-user :test,

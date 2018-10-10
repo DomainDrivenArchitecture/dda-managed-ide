@@ -54,13 +54,13 @@
                 :protocol protocol-type
                 :server-type :github}]
               :dda-pallet
-               (into []
-                (for [repo-name repo-names]
-                  (merge {:repo-name repo-name}
-                         {:host "github.com"
-                           :orga-path "DomainDrivenArchitecture"
-                           :protocol protocol-type
-                           :server-type :github})))}}
+              (into []
+               (for [repo-name repo-names]
+                 (merge {:repo-name repo-name}
+                        {:host "github.com"
+                          :orga-path "DomainDrivenArchitecture"
+                          :protocol protocol-type
+                          :server-type :github})))}}
       {:synced-repo
        (merge
          {:credential-store
