@@ -48,7 +48,13 @@
    :git-domain {:test
                 {:user-email "test-user@mydomain.org",
                  :repo
-                 {:books
+                 {:mytest
+                  [{:host "github.com"
+                    :protocol :https
+                    :orga-path "my"
+                    :repo-name "test"
+                    :server-type :github}]
+                  :books
                   [{:host "github.com",
                     :orga-path "DomainDrivenArchitecture",
                     :repo-name "ddaArchitecture",

@@ -61,9 +61,13 @@
 (s/defn ^:always-validate
   ide-git-config
   [ide-config :- DdaIdeDomainResolvedConfig]
-  (let [{:keys [user]} ide-config
-        {:keys [name email git-credentials desktop-wiki credential-store]} user]
-    (git/ide-git-config name email git-credentials desktop-wiki credential-store)))
+  (let [{:keys [user git]} ide-config
+        {:keys [name email git-credentials desktop-wiki credential-store]} user
+        ide-git-config (git/ide-git-config name email git-credentials desktop-wiki credential-store)]
+    (mu/deep-merge
+        {}
+        git
+        ide-git-config)))
 
 (s/defn ^:always-validate
   ide-serverspec-config
