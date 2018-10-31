@@ -76,11 +76,11 @@ sudo apt-get install openjdk-11-jre-headless
 3. Create the files 'example-ide.edn' (Domain-Schema for your desktop) and 'target.edn' (Schema for Targets to be provisioned) according to the reference and our example configurations. Please create them in the same folder where you have saved the jar-file. For more information about these files refer to the corresponding information below.
 4. Start the installation:
 ```bash
-java -jar managed-ide.jar --targets example-targets.edn example-ide.edn
+java -jar dda-managed-ide-standalone.jar.jar --targets example-targets.edn example-ide.edn
 ```
 If you want to install the ide on your localhost you don't need a target config.
 ```bash
-java -jar managed-ide.jar example-ide.edn
+java -jar dda-managed-ide-standalone.jar.jar example-ide.edn
 ```
 
 ### Configuration
