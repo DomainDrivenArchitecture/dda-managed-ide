@@ -41,7 +41,7 @@
   desktop-wiki :- Repositories
   credential-store :- Repositories]
  (let [email (if (some? email) email (str name "@mydomain"))
-       protocol-type (git-repo/protocol-type git-credentials)]
+       protocol-type (git-repo/github-protocol-type git-credentials)]
    {(keyword name)
     (merge
       {:user-email email}
