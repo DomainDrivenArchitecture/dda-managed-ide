@@ -161,7 +161,7 @@
                                     :yed
                                     {:download-url
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.1.zip",}
-                                    :dbvis {:version "10.0.13"}}
+                                    :dbvis {:version "10.0.15"}}
                              :atom {:plugins ["ink"
                                               "minimap"
                                               "busy-signal"
@@ -210,7 +210,7 @@
                                     :yed
                                     {:download-url
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.1.zip",}
-                                    :dbvis {:version "10.0.13"}}
+                                    :dbvis {:version "10.0.15"}}
                              :java {:java-default-to
                                     "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"}
                              :atom {:plugins ["ink"
@@ -268,7 +268,7 @@
                                     :yed
                                     {:download-url
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.1.zip",}
-                                    :dbvis {:version "10.0.13"}}
+                                    :dbvis {:version "10.0.15"}}
                              :devops {:terraform
                                         {:version "0.11.7",
                                          :sha256-hash
@@ -319,7 +319,7 @@
              :yed
              {:download-url
               "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.1.zip"},
-             :dbvis {:version "10.0.13"}},
+             :dbvis {:version "10.0.15"}},
             :atom
             {:plugins
              ["ink"
@@ -362,7 +362,7 @@
              :yed
              {:download-url
               "https://www.yworks.com/resources/yed/demo/yEd-3.18.1.1.zip"},
-             :dbvis {:version "10.0.13"}},
+             :dbvis {:version "10.0.15"}},
             :atom
             {:plugins
              ["ink"
