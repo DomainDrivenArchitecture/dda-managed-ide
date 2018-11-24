@@ -37,4 +37,13 @@
                        :dependencies [[org.clojure/tools.cli "0.4.1"]
                                       [ch.qos.logback/logback-classic "1.3.0-alpha4"]
                                       [org.slf4j/jcl-over-slf4j "1.8.0-beta2"]]}}
+  :release-tasks [["vcs" "assert-committed"]
+                  ["change" "version" "leiningen.release/bump-version" "release"]
+                  ["vcs" "commit"]
+                  ["vcs" "tag"]
+                  ["deploy"]
+                  ["uberjar"]
+                  ["change" "version" "leiningen.release/bump-version"]
+                  ["vcs" "commit"]
+                  ["vcs" "push"]]
   :local-repo-classpath true)
