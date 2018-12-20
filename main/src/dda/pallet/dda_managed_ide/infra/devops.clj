@@ -47,6 +47,12 @@
    #{:install-mfa
      :install-ami-cleaner})
 
+;TODO: Add pybuilder installation and configuration:
+;sudo apt install python3-pip
+;sudo pip3 install pip --upgrade
+;pip install pybuilder --user
+;export PATH=$PATH:~/.local/bin
+
 (defn install-mfa
   [facility]
   (actions/as-action
