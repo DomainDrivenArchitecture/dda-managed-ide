@@ -24,6 +24,7 @@
     [dda.pallet.dda-managed-ide.domain.git :as git]
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
     [dda.pallet.dda-managed-ide.domain.idea :as idea]
+    [dda.pallet.dda-managed-ide.domain.serverspec :as serverspec]
     [dda.pallet.dda-managed-ide.infra :as infra]))
 
 (def InfraResult {infra/facility infra/DdaIdeConfig})
@@ -72,20 +73,7 @@
 (s/defn ^:always-validate
   ide-serverspec-config
   [domain-config :- DdaIdeDomainResolvedConfig]
-  (let [{:keys [user ide-platform]} domain-config
-        contains-clojure? (contains? domain-config :clojure)
-        contains-devops? (contains? domain-config :devops)]
-    (mu/deep-merge
-      {}
-      (when contains-clojure?
-        {:file (list
-                 {:path (str "/home/" (:name user) "/.lein/profiles.clj")}
-                 {:path "/opt/leiningen/lein"}
-                 {:path "/etc/profile.d/lein.sh"})})
-      (when (contains? ide-platform :atom)
-        {:package '({:name "atom"}
-                    {:name "python"}
-                    {:name "gvfs-bin"})}))))
+  (serverspec/serverspec-prerequisits))
 
 (s/defn ^:always-validate
   dda-vm-domain-configuration
@@ -116,7 +104,7 @@
        :basics {:argo-uml {:version "0.34"}
                 :yed {:download-url
                       "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip"}
-                :dbvis {:version "10.0.15"}}}
+                :dbvis {:version "10.0.16"}}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
       (when (contains? ide-platform :idea)

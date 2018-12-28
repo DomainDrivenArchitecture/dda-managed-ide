@@ -19,7 +19,8 @@
   (:require
     [clojure.test :refer :all]
     [schema.core :as s]
-    [dda.pallet.dda-managed-ide.domain :as sut]))
+    [dda.pallet.dda-managed-ide.domain :as sut]
+    [dda.pallet.dda-managed-ide.domain.serverspec :as serverspec]))
 
 (s/set-fn-validation! true)
 
@@ -150,7 +151,10 @@
                     :server-type :github}],
                   :desktop-wiki []}}}
    :serverspec-domain {:package
-                          '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
+                       [{:name "apt-utils" :installed? true}
+                        {:name "curl" :installed? true}
+                        {:name "gnupg2" :installed? true}
+                        {:name "sudo" :installed? true}]}
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
@@ -161,7 +165,7 @@
                                     :yed
                                     {:download-url
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}
-                                    :dbvis {:version "10.0.15"}}
+                                    :dbvis {:version "10.0.16"}}
                              :atom {:plugins ["ink"
                                               "minimap"
                                               "busy-signal"
@@ -194,12 +198,11 @@
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
                    :usage-type :desktop-ide}
-   :serverspec-domain {:file
-                       '({:path "/home/test/.lein/profiles.clj"}
-                         {:path "/opt/leiningen/lein"}
-                         {:path "/etc/profile.d/lein.sh"},)
-                       :package
-                       '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
+   :serverspec-domain {:package
+                       [{:name "apt-utils" :installed? true}
+                        {:name "curl" :installed? true}
+                        {:name "gnupg2" :installed? true}
+                        {:name "sudo" :installed? true}]}
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
@@ -210,7 +213,7 @@
                                     :yed
                                     {:download-url
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}
-                                    :dbvis {:version "10.0.15"}}
+                                    :dbvis {:version "10.0.16"}}
                              :java {:java-default-to
                                     "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"}
                              :atom {:plugins ["ink"
@@ -268,7 +271,7 @@
                                     :yed
                                     {:download-url
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}
-                                    :dbvis {:version "10.0.15"}}
+                                    :dbvis {:version "10.0.16"}}
                              :devops {:terraform
                                         {:version "0.11.7",
                                          :sha256-hash
@@ -319,7 +322,7 @@
              :yed
              {:download-url
               "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip"},
-             :dbvis {:version "10.0.15"}},
+             :dbvis {:version "10.0.16"}},
             :atom
             {:plugins
              ["ink"
@@ -362,7 +365,7 @@
              :yed
              {:download-url
               "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip"},
-             :dbvis {:version "10.0.15"}},
+             :dbvis {:version "10.0.16"}},
             :atom
             {:plugins
              ["ink"
@@ -398,9 +401,9 @@
     "test the serverspec config creation"
     (is (thrown? Exception (sut/ide-serverspec-config {})))
     (is (= (:serverspec-domain config-repo)
-           (sut/ide-serverspec-config (:domain-input config-repo))))
+           (serverspec/serverspec-prerequisits)))
     (is (= (:serverspec-domain config-set-clojure)
-           (sut/ide-serverspec-config (:domain-input config-set-clojure))))))
+           (serverspec/serverspec-prerequisits)))))
 
 (deftest test-dda-vm-domain-config
   (testing
