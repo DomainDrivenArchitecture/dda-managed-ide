@@ -1,4 +1,4 @@
-FROM dda-managed-vm
+FROM dda-managed-ide
 
 RUN apt-get install curl -y
 
