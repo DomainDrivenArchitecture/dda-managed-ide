@@ -7,4 +7,7 @@ RUN apt-get install curl gnupg2 apt-utils -y
 COPY target/dda-managed-ide-standalone.jar /app/dda-managed-ide-standalone.jar
 COPY integration/docker/image/ide.edn /app/ide.edn
 
+# check prerequisits
+RUN java -jar /app/dda-managed-ide-standalone.jar --serverspec /app/ide.edn
+
 RUN java -jar /app/dda-managed-ide-standalone.jar /app/ide.edn

@@ -20,6 +20,7 @@
     [dda.pallet.commons.secret :as secret]
     [dda.config.commons.map-utils :as mu]
     [dda.pallet.dda-managed-vm.domain :as vm-domain]
+    [dda.pallet.dda-managed-vm.domain.serverspec :as serverspec]
     [dda.pallet.dda-git-crate.domain :as git-domain]
     [dda.pallet.dda-managed-ide.domain.git :as git]
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
@@ -72,20 +73,7 @@
 (s/defn ^:always-validate
   ide-serverspec-config
   [domain-config :- DdaIdeDomainResolvedConfig]
-  (let [{:keys [user ide-platform]} domain-config
-        contains-clojure? (contains? domain-config :clojure)
-        contains-devops? (contains? domain-config :devops)]
-    (mu/deep-merge
-      {}
-      (when contains-clojure?
-        {:file (list
-                 {:path (str "/home/" (:name user) "/.lein/profiles.clj")}
-                 {:path "/opt/leiningen/lein"}
-                 {:path "/etc/profile.d/lein.sh"})})
-      (when (contains? ide-platform :atom)
-        {:package '({:name "atom"}
-                    {:name "python"}
-                    {:name "gvfs-bin"})}))))
+  (serverspec/serverspec-prerequisits))
 
 (s/defn ^:always-validate
   dda-vm-domain-configuration
