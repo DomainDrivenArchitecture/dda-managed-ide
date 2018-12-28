@@ -28,6 +28,8 @@ jobs:
           skip_cleanup: true
           overwrite: true
           draft: true
+          on:
+            tags: true
           api_key:
             secure:
           file:
@@ -35,4 +37,6 @@ jobs:
             - target/dda-managed-ide-standalone.jar.md5
         - provider: script
           skip_cleanup: true
+          on:
+            tags: true
           script: bash integration/docker/publish.sh dda-managed-ide
