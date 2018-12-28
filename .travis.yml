@@ -26,8 +26,6 @@ jobs:
       deploy:
         - provider: releases
           skip_cleanup: true
-          overwrite: true
-          draft: true
           on:
             tags: true
           api_key:
