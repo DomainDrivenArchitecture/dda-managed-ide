@@ -2,7 +2,7 @@ FROM dda-managed-ide
 
 RUN apt-get install curl -y
 
-RUN curl -L -o /app/serverspec.jar https://github.com/DomainDrivenArchitecture/dda-serverspec-crate/releases/download/1.2.2/dda-serverspec-crate-1.2.2-standalone.jar
+RUN curl -L -o /app/serverspec.jar https://github.com/DomainDrivenArchitecture/dda-serverspec-crate/releases/download/1.3.0/dda-serverspec-standalone.jar
 
 COPY integration/docker/test/serverspec.edn /app/serverspec.edn
 
