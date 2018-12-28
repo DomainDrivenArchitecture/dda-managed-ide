@@ -19,7 +19,8 @@
   (:require
     [clojure.test :refer :all]
     [schema.core :as s]
-    [dda.pallet.dda-managed-ide.domain :as sut]))
+    [dda.pallet.dda-managed-ide.domain :as sut]
+    [dda.pallet.dda-managed-ide.domain.serverspec :as serverspec]))
 
 (s/set-fn-validation! true)
 
@@ -150,7 +151,10 @@
                     :server-type :github}],
                   :desktop-wiki []}}}
    :serverspec-domain {:package
-                          '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
+                       [{:name "apt-utils" :installed? true}
+                        {:name "curl" :installed? true}
+                        {:name "gnupg2" :installed? true}
+                        {:name "sudo" :installed? true}]}
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
@@ -194,12 +198,11 @@
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
                    :usage-type :desktop-ide}
-   :serverspec-domain {:file
-                       '({:path "/home/test/.lein/profiles.clj"}
-                         {:path "/opt/leiningen/lein"}
-                         {:path "/etc/profile.d/lein.sh"},)
-                       :package
-                       '({:name "atom"} {:name "python"} {:name "gvfs-bin"})}
+   :serverspec-domain {:package
+                       [{:name "apt-utils" :installed? true}
+                        {:name "curl" :installed? true}
+                        {:name "gnupg2" :installed? true}
+                        {:name "sudo" :installed? true}]}
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
@@ -398,9 +401,9 @@
     "test the serverspec config creation"
     (is (thrown? Exception (sut/ide-serverspec-config {})))
     (is (= (:serverspec-domain config-repo)
-           (sut/ide-serverspec-config (:domain-input config-repo))))
+           (serverspec/serverspec-prerequisits)))
     (is (= (:serverspec-domain config-set-clojure)
-           (sut/ide-serverspec-config (:domain-input config-set-clojure))))))
+           (serverspec/serverspec-prerequisits)))))
 
 (deftest test-dda-vm-domain-config
   (testing

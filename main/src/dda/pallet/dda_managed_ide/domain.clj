@@ -20,11 +20,11 @@
     [dda.pallet.commons.secret :as secret]
     [dda.config.commons.map-utils :as mu]
     [dda.pallet.dda-managed-vm.domain :as vm-domain]
-    [dda.pallet.dda-managed-vm.domain.serverspec :as serverspec]
     [dda.pallet.dda-git-crate.domain :as git-domain]
     [dda.pallet.dda-managed-ide.domain.git :as git]
     [dda.pallet.dda-managed-ide.domain.atom :as atom]
     [dda.pallet.dda-managed-ide.domain.idea :as idea]
+    [dda.pallet.dda-managed-ide.domain.serverspec :as serverspec]
     [dda.pallet.dda-managed-ide.infra :as infra]))
 
 (def InfraResult {infra/facility infra/DdaIdeConfig})
