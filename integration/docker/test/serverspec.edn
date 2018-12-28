@@ -1,2 +1,2 @@
-{:file [{:path "/home/repo"}
-        {:path "/home/.lein/profiles.clj"}]}
+{:file [{:path "/home/test-user/repo"}
+        {:path "/home/test-user/.lein/profiles.clj"}]}
