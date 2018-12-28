@@ -21,6 +21,7 @@
     [pallet.actions :as actions]
     [dda.pallet.core.infra :as core-infra]
     [dda.pallet.dda-managed-ide.infra.basics :as basics]
+    [dda.pallet.dda-managed-ide.infra.db :as db]
     [dda.pallet.dda-managed-ide.infra.clojure :as clojure]
     [dda.pallet.dda-managed-ide.infra.java :as java]
     [dda.pallet.dda-managed-ide.infra.java-script :as js]
@@ -35,6 +36,7 @@
 (def DdaIdeConfig
   {:ide-user s/Keyword
    (s/optional-key :basics) basics/Basics
+   (s/optional-key :db) db/Db
    (s/optional-key :clojure) clojure/Clojure
    (s/optional-key :java) java/Java
    (s/optional-key :java-script) js/JavaScript
@@ -46,6 +48,7 @@
    (hash-set (apply s/enum
                     (clojure.set/union
                       basics/Settings
+                      db/Settings
                       clojure/Settings
                       devops/Settings
                       js/Settings
@@ -60,6 +63,7 @@
           contains-java? (contains? config :java)
           contains-java-script? (contains? config :java-script)
           contains-basics? (contains? config :basics)
+          contains-db? (contains? config :db)
           contains-atom? (contains? config :atom)]
     (pallet.action/with-action-options
       {:sudo-user "root"
@@ -69,12 +73,14 @@
 
 (s/defn install-system
   [config :- DdaIdeConfig]
-  (let [{:keys [ide-settings basics clojure devops java java-script atom idea pycharm]} config
+  (let [{:keys [ide-settings basics db clojure devops java java-script atom idea
+                pycharm]} config
           contains-clojure? (contains? config :clojure)
           contains-devops? (contains? config :devops)
           contains-java? (contains? config :java)
           contains-java-script? (contains? config :java-script)
           contains-basics? (contains? config :basics)
+          contains-db? (contains? config :db)
           contains-atom? (contains? config :atom)
           contains-idea? (contains? config :idea)
           contains-pycharm? (contains? config :pycharm)]
@@ -84,6 +90,7 @@
        :script-env {:HOME (str "/root")}})
     (actions/package-manager :update)
     (basics/install-system facility ide-settings contains-basics? basics)
+    (db/install-system facility ide-settings contains-db? db)
     (clojure/install-system facility contains-clojure? clojure)
     (java/install-system facility contains-java? java)
     (js/install-system facility contains-java-script? java-script ide-settings)

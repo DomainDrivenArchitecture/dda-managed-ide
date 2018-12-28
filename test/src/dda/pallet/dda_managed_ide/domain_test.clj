@@ -159,13 +159,14 @@
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
                                              :install-npm
+                                             :install-pgtools
                                              :install-asciinema}
                              :basics
                                    {:argo-uml {:version "0.34"},
                                     :yed
                                     {:download-url
-                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}
-                                    :dbvis {:version "10.0.16"}}
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}}
+                             :db {:dbvis {:version "10.0.16"}}
                              :atom {:plugins ["ink"
                                               "minimap"
                                               "busy-signal"
@@ -207,13 +208,14 @@
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
                                              :install-npm
+                                             :install-pgtools
                                              :install-asciinema}
                              :basics
                                    {:argo-uml {:version "0.34"},
                                     :yed
                                     {:download-url
-                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}
-                                    :dbvis {:version "10.0.16"}}
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}}
+                             :db {:dbvis {:version "10.0.16"}}
                              :java {:java-default-to
                                     "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"}
                              :atom {:plugins ["ink"
@@ -265,13 +267,14 @@
                                              :install-npm
                                              :install-mfa
                                              :install-mach
+                                             :install-pgtools
                                              :install-ami-cleaner}
                              :basics
                                    {:argo-uml {:version "0.34"},
                                     :yed
                                     {:download-url
-                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}
-                                    :dbvis {:version "10.0.16"}}
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}}
+                             :db {:dbvis {:version "10.0.16"}}
                              :devops {:terraform
                                         {:version "0.11.7",
                                          :sha256-hash
@@ -316,13 +319,15 @@
    :infra {:dda-managed-ide
            {:ide-user :test,
             :ide-settings
-            #{:install-basics :install-idea-inodes :install-npm :install-asciinema},
+            #{:install-basics :install-idea-inodes :install-npm :install-asciinema
+              :install-pgtools,}
             :basics
             {:argo-uml {:version "0.34"},
              :yed
              {:download-url
-              "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip"},
-             :dbvis {:version "10.0.16"}},
+              "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip"}}
+            :db
+            {:dbvis {:version "10.0.16"}},
             :atom
             {:plugins
              ["ink"
@@ -359,13 +364,15 @@
             :java-script
               {:nodejs {:version "10.x"}}
             :ide-settings
-            #{:install-basics :install-idea-inodes :install-asciinema :install-yarn},
+            #{:install-basics :install-idea-inodes :install-asciinema :install-yarn
+              :install-pgtools,}
             :basics
             {:argo-uml {:version "0.34"},
              :yed
              {:download-url
-              "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip"},
-             :dbvis {:version "10.0.16"}},
+              "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip"},}
+            :db
+            {:dbvis {:version "10.0.16"}}
             :atom
             {:plugins
              ["ink"

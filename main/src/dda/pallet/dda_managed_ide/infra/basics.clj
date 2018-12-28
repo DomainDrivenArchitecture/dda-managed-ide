@@ -29,13 +29,9 @@
 (def Yed
    {:download-url s/Str})
 
-(def Dbvis
-   {:version s/Str})
-
 (def Basics
   {(s/optional-key :argo-uml) ArgoUml
-   (s/optional-key :yed) Yed
-   (s/optional-key :dbvis) Dbvis})
+   (s/optional-key :yed) Yed})
 
 (def Settings
    #{:install-basics})
@@ -94,42 +90,16 @@
         ["#!/bin/bash"
          "java -jar yed.jar"]))))
 
-(s/defn
-  install-dbvis
-  "get and install dbvis at /opt/dbvis"
-  [facility :- s/Keyword
-   config :- Dbvis]
-  (let [{:keys [version]} config]
-    (actions/as-action
-      (logging/info (str facility "-configure system: install-dbvis")))
-    (actions/remote-directory
-      "/opt/dbvis"
-      :owner "root"
-      :group "users"
-      :recursive true
-      :unpack :tar
-      :url (str "http://www.dbvis.com/product_download/dbvis-" version
-                "/media/dbvis_unix_" (string/replace version #"\." "_") ".tar.gz"))
-    (actions/remote-file
-      "/etc/profile.d/dbvis.sh"
-      :literal true
-      :content
-      (util/create-file-content
-        ["PATH=$PATH:/opt/dbvis"
-         "export PATH"]))))
-
 (s/defn install-system
   [facility :- s/Keyword
    ide-settings
    contains-basics? :- s/Bool
    basics :- Basics]
-  (let [{:keys [argo-uml yed dbvis]} basics]
+  (let [{:keys [argo-uml yed]} basics]
     (when (contains? ide-settings :install-basics)
        (install-basics facility))
     (when contains-basics?
       (when (contains? basics :argo-uml)
         (install-argouml facility argo-uml))
       (when (contains? basics :yed)
-        (install-yed facility yed))
-      (when (contains? basics :dbvis)
-        (install-dbvis facility dbvis)))))
+        (install-yed facility yed)))))
