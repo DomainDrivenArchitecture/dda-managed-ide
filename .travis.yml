@@ -10,7 +10,7 @@ stages:
 env:
   global:
     - DOCKER_USERNAME: domaindrivenarchitecture
-    - secure:
+    - secure: "bbQx3UncAIx0YVwi06YN3WEOTycPAZQwYJuoNK7tzum+Bp0XE0qcQsM2j2QZeCEOGI2Zs43slRdUPS/dHqLSFXmpG7rw7Je3Ze8GkkR+4Q10Ka1w90pN7V6iDYvhnJHg8ZdUgyeTVOzoFxB88wtjwSTD9RA+fwz/bj8ffBu47jfxk1GeVY4/2pjMB8xCcwDdTK4c1ru/0V0JjFfD3AO+zdPZRNc2JlTOFDpohrKPto1HAkt55mvRSLlgQy9/zzZPqey2mIRxYAU3yPrNNB7Dg5wxHN0mU4fhNsZ2qAFnDS6/E7zW//ayEJAUEo0apqK4idvE11BvpVJAJj0HNQBuIKqTFwDWKV4XgUudc+pQBizAzNVtaAoVIozNscMVbFjYqKg+B2QDHVt0QaxDKTiOYjR+VXxu/aBSi7vrPKwLQ4bqb2Y7sx22UusLysNNe6GJbChpuNJjmGwNudjWGDpzRSokEj/mB2SOm3x3IV7GeJOtaZkDzRYhrWqdAFTA3QryCPcJJi6NF5TBH9Eorf8jkHzmVlc10aIKHWG8Tn/D3Ehzx9k33ZEizajKUGLofKpMrvXbpT5exaM3oajJNuhwjuJizYyM3aQIIkHCD7rvPwsBx8uudQ7GnYrefuC8YAoGv81Sydm7ziYSNHuUI5+11K6Qm9sD/T1BpUTs/qGhTOc="
 jobs:
   include:
     - stage: build
@@ -31,7 +31,7 @@ jobs:
           on:
             tags: true
           api_key:
-            secure:
+            secure: "a9qwquUhb1e8mCCXAn8AD+j1gRMD0w0swsEpMQbCNnddVsENpIfhr353QEDNzqr7W5cIcm3N9+XSkJogRPzSanPF64TnjeE5vkk9NZ2Pv4fAfrI58L7n5fS+/oXoFluJ+3wjzLNpW/lCD46hjiFzvc+Ov+gFO1IwovCGgLni0pyyCki34wAyQoPV/2YRxFmIGOch7D6bczkPPqWutszUaGKmnfp2YfZJ8hFm1tIlzjJ66sGQz8t64AMC4g31cc2hMWNoi2dmmbWhIaAH01xq9qUnK/byyfkVwKxvjDi2i35/UZQMwes/AEMHtcQImeOHV7/ukrV1XtxGOUAk4sZN+hFxngl22MTvVNsMrjyhxp/WTtfSgMAiFfYFoz+meRUUEGbqYiXi57wg1Dw0JwlGJoZPCzTkVS5wRv3+sySWkrBIsinTQK69Ij2VNWy2rpVPUzBOf4zSssJQVaWn2f5JxgxT3OwLtTi7oKzpemybrdo6b1zLdCQDluysbtT3yilbB1tjvLP7nuOTPQS3DBaaRiq+3EBXKuwWr+k53b9KgovCpnJBc5iqMqXxS7haZ+yprflk1hY6WwkbcoUV1QWYt/mgg5C9HVwY3I9klhKdwXD4MWW6U1pUCY+zcBBhHggbMKZIan9yeFPVqGWuw6A0cVsKMlT0GeBcGwdKb9tnhxQ="
           file:
             - target/dda-managed-ide-standalone.jar
             - target/dda-managed-ide-standalone.jar.md5
