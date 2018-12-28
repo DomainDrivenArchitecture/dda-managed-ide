@@ -1,1 +1,37 @@
+dist: trusty
 language: clojure
+
+services:
+  - docker
+
+stages:
+  - build
+
+env:
+  global:
+    - DOCKER_USERNAME: domaindrivenarchitecture
+    - secure: "GkxA9AQflYbajB5jWXiBLfERVy6GcA2lah51z+qS3pVnuGkpoKMv5AA4SiSTqEzm8ADVT5Ah/6hq9M5TQVwU+qmwqdiw2WyF4PngXx11JrLpmDESgF3A6PtLBfS5DV5vJZbYg6Hu9tG+W0WupOCpvBklxrm1euoilievXNL7psHfVaSCoPlpsJQqs0qkOdJis+oEL0mdbwFTMJ2HP1R9nCV9zCvC5H0jiOJad41aZEXVVCQvwB4Ahsce0Jbg8n7X69sSuNmhpVilfw5EwPWfq8tBJU5xsgqLX7Si9MNw11vLwGDxBGrEnvlLrvF8AN4SUjdk9wvARZmLG/pKSe+EA5lvD0/aR9AKadYfWXwTOJgXBSuI7gCnY+Pzah6HjLryiX67cptesXFNBk3SbeVeahV+ga3m2Aj60IaMcHrCrAKxNynm2zWA5u7sofqP9wjpz6NCNgKQvTa6WoPusNa7fhpkeUaa4JV38Y3mTFdsTwkgwFL7MAbO1u49oNnKa0ckoWHGF1e6RCpL5RcDt/UQ9XYO1eCGT6Rfw5bNNgXFnuQNum0yYNRlORc8yTjqDQDUk+NAz8bGbY3xSSbccnZvca2Lv0mBCiiWYyz46gFOcTfAotcxvpBN87Rtv4LwO5R9J0vov88iBbOBlqRGkQny1NobZYAnhp1pHv5miEnC1LQ="
+jobs:
+  include:
+    - stage: build
+      script:
+        - # build
+        - lein test
+        - lein uberjar
+        - md5sum target/dda-managed-ide-standalone.jar > target/dda-managed-ide-standalone.jar.md5
+        - # create docker image
+        - docker build -t dda-managed-ide --file integration/docker/image/Dockerfile .
+        - # integration test on docker image level
+        - docker build -t dda-managed-ide-test --file integration/docker/test/Dockerfile .
+      deploy:
+        skip_cleanup: true
+        provider: releases
+        overwrite: true
+        draft: true
+        api_key:
+          secure: "m86pn7NJtpPuC8wdD53KvShCSEtcWUVUIgWYlqQh4TT17Rs8LI6AwoQ4oZlPVr5ZITsD01vvT05BMp8TSFa9L2fvMoAgNX2d9Rlnh7CwjQr8BU40HjaslLozyxIBCerjehaufzBpEHaoPKtjQR0/p2DNACt1d504Uv6JlCZ8UIkUwDJl6CjO/L5wtk2IEFKen8wk+/B9Oa7UB0V4mrxzzwjFQWJQsud/lV+Ti71aZISSrxnLSAx6oAe727oU9/WP94d2hbZ9FmnHyzXLYrD+G6coHh/mm3+VVyhjq8KR6BgrfhJmoR7DjSXgCsV/FxSCByu/pc1O8CGLx5V/iMf4DnF0Mcrt9MNijsV0QqZ3pFBq1S2PkCa1F+StZY3khkfVW1AlHGQJdiZezst1FfJZs7rfiSqC96E+5QAyUV57IlJoRWRfFXU38Gt5zsT+bd2Eu1lIVBx71wcEF0prZJkYkyyUbayZTFC9XTe9x3uIZVI6VbBwL/biOXz7RBbXFg69mmwZLXbQymUMDs58XlUvps1PWwdDF7wlU1ANBxHZ9SxrU4N2/5BnSXNGdA5hKM8viuh6hMl4nCRCgMJKsvhD/dAvdU1HbvQkAEs6WRlo03gk6bCb5xxfAzcSf+UQTYmmttVvkFft8mih2w9xZDVIvFvzZkydLeTe/zOuq/3iTOg="
+        file:
+          - target/dda-managed-ide-standalone.jar
+          - target/dda-managed-ide-standalone.jar.md5
+        provider: script
+        script: bash integration/docker/publish.sh dda-managed-ide
