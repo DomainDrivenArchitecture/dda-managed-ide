@@ -16,13 +16,24 @@ For installation & configuration with the dda-managed-ide the schema is:
    {:version s/Str})
 
 (def Basics
-  {(s/optional-key :argo-uml) ArgoUml
-   (s/optional-key :yed) Yed
-   (s/optional-key :dbvis) Dbvis})
+ {(s/optional-key :argo-uml) ArgoUml
+  (s/optional-key :yed) Yed})
 
 (def BasicsSettings
    #{:install-basics
      :install-asciinema})
+
+; ----------------------- db --------------------------
+
+(def Dbvis
+  {:version s/Str})
+
+(def Db
+ {(s/optional-key :dbvis) Dbvis})
+
+(def Settings
+  #{:install-pgtools})
+
 
 ; ----------------------- clojure --------------------------
 
@@ -105,6 +116,7 @@ For installation & configuration with the dda-managed-ide the schema is:
 (def DdaIdeConfig
   {:ide-user s/Keyword
    (s/optional-key :basics) Basics
+   (s/optional-key :db) Db
    (s/optional-key :clojure) Clojure
    (s/optional-key :java) Java
    (s/optional-key :java-script) JavaScript
