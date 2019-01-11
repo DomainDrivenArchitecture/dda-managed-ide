@@ -276,9 +276,9 @@
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}}
                              :db {:dbvis {:version "10.0.16"}}
                              :devops {:terraform
-                                        {:version "0.11.7",
+                                        {:version "0.11.11",
                                          :sha256-hash
-                                         "6b8ce67647a59b2a3f70199c304abca0ddec0e49fd060944c26f666298e23418"}
+                                         "94504f4a67bad612b5c8e3a4b7ce6ca2772b3c1559630dfd71e9c519e3d6149c"}
                                       :packer
                                         {:version "1.2.5"
                                          :sha256-hash
