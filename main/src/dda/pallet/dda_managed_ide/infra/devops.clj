@@ -52,6 +52,9 @@
 ;sudo pip3 install pip --upgrade
 ;pip install pybuilder --user
 ;export PATH=$PATH:~/.local/bin
+;pip install jupyterlab
+;pip install pandas
+;pip install matplottlib
 
 (defn install-mfa
   [facility]
