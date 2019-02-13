@@ -33,8 +33,3 @@ jobs:
           file:
             - target/dda-managed-ide-standalone.jar
             - target/dda-managed-ide-standalone.jar.md5
-        - provider: script
-          skip_cleanup: true
-          on:
-            tags: true
-          script: bash integration/docker/publish.sh dda-managed-ide
