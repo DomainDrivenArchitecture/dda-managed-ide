@@ -23,9 +23,12 @@
     [pallet.actions :as actions]
     [dda.config.commons.user-home :as user-env]))
 
+(def Settings
+   #{:install-pip3
+     :install-pybuilder
+     :install-jupyther})
+
 ;TODO: Add pybuilder installation and configuration:
-;sudo apt install python3-pip
-;sudo pip3 install pip --upgrade
 ;export PATH=$PATH:~/.local/bin
 ;pip install pybuilder --user
 ;pip install jupyterlab --user
@@ -33,3 +36,32 @@
 ;pip install matplottlib -user
 
 ;TODO: remove python3-pip from devops ...
+
+(defn install-pip3
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-install system: install-pip3")))
+  (actions/packages
+    :aptitude ["python3-pip"])
+  (actions/exec-checked-script
+    "install pip3"
+    ("pip3" "install" "pip" "--upgrade")))
+
+(defn install-pybuilder
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-install system: install-pybuilder")))
+  (actions/packages
+    :aptitude ["python3-pip"])
+  (actions/exec-checked-script
+    "install pip3"
+    ("pip3" "install" "pybuilder")))
+
+(s/defn install-system
+  [facility :- s/Keyword
+   settings]
+  (let []
+    (when (contains? settings :install-pip3)
+       (install-pip3 facility))
+    (when (contains? settings :install-pybuilder)
+       (install-pybuilder facility)))) 

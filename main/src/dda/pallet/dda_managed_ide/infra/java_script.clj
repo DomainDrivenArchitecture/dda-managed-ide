@@ -23,6 +23,22 @@
     [dda.pallet.crate.util :as util]
     [dda.config.commons.user-home :as user-env]))
 
+; # nodejs - mehrere Versionen
+; curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+; export NVM_DIR="$HOME/.nvm"
+; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+; nvm install 6.16
+; nvm install 8.15
+; nvm install 9.11.2
+; nvm install 10.15.0
+; nvm install 11.7.0
+; nvm install node
+; nvm use 11.7.0
+;
+; apt install -y npm
+
+
 (def NodeJs
    {:version s/Str}) ; 6.x, 8.x or 10.x works
 

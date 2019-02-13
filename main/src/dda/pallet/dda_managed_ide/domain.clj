@@ -45,6 +45,7 @@
      (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
      (s/optional-key :java) {}
      (s/optional-key :java-script) {}
+     (s/optional-key :bigdata) {}
      (s/optional-key :devops)
      {(s/optional-key :aws)
       {(s/optional-key :simple) {:id secret/Secret
@@ -94,7 +95,8 @@
         contains-clojure? (contains? domain-config :clojure)
         contains-java? (contains? domain-config :java)
         contains-java-script? (contains? domain-config :java-script)
-        contains-devops? (contains? domain-config :devops)]
+        contains-devops? (contains? domain-config :devops)
+        contains-bigdata? (contains? domain-config :bigdata)]
     {infra/facility
      (mu/deep-merge
       {:ide-user (keyword (:name user))
@@ -129,8 +131,12 @@
                               :sha256-hash "bc58aa3f3db380b76776e35f69662b49f3cf15cf80420fc81a15ce971430824c"}
                      :docker {:bip "192.168.1.1/24"}
                      :aws {}}
-              :ide-settings #{}}
-           {:devops devops
-            :ide-settings #{:install-mach
+            :ide-settings #{:install-pip3
+                            :install-pybuilder
+                            :install-mach
                             :install-mfa
-                            :install-ami-cleaner}})))}))
+                            :install-ami-cleaner}}
+           {:devops devops}))
+      (when contains-bigdata?
+        {:ide-settings #{:install-pip3
+                         :install-pybuilder}}))}))

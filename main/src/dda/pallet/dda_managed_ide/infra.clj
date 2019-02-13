@@ -26,6 +26,7 @@
     [dda.pallet.dda-managed-ide.infra.java :as java]
     [dda.pallet.dda-managed-ide.infra.java-script :as js]
     [dda.pallet.dda-managed-ide.infra.devops :as devops]
+    [dda.pallet.dda-managed-ide.infra.python :as py]
     [dda.pallet.dda-managed-ide.infra.atom :as atom]
     [dda.pallet.dda-managed-ide.infra.idea :as idea]))
 
@@ -52,6 +53,7 @@
                       clojure/Settings
                       devops/Settings
                       js/Settings
+                      py/Settings
                       atom/Settings
                       idea/Settings)))})
 
@@ -94,6 +96,7 @@
     (clojure/install-system facility contains-clojure? clojure)
     (java/install-system facility contains-java? java)
     (js/install-system facility contains-java-script? java-script ide-settings)
+    (py/install-system facility ide-settings)
     (devops/install-system facility ide-settings contains-devops? devops)
     (atom/install-system facility ide-settings contains-atom? atom)
     (idea/install-system facility ide-settings contains-idea? contains-pycharm? idea)))

@@ -52,21 +52,19 @@
   (actions/as-action
     (logging/info (str facility "-install system: install-mfa")))
   (actions/packages
-    :aptitude ["clipit" "python-pip"])
+    :aptitude ["clipit"])
   (actions/exec-checked-script
     "install mfa"
-    ("pip" "install" "mfa")))
+    ("pip3" "install" "mfa")))
 
 (defn install-ami-cleaner
   [facility]
   (actions/as-action
     (logging/info (str facility "-install system: install-ami-cleaner")))
-  (actions/packages
-    :aptitude ["python-pip"])
   (actions/exec-checked-script
     "install ami-cleaner"
-    ("pip" "install" "future")
-    ("pip" "install" "aws-amicleaner")))
+    ("pip3" "install" "future")
+    ("pip3" "install" "aws-amicleaner")))
 
 (s/defn install-packer
   [facility :- s/Keyword

@@ -265,6 +265,8 @@
                                              :install-basics
                                              :install-asciinema
                                              :install-npm
+                                             :install-pip3
+                                             :install-pybuilder
                                              :install-mfa
                                              :install-mach
                                              :install-pgtools
