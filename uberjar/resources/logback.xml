@@ -23,7 +23,7 @@
     <appender-ref ref="PALLETFILE" />
   </logger>
 
-  <logger name="pallet" level="DEBUG">
+  <logger name="pallet" level="INFO">
     <appender-ref ref="PALLETFILE" />
   </logger>
 

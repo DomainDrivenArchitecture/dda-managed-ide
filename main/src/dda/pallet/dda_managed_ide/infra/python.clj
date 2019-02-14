@@ -42,24 +42,20 @@
   [facility]
   (actions/as-action
     (logging/info (str facility "-install system: install-pybuilder")))
-  (actions/packages
-    :aptitude ["python3-pip"])
   (actions/exec-checked-script
     "install pybuilder"
-    ("pip3" "install" "pybuilder")))
+    ("pip3" "install" "pybuilder")
+    ("pip3" "install" "pip" "--upgrade")))
 
 (defn install-jupyterlab
   [facility]
   (actions/as-action
     (logging/info (str facility "-install system: install-pybuilder")))
-  (actions/packages
-    :aptitude ["python3-pip"])
   (actions/exec-checked-script
     "install jupyterlab"
-    ("pip3" "install" "pybuilder")
     ("pip3" "install" "jupyterlab")
     ("pip3" "install" "pandas")
-    ("pip3" "install" "matplottlib")))
+    ("pip3" "install" "matplotlib")))
 
 (s/defn install-system
   [facility :- s/Keyword
