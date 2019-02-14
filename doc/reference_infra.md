@@ -71,6 +71,12 @@ For installation & configuration with the dda-managed-ide the schema is:
 (def JavaScriptSettings
   #{:install-yarn})
 
+; ----------------------- java-script --------------------------
+(def PythonSettings
+   #{:install-pip3
+     :install-pybuilder
+     :install-jupyterlab})
+
 ; ----------------------- devops --------------------------
 
 (def Aws
@@ -126,6 +132,7 @@ For installation & configuration with the dda-managed-ide the schema is:
    (hash-set (apply s/enum
                     (clojure.set/union
                       BasicsSettings
+                      PythonSettings
                       DevopsSettings
                       AtomSettings
                       IdeaSettings

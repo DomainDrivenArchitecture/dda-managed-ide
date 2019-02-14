@@ -29,6 +29,9 @@ The dda-managed-ide installs the following packages in addition to the packages 
   * custom jdk & gradle
 * java-script
   * custom nodejs, npm & yarn
+* python3
+  * pybuilder
+  * jupyterlab
 * devops
   * docker-host with configuration for bridge networking
   * aws-cli with simple credentials configuration

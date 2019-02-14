@@ -58,6 +58,7 @@ The schema for the ide configuration is:
     (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
     (s/optional-key :java) {}
     (s/optional-key :java-script) {}
+    (s/optional-key :bigdata) {}
     (s/optional-key :devops)
     {(s/optional-key :aws)
      {(s/optional-key :simple) {:id secret/Secret
