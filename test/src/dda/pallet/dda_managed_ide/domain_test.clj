@@ -247,6 +247,53 @@
                                                     :username "mvn-account"
                                                     :password "mvn-password"}]}}}})
 
+(def config-set-bigdata
+  {:domain-input {:user {:name  "test"
+                         :password "pwd"}
+                  :bookmarks [{:name "Bookmarks Toolbar"
+                               :links [["url" "name"]]}]
+                  :target-type :virtualbox
+                  :bigdata {}
+                  :ide-platform #{:atom}}
+   :dda-vm-domain {:user {:name "test", :password "pwd"},
+                   :target-type :virtualbox,
+                   :usage-type :desktop-ide}
+   :serverspec-domain {:file '()}
+   :infra {:dda-managed-ide {:ide-user :test,
+                             :ide-settings #{:install-idea-inodes
+                                             :install-basics
+                                             :install-asciinema
+                                             :install-npm
+                                             :install-pip3
+                                             :install-pgtools
+                                             :install-jupyterlab}
+                             :basics
+                                   {:argo-uml {:version "0.34"},
+                                    :yed
+                                    {:download-url
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}}
+                             :db {:dbvis {:version "10.0.16"}}
+                             :atom {:plugins ["ink"
+                                              "minimap"
+                                              "busy-signal"
+                                              "atom-toolbar"
+                                              "atom-meld"
+                                              "intentions"
+                                              "trailing-spaces"
+                                              "linter"
+                                              "linter-write-good"
+                                              "linter-ui-default"
+                                              "linter-jsonlint"
+                                              "linter-spell"
+                                              "linter-spell-html"
+                                              "linter-clojure"
+                                              "minimap-linter"
+                                              "teletype"
+                                              "tree-view-git-status"
+                                              "git-time-machine"
+                                              "language-diff"
+                                              "split-diff"]}}}})
+
 (def config-set-devops
   {:domain-input {:user {:name  "test"
                          :password "pwd"}
@@ -431,6 +478,8 @@
            (sut/infra-configuration (:domain-input config-repo))))
     (is (= (:infra config-set-clojure)
            (sut/infra-configuration (:domain-input config-set-clojure))))
+    (is (= (:infra config-set-bigdata)
+           (sut/infra-configuration (:domain-input config-set-bigdata))))
     (is (= (:infra config-set-devops)
            (sut/infra-configuration (:domain-input config-set-devops))))
     (is (= (:infra config-set-java)

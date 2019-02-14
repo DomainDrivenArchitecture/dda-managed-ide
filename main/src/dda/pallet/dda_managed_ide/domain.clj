@@ -139,4 +139,4 @@
            {:devops devops}))
       (when contains-bigdata?
         {:ide-settings #{:install-pip3
-                         :install-pybuilder}}))}))
+                         :install-jupyterlab}}))}))

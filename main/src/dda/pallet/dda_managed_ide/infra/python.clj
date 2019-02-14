@@ -26,16 +26,7 @@
 (def Settings
    #{:install-pip3
      :install-pybuilder
-     :install-jupyther})
-
-;TODO: Add pybuilder installation and configuration:
-;export PATH=$PATH:~/.local/bin
-;pip install pybuilder --user
-;pip install jupyterlab --user
-;pip install pandas --user
-;pip install matplottlib -user
-
-;TODO: remove python3-pip from devops ...
+     :install-jupyterlab})
 
 (defn install-pip3
   [facility]
@@ -54,8 +45,21 @@
   (actions/packages
     :aptitude ["python3-pip"])
   (actions/exec-checked-script
-    "install pip3"
+    "install pybuilder"
     ("pip3" "install" "pybuilder")))
+
+(defn install-jupyterlab
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-install system: install-pybuilder")))
+  (actions/packages
+    :aptitude ["python3-pip"])
+  (actions/exec-checked-script
+    "install jupyterlab"
+    ("pip3" "install" "pybuilder")
+    ("pip3" "install" "jupyterlab")
+    ("pip3" "install" "pandas")
+    ("pip3" "install" "matplottlib")))
 
 (s/defn install-system
   [facility :- s/Keyword
@@ -64,4 +68,6 @@
     (when (contains? settings :install-pip3)
        (install-pip3 facility))
     (when (contains? settings :install-pybuilder)
-       (install-pybuilder facility)))) 
+       (install-pybuilder facility))
+    (when (contains? settings :install-jupyterlab)
+       (install-jupyterlab facility))))
