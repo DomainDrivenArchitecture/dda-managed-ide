@@ -48,9 +48,10 @@
   install-user-nodejs
   "get and install install-nodejs"
   [facility :- s/Keyword
-   os-user-name :- s/Str
+   user-name :- s/Str
    config :- NodeJs]
-  (let [{:keys [nodejs-install nodejs-use]} config]
+  (let [{:keys [nodejs-install nodejs-use]} config
+        user-home (user-env/user-home-dir user-name)]
     (actions/as-action
       (logging/info (str facility "-install user: install-nodejs")))
     (actions/remote-file
@@ -139,8 +140,8 @@
   (let [{:keys [nodejs]} js]
     (when (contains? settings :install-npm)
       (install-npm facility))
-    (when (contains? settings :install-yarn)
-      (install-yarn facility))
+    (when (contains? settings :install-yarn))
+      ;(install-yarn facility))
     (when (contains? settings :install-asciinema)
        (install-asciinema facility))
     (when (contains? settings :install-mach)
