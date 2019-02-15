@@ -18,19 +18,14 @@
   (:require
     [clojure.tools.logging :as logging]
     [schema.core :as s]
+    [selmer.parser :as selmer]
     [pallet.actions :as actions]
     [selmer.parser :as selmer]
     [dda.pallet.crate.util :as util]
     [dda.config.commons.user-home :as user-env]))
 
-; # nodejs - mehrere Versionen
-
-;
-; apt install -y npm
-
-
 (def NodeJs
-   s/Str) ; 6.x, 8.x or 10.x works
+   s/Str) ; e.g. "6.16" "8.15" "9.11.2" "10.15.0"
 
 (def JavaScript
    {:nodejs-install [NodeJs]
@@ -52,23 +47,18 @@
 (s/defn
   install-user-nodejs
   "get and install install-nodejs"
-  ; curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-  ; export NVM_DIR="$HOME/.nvm"
-  ; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  ; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-  ; nvm install 6.16
-  ; nvm install 8.15
-  ; nvm install 9.11.2
-  ; nvm install 10.15.0
-  ; nvm install 11.7.0
-  ; nvm install node
-  ; nvm use 11.7.0
   [facility :- s/Keyword
    os-user-name :- s/Str
    config :- NodeJs]
   (let [{:keys [nodejs-install nodejs-use]} config]
     (actions/as-action
       (logging/info (str facility "-install user: install-nodejs")))
+    (actions/remote-file
+     (str user-home "/.bashrc.d/gopass.sh")
+     :literal true
+     :content (selmer/render-file "js_nvm_bashrc.template" {})
+     :owner user-name
+     :group user-name)
     (actions/exec-checked-script
       "install-nodejs"
       ("curl" "-o-" "https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh" "|" "bash")
