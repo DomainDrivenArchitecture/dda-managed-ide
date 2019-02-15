@@ -415,7 +415,7 @@
                :nodejs-use "11.7.0"}
             :ide-settings
             #{:install-basics :install-idea-inodes :install-asciinema :install-yarn
-              :install-pgtools,}
+              :install-npm :install-pgtools,}
             :basics
             {:argo-uml {:version "0.34"},
              :yed
