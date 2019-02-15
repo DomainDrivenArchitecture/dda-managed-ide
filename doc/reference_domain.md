@@ -57,7 +57,7 @@ The schema for the ide configuration is:
     (s/optional-key :git) git-domain/GitDomainConfig
     (s/optional-key :clojure) {(s/optional-key :lein-auth) [RepoAuth]}
     (s/optional-key :java) {}
-    (s/optional-key :java-script) {}
+    (s/optional-key :java-script) {:nodejs-use s/Str} ; e.g. "6.16" "8.15" "9.11.2" "10.15.0"
     (s/optional-key :bigdata) {}
     (s/optional-key :devops)
     {(s/optional-key :aws)
