@@ -86,7 +86,7 @@
   [facility :- s/Keyword]
   (actions/as-action
     (logging/info (str facility "-install system: install-yarn")))
-  (actions/packages :aptitude ["nodejs"]))
+  (actions/packages :aptitude ["yarn"]))
 
 (s/defn init-asciinema
   [facility :- s/Keyword]
@@ -155,5 +155,4 @@
    settings]
   (let [{:keys [nodejs]} js]
     (when contains-java-script?
-      (when (contains? js :nodejs)
-        (install-user-nodejs facility os-user-name nodejs)))))
+      (install-user-nodejs facility os-user-name nodejs))))
