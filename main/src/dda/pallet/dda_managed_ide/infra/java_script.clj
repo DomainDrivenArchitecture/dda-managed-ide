@@ -24,26 +24,17 @@
     [dda.config.commons.user-home :as user-env]))
 
 ; # nodejs - mehrere Versionen
-; curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-; export NVM_DIR="$HOME/.nvm"
-; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-; nvm install 6.16
-; nvm install 8.15
-; nvm install 9.11.2
-; nvm install 10.15.0
-; nvm install 11.7.0
-; nvm install node
-; nvm use 11.7.0
+
 ;
 ; apt install -y npm
 
 
 (def NodeJs
-   {:version s/Str}) ; 6.x, 8.x or 10.x works
+   s/Str) ; 6.x, 8.x or 10.x works
 
 (def JavaScript
-   {(s/optional-key :nodejs) NodeJs})
+   {:nodejs-install [NodeJs]
+    :nodejs-use NodeJs})
 
 (def Settings
    #{:install-yarn
@@ -59,28 +50,32 @@
     :aptitude ["npm"]))
 
 (s/defn
-  init-nodejs
-  [facility :- s/Keyword
-   config :- NodeJs]
-  (let [{:keys [version]} config]
-    (actions/as-action
-      (logging/info (str facility "-init system: init-nodejs")))
-    (actions/package-source (str "nodejs_" version)
-      :aptitude
-      {:url (str "https://deb.nodesource.com/node_" version)
-       :release "bionic"
-       :scopes ["main"]
-       :key-url "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"})))
-
-(s/defn
-  install-nodejs
+  install-user-nodejs
   "get and install install-nodejs"
+  ; curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+  ; export NVM_DIR="$HOME/.nvm"
+  ; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  ; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  ; nvm install 6.16
+  ; nvm install 8.15
+  ; nvm install 9.11.2
+  ; nvm install 10.15.0
+  ; nvm install 11.7.0
+  ; nvm install node
+  ; nvm use 11.7.0
   [facility :- s/Keyword
+   os-user-name :- s/Str
    config :- NodeJs]
-  (let [{:keys [version]} config]
+  (let [{:keys [nodejs-install nodejs-use]} config]
     (actions/as-action
-      (logging/info (str facility "-install system: install-nodejs")))
-    (actions/packages :aptitude ["nodejs"])))
+      (logging/info (str facility "-install user: install-nodejs")))
+    (actions/exec-checked-script
+      "install-nodejs"
+      ("curl" "-o-" "https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh" "|" "bash")
+      ("export" "NVM_DIR=\"$HOME/.nvm\"")
+      (doseq [x ~nodejs-install]
+        ("nvm" "install" @x))
+      ("nvm" "use" ~nodejs-use))))
 
 (s/defn
   init-yarn
@@ -141,9 +136,6 @@
    js :- JavaScript
    settings]
   (let [{:keys [nodejs]} js]
-    (when contains-java-script?
-      (when (contains? js :nodejs)
-        (init-nodejs facility nodejs)))
     (when (contains? settings :install-yarn)
       (init-yarn facility))
     (when (contains? settings :install-asciinema)
@@ -155,9 +147,6 @@
    js :- JavaScript
    settings]
   (let [{:keys [nodejs]} js]
-    (when contains-java-script?
-      (when (contains? js :nodejs)
-        (install-nodejs facility nodejs)))
     (when (contains? settings :install-npm)
       (install-npm facility))
     (when (contains? settings :install-yarn)
@@ -166,3 +155,14 @@
        (install-asciinema facility))
     (when (contains? settings :install-mach)
       (install-mach facility))))
+
+(s/defn install-user
+  [facility :- s/Keyword
+   os-user-name :- s/Str
+   contains-java-script? :- s/Bool
+   js :- JavaScript
+   settings]
+  (let [{:keys [nodejs]} js]
+    (when contains-java-script?
+      (when (contains? js :nodejs)
+        (install-user-nodejs facility os-user-name nodejs)))))

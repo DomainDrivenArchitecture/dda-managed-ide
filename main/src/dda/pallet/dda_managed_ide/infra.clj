@@ -101,6 +101,17 @@
     (atom/install-system facility ide-settings contains-atom? atom)
     (idea/install-system facility ide-settings contains-idea? contains-pycharm? idea)))
 
+(s/defn install-user
+  [config :- DdaIdeConfig]
+  (let [{:keys [ide-user java-script ide-settings]} config
+        os-user-name (name ide-user)
+        contains-java-script? (contains? config :java-script)]
+    (pallet.action/with-action-options
+      {:sudo-user os-user-name
+       :script-dir (str "/home/" os-user-name "/")
+       :script-env {:HOME (str "/home/" os-user-name "/")}}
+      (js/install-user facility os-user-name contains-java-script? java-script ide-settings))))
+
 (s/defn configure-system
   [config :- DdaIdeConfig]
   (let [{:keys [ide-user clojure devops atom java]} config

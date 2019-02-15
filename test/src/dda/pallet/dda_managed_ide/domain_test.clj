@@ -405,13 +405,14 @@
   {:domain-input {:user {:name  "test"
                          :password "pwd"}
                   :target-type :virtualbox
-                  :java-script {}
+                  :java-script {:nodejs-use "11.7.0"}
                   :ide-platform #{:atom}}
    :serverspec-domain {:file '()}
    :infra {:dda-managed-ide
            {:ide-user :test,
             :java-script
-              {:nodejs {:version "10.x"}}
+              {:nodejs-install ["6.16" "8.15" "9.11.2" "10.15.0" "node" "11.7.0"]
+               :nodejs-use "11.7.0"}
             :ide-settings
             #{:install-basics :install-idea-inodes :install-asciinema :install-yarn
               :install-pgtools,}
