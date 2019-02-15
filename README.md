@@ -113,7 +113,8 @@ Example content of the file, 'example-ide.edn':
                         :username {:plain "mvn-account"}
                         :password {:plain "mvn-password"}}]}
  :java {}
- :java-script {}
+ :java-script {:nodejs-use "11.7.0"}
+ :bigdata {}
  :devops {:aws {:simple {:id {:plain "ACCESS_KEY"}
                          :secret {:plain "SECRET_KEY"}}}}
  :ide-platform #{:atom}
