@@ -107,7 +107,7 @@
         os-user-name (name ide-user)
         contains-java-script? (contains? config :java-script)]
     (pallet.action/with-action-options
-      {:sudo-user os-user-name
+      {:sudo-user "root"
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
       (js/install-user facility os-user-name contains-java-script? java-script ide-settings))))
@@ -144,7 +144,8 @@
 
 (s/defmethod core-infra/dda-install facility
   [dda-crate config]
-  (install-system config))
+  (install-system config)
+  (install-user config))
 
 (s/defmethod core-infra/dda-configure facility
   [dda-crate config]

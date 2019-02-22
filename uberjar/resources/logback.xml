@@ -1,4 +1,5 @@
-<configuration scan="true" scanPeriod="1 seconds" debug="false">
+<configuration scan="false" scanPeriod="1 seconds" debug="false">
+
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -19,20 +20,21 @@
     </encoder>
   </appender>
 
-  <logger name="clj-ssh.ssh" level="INFO">
-    <appender-ref ref="PALLETFILE" />
-  </logger>
+  <logger name="clj-ssh.ssh" level="INFO" />
 
-  <logger name="pallet" level="INFO">
-    <appender-ref ref="PALLETFILE" />
-  </logger>
+  <logger name="pallet" level="INFO" />
 
-  <logger name="dda" level="DEBUG">
-    <appender-ref ref="PALLETFILE" />
-  </logger>
+  <logger name="pallet.local.execute" level="DEBUG" />
+
+  <logger name="pallet.execute" level="DEBUG" />
+
+  <logger name="dda" level="DEBUG" />
 
   <root level="INFO">
     <appender-ref ref="CONSOLE" />
+  </root>
+  <root level="DEBUG">
+    <appender-ref ref="PALLETFILE" />
   </root>
 
 </configuration>

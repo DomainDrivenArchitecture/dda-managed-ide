@@ -405,17 +405,16 @@
   {:domain-input {:user {:name  "test"
                          :password "pwd"}
                   :target-type :virtualbox
-                  :java-script {:nodejs-use "11.7.0"}
+                  :java-script {:nodejs-use "11.x"}
                   :ide-platform #{:atom}}
    :serverspec-domain {:file '()}
    :infra {:dda-managed-ide
            {:ide-user :test,
             :java-script
-              {:nodejs-install ["6.16" "8.15" "9.11.2" "10.15.0" "node" "11.7.0"]
-               :nodejs-use "11.7.0"}
+              {:nodejs-use "11.x"}
             :ide-settings
-            #{:install-basics :install-idea-inodes :install-asciinema :install-yarn
-              :install-npm :install-pgtools,}
+            #{:install-basics :install-idea-inodes :install-asciinema :install-nvm
+              :install-pgtools,}
             :basics
             {:argo-uml {:version "0.34"},
              :yed

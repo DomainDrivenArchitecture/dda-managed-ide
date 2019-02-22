@@ -63,14 +63,13 @@ For installation & configuration with the dda-managed-ide the schema is:
 ; ----------------------- java-script --------------------------
 
 (def NodeJs
-   s/Str) ; e.g. "6.16" "8.15" "9.11.2" "10.15.0"
+   s/Str) ; e.g. 6.x, 8.x or 10.x works
 
 (def JavaScript
-   {:nodejs-install [NodeJs]
-    :nodejs-use NodeJs})
+   {:nodejs-use NodeJs})
 
 (def JavaScriptSettings
-  #{:install-yarn
+  #{:install-nvm
     :install-npm
     :install-mach
     :install-asciinema})

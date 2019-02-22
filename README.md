@@ -28,7 +28,7 @@ The dda-managed-ide installs the following packages in addition to the packages 
 * java
   * custom jdk & gradle
 * java-script
-  * custom nodejs, npm & yarn
+  * custom nodejs, nvm & npm
 * python3
   * pybuilder
   * jupyterlab
@@ -113,7 +113,7 @@ Example content of the file, 'example-ide.edn':
                         :username {:plain "mvn-account"}
                         :password {:plain "mvn-password"}}]}
  :java {}
- :java-script {:nodejs-use "11.7.0"}
+ :java-script {:nodejs-use "11.x"}
  :bigdata {}
  :devops {:aws {:simple {:id {:plain "ACCESS_KEY"}
                          :secret {:plain "SECRET_KEY"}}}}

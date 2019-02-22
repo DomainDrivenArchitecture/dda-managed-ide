@@ -25,68 +25,30 @@
     [dda.config.commons.user-home :as user-env]))
 
 (def NodeJs
-   s/Str) ; e.g. "6.16" "8.15" "9.11.2" "10.15.0"
+   s/Str) ; e.g. 6.x, 8.x or 10.x works
 
 (def JavaScript
-   {:nodejs-install [NodeJs]
-    :nodejs-use NodeJs})
+   {:nodejs-use NodeJs})
 
 (def Settings
-   #{:install-yarn
+   #{:install-nvm
      :install-npm
      :install-mach
      :install-asciinema})
 
-(defn install-npm
-  [facility]
-  (actions/as-action
-    (logging/info (str facility "-install system: install-npm")))
-  (actions/packages
-    :aptitude ["npm"]))
-
 (s/defn
-  install-user-nodejs
-  "get and install install-nodejs"
+  init-nodejs
   [facility :- s/Keyword
-   user-name :- s/Str
-   config :- NodeJs]
-  (let [{:keys [nodejs-install nodejs-use]} config
-        user-home (user-env/user-home-dir user-name)]
+   java-script :- JavaScript]
+  (let [{:keys [nodejs-use]} java-script]
     (actions/as-action
-      (logging/info (str facility "-install user: install-nodejs")))
-    (actions/remote-file
-     (str user-home "/.bashrc.d/gopass.sh")
-     :literal true
-     :content (selmer/render-file "js_nvm_bashrc.template" {})
-     :owner user-name
-     :group user-name)
-    (actions/exec-checked-script
-      "install-nodejs"
-      ("curl" "-o-" "https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh" "|" "bash")
-      ("export" "NVM_DIR=\"$HOME/.nvm\"")
-      (doseq [x ~nodejs-install]
-        ("nvm" "install" @x))
-      ("nvm" "use" ~nodejs-use))))
-
-(s/defn
-  init-yarn
-  [facility :- s/Keyword]
-  (actions/as-action
-    (logging/info (str facility "-init system: init-yarn")))
-  (actions/package-source "yarn"
-    :aptitude
-    {:url "https://dl.yarnpkg.com/debian/"
-     :release "stable"
-     :scopes ["main"]
-     :key-url "https://dl.yarnpkg.com/debian/pubkey.gpg"}))
-
-(s/defn
-  install-yarn
-  "get and install install-yarn"
-  [facility :- s/Keyword]
-  (actions/as-action
-    (logging/info (str facility "-install system: install-yarn")))
-  (actions/packages :aptitude ["yarn"]))
+      (logging/info (str facility "-init system: init-nodejs")))
+    (actions/package-source (str "nodejs_" nodejs-use)
+      :aptitude
+      {:url (str "https://deb.nodesource.com/node_" nodejs-use)
+       :release "bionic"
+       :scopes ["main"]
+       :key-url "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"})))
 
 (s/defn init-asciinema
   [facility :- s/Keyword]
@@ -98,6 +60,49 @@
      :release "bionic"
      :scopes ["main"]
      :key-url "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9D2E234C0F833EAD"}))
+
+(defn install-npm
+  [facility]
+  (actions/as-action
+    (logging/info (str facility "-install system: install-npm")))
+  (actions/packages
+    :aptitude ["npm"]))
+
+(s/defn
+  install-nodejs
+  "get and install install-nodejs"
+  [facility :- s/Keyword
+   nodejs :- NodeJs]
+  (let [{:keys [nodejs-use]} nodejs]
+    (actions/as-action
+      (logging/info (str facility "-install system: install-nodejs")))
+    (actions/packages :aptitude ["nodejs"])))
+
+(s/defn
+  install-user-nvm
+  "get and install install-nodejs"
+  [facility :- s/Keyword
+   user-name :- s/Str]
+  (let [user-home (user-env/user-home-dir user-name)]
+    (actions/as-action
+      (logging/info (str facility "-install user: install-user-nvm")))
+    (actions/remote-file
+     (str user-home "/.bashrc.d/nvm.sh")
+     :literal true
+     :content (selmer/render-file "js_nvm_bashrc.template" {})
+     :owner user-name
+     :group user-name)
+    (actions/remote-file
+     (str "/tmp/nvm_install.sh")
+     :literal true
+     :content (selmer/render-file "nvm_install.sh.template" {})
+     :owner user-name
+     :group user-name
+     :mode "644")
+    (actions/exec-checked-script
+      "install-user-nvm"
+      ("su" ~user-name "-c" "\"bash /tmp/nvm_install.sh\"")
+      ("su" ~user-name "-c" ~(str "\"source " user-home "/.bashrc.d/nvm.sh\"")))))
 
 (s/defn install-asciinema
   [facility :- s/Keyword]
@@ -127,8 +132,8 @@
    js :- JavaScript
    settings]
   (let [{:keys [nodejs]} js]
-    (when (contains? settings :install-yarn)
-      (init-yarn facility))
+    (when contains-java-script?
+      (init-nodejs facility js))
     (when (contains? settings :install-asciinema)
        (init-asciinema facility))))
 
@@ -138,10 +143,10 @@
    js :- JavaScript
    settings]
   (let [{:keys [nodejs]} js]
+    (when contains-java-script?
+      (install-nodejs facility js))
     (when (contains? settings :install-npm)
       (install-npm facility))
-    (when (contains? settings :install-yarn))
-      ;(install-yarn facility))
     (when (contains? settings :install-asciinema)
        (install-asciinema facility))
     (when (contains? settings :install-mach)
@@ -153,6 +158,5 @@
    contains-java-script? :- s/Bool
    js :- JavaScript
    settings]
-  (let [{:keys [nodejs]} js]
-    (when contains-java-script?
-      (install-user-nodejs facility os-user-name nodejs))))
+  (when (contains? settings :install-nvm)
+    (install-user-nvm facility os-user-name)))
