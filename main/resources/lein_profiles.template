@@ -1,7 +1,7 @@
 {:user
   {:plugins [[slamhound "1.5.5"]
-             [lein-cloverage "1.0.10"]
-             [jonase/eastwood "0.2.6"]
+             [lein-cloverage "1.1.1"]
+             [jonase/eastwood "0.3.5"]
              [lein-kibit "0.1.6"]
              [lein-checkall "0.1.1"]
              [lein-ancient "0.6.15"]
@@ -9,7 +9,7 @@
              [lein-idefiles "0.2.1"]
              [org.timmc/nephila "0.3.0"]
              [lein-licenses "0.2.2"]]
-  :dependencies [[pjstadig/humane-test-output "0.8.3"]
+  :dependencies [[pjstadig/humane-test-output "0.9.0"]
                  [proto-repl "0.3.1"]]
   :injections [(require 'pjstadig.humane-test-output)
                (pjstadig.humane-test-output/activate!)]}
