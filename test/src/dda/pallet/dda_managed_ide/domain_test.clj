@@ -165,7 +165,7 @@
                                    {:argo-uml {:version "0.34"},
                                     :yed
                                     {:download-url
-                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}}
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip",}}
                              :db {:dbvis {:version "10.0.16"}}
                              :atom {:plugins ["ink"
                                               "minimap"
@@ -214,7 +214,7 @@
                                    {:argo-uml {:version "0.34"},
                                     :yed
                                     {:download-url
-                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}}
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip",}}
                              :db {:dbvis {:version "10.0.16"}}
                              :java {:java-default-to
                                     "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"}
@@ -271,7 +271,7 @@
                                    {:argo-uml {:version "0.34"},
                                     :yed
                                     {:download-url
-                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}}
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip",}}
                              :db {:dbvis {:version "10.0.16"}}
                              :atom {:plugins ["ink"
                                               "minimap"
@@ -322,7 +322,7 @@
                                    {:argo-uml {:version "0.34"},
                                     :yed
                                     {:download-url
-                                     "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip",}}
+                                     "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip",}}
                              :db {:dbvis {:version "10.0.16"}}
                              :devops {:terraform
                                         {:version "0.11.11",
@@ -374,7 +374,7 @@
             {:argo-uml {:version "0.34"},
              :yed
              {:download-url
-              "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip"}}
+              "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip"}}
             :db
             {:dbvis {:version "10.0.16"}},
             :atom
@@ -419,7 +419,7 @@
             {:argo-uml {:version "0.34"},
              :yed
              {:download-url
-              "https://www.yworks.com/resources/yed/demo/yEd-3.18.2.zip"},}
+              "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip"},}
             :db
             {:dbvis {:version "10.0.16"}}
             :atom
