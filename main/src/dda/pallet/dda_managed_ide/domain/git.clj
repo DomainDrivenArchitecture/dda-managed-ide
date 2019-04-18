@@ -63,15 +63,7 @@
                           :server-type :github})))}}
       {:synced-repo
        (merge
-         {:credential-store
-          (into [] (concat
-                     [{:host "github.com"
-                       :orga-path "DomainDrivenArchitecture"
-                       :repo-name "password-store-for-teams"
-                       :protocol protocol-type
-                       :server-type :github}]
-                     (when (some? credential-store)
-                       credential-store)))}
+         {:credential-store (git-repo/credential-store-setup credential-store protocol-type)}
          (when (some? desktop-wiki)
           {:desktop-wiki desktop-wiki}))}
       {})}))
