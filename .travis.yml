@@ -19,6 +19,8 @@ jobs:
         - lein test
         - lein uberjar
         - md5sum target/uberjar/dda-managed-ide-standalone.jar > target/uberjar/dda-managed-ide-standalone.jar.md5
+        - sha256sum target/uberjar/dda-managed-ide-standalone.jar > target/uberjar/dda-managed-ide-standalone.jar.sha256
+        - sha512sum target/uberjar/dda-managed-ide-standalone.jar > target/uberjar/dda-managed-ide-standalone.jar.sha512
         - # create docker image
         - docker build -t dda-managed-ide --file integration/docker/image/Dockerfile .
         - # integration test on docker image level
@@ -33,3 +35,5 @@ jobs:
           file:
             - target/uberjar/dda-managed-ide-standalone.jar
             - target/uberjar/dda-managed-ide-standalone.jar.md5
+            - target/uberjar/dda-managed-ide-standalone.jar.sha256
+            - target/uberjar/dda-managed-ide-standalone.jar.sha512
