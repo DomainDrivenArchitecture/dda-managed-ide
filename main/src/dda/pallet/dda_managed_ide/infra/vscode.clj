@@ -33,7 +33,9 @@
 ; sudo apt-get install apt-transport-https
 ; sudo apt-get update
 ; sudo apt-get install code # or code-insiders
-
-; code --install-extension avli.clojure
+; curl -Lo joker-0.12.2-linux-amd64.zip https://github.com/candid82/joker/releases/download/v0.12.2/joker-0.12.2-linux-amd64.zip
+; unzip joker-0.12.2-linux-amd64.zip
+; mv joker /usr/local/bin/
+; code --install-extension cospaia.clojure4vscode martinklepsch.clojure-joker-linter DavidAnson.vscode-markdownlint
 
 ; # Settings can be found at $HOME/.config/Code/User/settings.json
