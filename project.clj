@@ -1,10 +1,10 @@
-(defproject dda/dda-managed-ide "3.0.2-SNAPSHOT"
+(defproject dda/dda-managed-ide "3.0.2"
   :description "module to install and configure ide based on ubuntu vm."
   :url "https://www.domaindrivenarchitecture.org"
   :license {:name "Apache License, Version 2.0"
             :url "https://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [[dda/dda-pallet "3.0.0"]
-                 [dda/dda-managed-vm "2.5.1"]]
+                 [dda/dda-managed-vm "2.5.2"]]
   :target-path "target/%s/"
   :source-paths ["main/src"]
   :resource-paths ["main/resources"]
