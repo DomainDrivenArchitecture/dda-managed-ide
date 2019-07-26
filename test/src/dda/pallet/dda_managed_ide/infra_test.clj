@@ -17,9 +17,9 @@
 
 (ns dda.pallet.dda-managed-ide.infra-test
   (:require
-    [clojure.test :refer :all]
-    [schema.core :as s]
-    [dda.pallet.dda-managed-ide.infra :as sut]))
+   [clojure.test :refer :all]
+   [schema.core :as s]
+   [dda.pallet.dda-managed-ide.infra :as sut]))
 
 (s/set-fn-validation! true)
 
@@ -28,24 +28,22 @@
    :ide-settings #{}})
 
 (def basic-atom-config
-   {:atom
-    {:plugins ["proto-repl"]}})
+  {:atom
+   {:plugins ["proto-repl"]}})
 
 (def wrong-atom-config
-   {:atom
-    {:plugins [:proto-repl]}})
-
+  {:atom
+   {:plugins [:proto-repl]}})
 
 (deftest test-schema
   (testing
-    "test the ide schema"
+   "test the ide schema"
     (is (s/validate sut/DdaIdeConfig basic-config))
     (is (s/validate sut/DdaIdeConfig (merge basic-config basic-atom-config)))
     (is (thrown? Exception (s/validate sut/DdaIdeConfig (merge basic-config wrong-atom-config))))
     (is (thrown? Exception (s/validate sut/DdaIdeConfig {:unsuported-key :unsupported-value})))))
 
-
 (deftest plan-def
   (testing
-    "test plan-def"
+   "test plan-def"
     (is sut/with-dda-ide)))
