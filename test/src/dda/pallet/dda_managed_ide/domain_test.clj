@@ -158,6 +158,7 @@
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
+                                             :install-tmate
                                              :install-npm
                                              :install-pgtools
                                              :install-asciinema}
@@ -207,6 +208,7 @@
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
+                                             :install-tmate
                                              :install-npm
                                              :install-pgtools
                                              :install-asciinema}
@@ -262,6 +264,7 @@
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
+                                             :install-tmate
                                              :install-asciinema
                                              :install-npm
                                              :install-pip3
@@ -310,6 +313,7 @@
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
+                                             :install-tmate
                                              :install-asciinema
                                              :install-npm
                                              :install-pip3
@@ -368,7 +372,7 @@
    :infra {:dda-managed-ide
            {:ide-user :test,
             :ide-settings
-            #{:install-basics :install-idea-inodes :install-npm :install-asciinema
+            #{:install-basics :install-tmate :install-idea-inodes :install-npm :install-asciinema
               :install-pgtools,}
             :basics
             {:argo-uml {:version "0.34"},
@@ -413,7 +417,7 @@
             :java-script
               {:nodejs-use "11.x"}
             :ide-settings
-            #{:install-basics :install-idea-inodes :install-asciinema :install-nvm
+            #{:install-basics :install-tmate :install-idea-inodes :install-asciinema :install-nvm
               :install-pgtools,}
             :basics
             {:argo-uml {:version "0.34"},

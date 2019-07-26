@@ -34,7 +34,7 @@
    (s/optional-key :yed) Yed})
 
 (def Settings
-   #{:install-basics})
+   #{:install-basics :install-tmate})
 
 (s/defn install-basics
   [facility :- s/Keyword]
@@ -42,6 +42,13 @@
     (logging/info (str facility "-install system: install-basics")))
   (actions/packages
     :aptitude ["curl" "gnutls-bin" "apache2-utils" "meld" "whois" "make"]))
+
+(s/defn install-tmate
+  [facility :- s/Keyword]
+  (actions/as-action
+   (logging/info (str facility "-install system: install-tmate")))
+  (actions/packages
+   :aptitude ["tmate"]))
 
 (s/defn
   install-argouml
@@ -97,7 +104,9 @@
    basics :- Basics]
   (let [{:keys [argo-uml yed]} basics]
     (when (contains? ide-settings :install-basics)
-       (install-basics facility))
+      (install-basics facility))
+    (when (contains? ide-settings :install-tmate)
+      (install-tmate facility))
     (when contains-basics?
       (when (contains? basics :argo-uml)
         (install-argouml facility argo-uml))

@@ -102,6 +102,7 @@
       {:ide-user (keyword (:name user))
        :ide-settings #{:install-idea-inodes
                        :install-basics
+                       :install-tmate
                        :install-asciinema
                        :install-pgtools}
        :basics {:argo-uml {:version "0.34"}
