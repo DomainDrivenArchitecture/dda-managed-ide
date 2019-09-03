@@ -71,6 +71,7 @@
    config :- Packer]
   (let [{:keys [version sha256-hash]} config
         file-name (str "packer_" version "_linux_amd64.zip")
+        usr-local-lib-dir (str "/usr/local/lib/packer/" version)
         sum-name (str file-name "SHA256SUM")]
     (actions/as-action
       (logging/info (str facility "-install system: install-packer")))
@@ -83,14 +84,16 @@
         :literal true
         :content (str sha256-hash " " file-name)))
     (actions/exec-checked-script
-      "install packer"
-      ("curl" "-L" "-o" ~(str "/tmp/" file-name)
-        ~(str "https://releases.hashicorp.com/packer/" version "/" file-name))
-      ("cd" "/tmp")
-      (if (file-exists? ~sum-name)
-        ("sha256sum" "-c" ~sum-name))
-      ("unzip" ~file-name)
-      ("mv" "packer" "/usr/local/bin/"))))
+     "install packer"
+     ("curl" "-L" "-o" ~(str "/tmp/" file-name)
+             ~(str "https://releases.hashicorp.com/packer/" version "/" file-name))
+     ("cd" "/tmp")
+     (if (file-exists? ~sum-name)
+       ("sha256sum" "-c" ~sum-name))
+     ("unzip" ~file-name)
+     ("mkdir" "-p" ~usr-local-lib-dir)
+     ("mv" "packer" ~usr-local-lib-dir)
+     ("ln" "-s" "-f" ~(str usr-local-lib-dir "/packer") "/usr/local/bin/packer"))))
 
 (defn install-docker
   [facility]
@@ -166,6 +169,7 @@
    terraform-config :- Terraform]
   (let [{:keys [version sha256-hash]} terraform-config
         terraform-file-name (str "terraform_" version "_linux_amd64.zip")
+        usr-local-lib-dir (str "/usr/local/lib/terraform/" version)
         terraform-sum-name (str terraform-file-name "SHA256SUM")]
     (actions/as-action
       (logging/info (str facility "-install system: install-terraform")))
@@ -178,14 +182,16 @@
         :literal true
         :content (str sha256-hash " " terraform-file-name)))
     (actions/exec-checked-script
-      "install terraform"
-      ("curl" "-L" "-o" ~(str "/tmp/" terraform-file-name)
-        ~(str "https://releases.hashicorp.com/terraform/" version "/" terraform-file-name))
-      ("cd" "/tmp")
-      (if (file-exists? ~terraform-sum-name)
-        ("sha256sum" "-c" ~terraform-sum-name))
-      ("unzip" ~terraform-file-name)
-      ("mv" "terraform" "/usr/local/bin/"))))
+     "install terraform"
+     ("curl" "-L" "-o" ~(str "/tmp/" terraform-file-name)
+             ~(str "https://releases.hashicorp.com/terraform/" version "/" terraform-file-name))
+     ("cd" "/tmp")
+     (if (file-exists? ~terraform-sum-name)
+       ("sha256sum" "-c" ~terraform-sum-name))
+     ("unzip" ~terraform-file-name)
+     ("mkdir" "-p" ~usr-local-lib-dir)
+     ("mv" "terraform" ~usr-local-lib-dir)
+     ("ln" "-s" "-f" ~(str usr-local-lib-dir "/terraform") "/usr/local/bin/terraform"))))
 
 (s/defn install-system
   [facility :- s/Keyword
