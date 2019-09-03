@@ -47,6 +47,15 @@
     ("pip3" "install" "pybuilder")
     ("pip3" "install" "pip" "--upgrade")))
 
+(defn install-rest-client
+  [facility]
+  (actions/as-action
+   (logging/info (str facility "-install system: install-rest-client")))
+  (actions/exec-checked-script
+   "install pybuilder"
+   ("pip3" "install" "requests")
+   ("pip3" "install" "pip" "--upgrade")))
+
 (defn install-jupyterlab
   [facility]
   (actions/as-action
