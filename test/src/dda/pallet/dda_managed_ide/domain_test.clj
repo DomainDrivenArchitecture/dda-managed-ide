@@ -319,7 +319,6 @@
                                              :install-pip3
                                              :install-pybuilder
                                              :install-mfa
-                                             :install-mach
                                              :install-pgtools
                                              :install-ami-cleaner}
                              :basics
@@ -329,13 +328,13 @@
                                      "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip",}}
                              :db {:dbvis {:version "10.0.16"}}
                              :devops {:terraform
-                                        {:version "0.11.11",
+                                        {:version "0.12.6",
                                          :sha256-hash
-                                         "94504f4a67bad612b5c8e3a4b7ce6ca2772b3c1559630dfd71e9c519e3d6149c"}
+                                         "6544eb55b3e916affeea0a46fe785329c36de1ba1bdb51ca5239d3567101876f"}
                                       :packer
-                                        {:version "1.2.5"
+                                        {:version "1.4.2"
                                          :sha256-hash
-                                         "bc58aa3f3db380b76776e35f69662b49f3cf15cf80420fc81a15ce971430824c"}
+                                         "2fcbd1662ac76dc4dec381bdc7b5e6316d5b9d48e0774a32fe6ef9ec19f47213"}
                                       :docker {:bip "192.168.1.1/24"}
                                       :aws {:simple {:id "ACCESS_KEY"
                                                      :secret "SECRET_KEY"}}}

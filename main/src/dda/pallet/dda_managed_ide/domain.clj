@@ -126,15 +126,14 @@
          {:ide-settings #{:install-npm :install-asciinema}})
       (when contains-devops?
          (mu/deep-merge
-           {:devops {:terraform {:version "0.11.11"
-                                 :sha256-hash "94504f4a67bad612b5c8e3a4b7ce6ca2772b3c1559630dfd71e9c519e3d6149c"}
-                     :packer {:version "1.2.5"
-                              :sha256-hash "bc58aa3f3db380b76776e35f69662b49f3cf15cf80420fc81a15ce971430824c"}
+           {:devops {:terraform {:version "0.12.6"
+                                 :sha256-hash "6544eb55b3e916affeea0a46fe785329c36de1ba1bdb51ca5239d3567101876f"}
+                     :packer {:version "1.4.2"
+                              :sha256-hash "2fcbd1662ac76dc4dec381bdc7b5e6316d5b9d48e0774a32fe6ef9ec19f47213"}
                      :docker {:bip "192.168.1.1/24"}
                      :aws {}}
             :ide-settings #{:install-pip3
                             :install-pybuilder
-                            :install-mach
                             :install-mfa
                             :install-ami-cleaner}}
            {:devops devops}))
