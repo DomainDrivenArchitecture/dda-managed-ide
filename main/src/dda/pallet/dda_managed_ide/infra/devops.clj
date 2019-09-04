@@ -66,34 +66,45 @@
     ("pip3" "install" "future")
     ("pip3" "install" "aws-amicleaner")))
 
+(s/defn install-hashi-installer
+  [facility :- s/Keyword]
+  (actions/as-action
+   (logging/info (str facility "-install system: install-hashi-installer")))
+  (actions/directory
+   "/usr/local/lib/dda-pallet"
+   :owner "root"
+   :group "root"
+   :mode "755")
+  (actions/remote-file
+   "/usr/local/lib/dda-pallet/install_hashicorp.py"
+   :owner "root"
+   :group "root"
+   :mode "755"
+   :literal true
+   :content
+   (selmer/render-file "install_hashicorp.py.template" {})))
+
 (s/defn install-packer
   [facility :- s/Keyword
    config :- Packer]
-  (let [{:keys [version sha256-hash]} config
-        file-name (str "packer_" version "_linux_amd64.zip")
-        usr-local-lib-dir (str "/usr/local/lib/packer/" version)
-        sum-name (str file-name "SHA256SUM")]
+  (let [{:keys [version sha256-hash]} config]
     (actions/as-action
-      (logging/info (str facility "-install system: install-packer")))
-    (when (contains? config :sha256-hash)
-      (actions/remote-file
-        (str "/tmp/" sum-name)
-        :owner "root"
-        :group "root"
-        :mode "600"
-        :literal true
-        :content (str sha256-hash " " file-name)))
-    (actions/exec-checked-script
-     "install packer"
-     ("curl" "-L" "-o" ~(str "/tmp/" file-name)
-             ~(str "https://releases.hashicorp.com/packer/" version "/" file-name))
-     ("cd" "/tmp")
-     (if (file-exists? ~sum-name)
-       ("sha256sum" "-c" ~sum-name))
-     ("unzip" ~file-name)
-     ("mkdir" "-p" ~usr-local-lib-dir)
-     ("mv" "packer" ~usr-local-lib-dir)
-     ("ln" "-s" "-f" ~(str usr-local-lib-dir "/packer") "/usr/local/bin/packer"))))
+     (logging/info (str facility "-install system: install-packer")))
+    (if (contains? config :sha256-hash)
+      (actions/exec-checked-script
+       "install packer"
+       ("/usr/local/lib/dda-pallet/install_hashicorp.py"
+        "--version" ~version
+        "--hash" ~sha256-hash
+        "--link-to-path"
+        "packer"))
+      (actions/exec-checked-script
+       "install packer"
+       ("/usr/local/lib/dda-pallet/install_hashicorp.py"
+        "--version" ~version
+        "--link-to-path"
+        "packer")))
+  ))
 
 (defn install-docker
   [facility]
@@ -166,32 +177,24 @@
 
 (s/defn install-terraform
   [facility
-   terraform-config :- Terraform]
-  (let [{:keys [version sha256-hash]} terraform-config
-        terraform-file-name (str "terraform_" version "_linux_amd64.zip")
-        usr-local-lib-dir (str "/usr/local/lib/terraform/" version)
-        terraform-sum-name (str terraform-file-name "SHA256SUM")]
+   config :- Terraform]
+  (let [{:keys [version sha256-hash]} config]
     (actions/as-action
       (logging/info (str facility "-install system: install-terraform")))
-    (when (contains? terraform-config :sha256-hash)
-      (actions/remote-file
-        (str "/tmp/" terraform-sum-name)
-        :owner "root"
-        :group "root"
-        :mode "600"
-        :literal true
-        :content (str sha256-hash " " terraform-file-name)))
-    (actions/exec-checked-script
-     "install terraform"
-     ("curl" "-L" "-o" ~(str "/tmp/" terraform-file-name)
-             ~(str "https://releases.hashicorp.com/terraform/" version "/" terraform-file-name))
-     ("cd" "/tmp")
-     (if (file-exists? ~terraform-sum-name)
-       ("sha256sum" "-c" ~terraform-sum-name))
-     ("unzip" ~terraform-file-name)
-     ("mkdir" "-p" ~usr-local-lib-dir)
-     ("mv" "terraform" ~usr-local-lib-dir)
-     ("ln" "-s" "-f" ~(str usr-local-lib-dir "/terraform") "/usr/local/bin/terraform"))))
+    (if (contains? config :sha256-hash)
+      (actions/exec-checked-script
+       "install terraform"
+       ("/usr/local/lib/dda-pallet/install_hashicorp.py"
+        "--version" ~version
+        "--hash" ~sha256-hash
+        "--link-to-path"
+        "terraform"))
+      (actions/exec-checked-script
+       "install packer"
+       ("/usr/local/lib/dda-pallet/install_hashicorp.py"
+        "--version" ~version
+        "--link-to-path"
+        "terraform")))))
 
 (s/defn install-system
   [facility :- s/Keyword
@@ -205,13 +208,16 @@
        (install-ami-cleaner facility))
     (when contains-devops?
       (when (contains? devops :aws)
-         (install-awscli facility))
+        (install-awscli facility))
       (when (contains? devops :docker)
-         (install-docker facility))
+        (install-docker facility))
+      (when (or (contains? devops :terraform)
+                (contains? devops :package))
+        (install-hashi-installer facility))
       (when (contains? devops :terraform)
-         (install-terraform facility terraform))
+        (install-terraform facility terraform))
       (when (contains? devops :packer)
-         (install-packer facility packer)))))
+        (install-packer facility packer)))))
 
 (s/defn configure-system
   [facility :- s/Keyword
