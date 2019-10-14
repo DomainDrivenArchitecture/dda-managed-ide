@@ -1,0 +1,48 @@
+{:input {:user {:name "test"
+                :password "pwd"
+                :email "test-user@mydomain.org"
+                :credential-store []
+                :desktop-wiki []}
+         :target-type :remote-aws
+         :ide-platform #{:atom}
+         :git   {:test
+                 {:user-email "email"
+                  :repo {:mytest [{:host "github.com"
+                                   :protocol :https
+                                   :orga-path "my"
+                                   :repo-name "test"
+                                   :server-type :github}]}}}}
+ :expected {:dda-managed-ide {:ide-user :test
+                              :ide-settings #{:install-idea-inodes
+                                              :install-basics
+                                              :install-tmate
+                                              :install-npm
+                                              :install-pgtools
+                                              :install-asciinema}
+                              :basics
+                              {:argo-uml {:version "0.34"}
+                               :yed
+                               {:download-url
+                                "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip"}}
+                              :db {:dbvis {:version "10.0.16"}}
+                              :atom {:plugins ["ink"
+                                               "minimap"
+                                               "busy-signal"
+                                               "atom-toolbar"
+                                               "atom-meld"
+                                               "intentions"
+                                               "trailing-spaces"
+                                               "linter"
+                                               "linter-write-good"
+                                               "linter-ui-default"
+                                               "linter-jsonlint"
+                                               "linter-spell"
+                                               "linter-spell-html"
+                                               "linter-clojure"
+                                               "minimap-linter"
+                                               "teletype"
+                                               "tree-view-git-status"
+                                               "git-time-machine"
+                                               "language-diff"
+                                               "split-diff"]}}}
+ :meta {:name "default"}}

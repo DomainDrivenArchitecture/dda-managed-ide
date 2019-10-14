@@ -1,0 +1,59 @@
+{:input {:user {:name  "test"
+                :password "pwd"}
+         :bookmarks [{:name "Bookmarks Toolbar"
+                      :links [["url" "name"]]}]
+         :target-type :virtualbox
+         :devops {:aws {:simple {:id "ACCESS_KEY"
+                                 :secret "SECRET_KEY"}}}
+         :ide-platform #{:atom}}
+ :expected {:dda-managed-ide {:ide-user :test
+                              :ide-settings #{:install-idea-inodes
+                                              :install-basics
+                                              :install-tmate
+                                              :install-asciinema
+                                              :install-npm
+                                              :install-pip3
+                                              :install-pybuilder
+                                              :install-mfa
+                                              :install-pgtools
+                                              :install-ami-cleaner}
+                              :basics
+                              {:argo-uml {:version "0.34"}
+                               :yed
+                               {:download-url
+                                "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip"}}
+                              :db {:dbvis {:version "10.0.16"}}
+                              :devops {:terraform
+                                       {:version "0.12.6"
+                                        :sha256-hash
+                                        "6544eb55b3e916affeea0a46fe785329c36de1ba1bdb51ca5239d3567101876f"}
+                                       :packer
+                                       {:version "1.4.2"
+                                        :sha256-hash
+                                        "2fcbd1662ac76dc4dec381bdc7b5e6316d5b9d48e0774a32fe6ef9ec19f47213"}
+                                       :docker {:bip "192.168.1.1/24"}
+                                       :aws {:simple {:id "ACCESS_KEY"
+                                                      :secret "SECRET_KEY"}}}
+                              :atom {:plugins ["ink"
+                                               "minimap"
+                                               "busy-signal"
+                                               "atom-toolbar"
+                                               "atom-meld"
+                                               "intentions"
+                                               "trailing-spaces"
+                                               "linter"
+                                               "linter-write-good"
+                                               "linter-ui-default"
+                                               "linter-jsonlint"
+                                               "linter-spell"
+                                               "linter-spell-html"
+                                               "linter-clojure"
+                                               "minimap-linter"
+                                               "teletype"
+                                               "tree-view-git-status"
+                                               "git-time-machine"
+                                               "language-diff"
+                                               "split-diff"
+                                               "language-terraform"
+                                               "terraform-fmt"]}}}
+ :meta {:name "config-set-devops"}}
