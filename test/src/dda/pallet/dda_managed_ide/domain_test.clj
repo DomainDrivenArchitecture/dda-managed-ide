@@ -17,10 +17,11 @@
 
 (ns dda.pallet.dda-managed-ide.domain-test
   (:require
-    [clojure.test :refer :all]
-    [schema.core :as s]
-    [dda.pallet.dda-managed-ide.domain :as sut]
-    [dda.pallet.dda-managed-ide.domain.serverspec :as serverspec]))
+   [clojure.test :refer :all]
+   [data-test :refer :all]
+   [schema.core :as s]
+   [dda.pallet.dda-managed-ide.domain :as sut]
+   [dda.pallet.dda-managed-ide.domain.serverspec :as serverspec]))
 
 (s/set-fn-validation! true)
 
@@ -46,110 +47,6 @@
                           :desktop-wiki []},
                    :target-type :remote-aws,
                    :usage-type :desktop-ide}
-   :git-domain {:test
-                {:user-email "test-user@mydomain.org",
-                 :repo
-                 {:mytest
-                  [{:host "github.com"
-                    :protocol :https
-                    :orga-path "my"
-                    :repo-name "test"
-                    :server-type :github}]
-                  :books
-                  [{:host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :repo-name "ddaArchitecture",
-                    :protocol :https,
-                    :server-type :github}],
-                  :dda-pallet
-                  [{:repo-name "dda-config-commons",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-pallet-commons",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-pallet",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-user-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-backup-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-git-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-hardening-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "httpd-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-httpd-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-liferay-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-managed-vm",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-managed-ide",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-mariadb-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-serverspec-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-tomcat-crate",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}
-                   {:repo-name "dda-cloudspec",
-                    :host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :protocol :https,
-                    :server-type :github}]}
-                 :synced-repo
-                 {:credential-store [],
-                  :desktop-wiki []}}}
-   :serverspec-domain {:package
-                       [{:name "apt-utils" :installed? true}
-                        {:name "curl" :installed? true}
-                        {:name "gnupg2" :installed? true}
-                        {:name "sudo" :installed? true}]}
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
@@ -195,11 +92,6 @@
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
                    :usage-type :desktop-ide}
-   :serverspec-domain {:package
-                       [{:name "apt-utils" :installed? true}
-                        {:name "curl" :installed? true}
-                        {:name "gnupg2" :installed? true}
-                        {:name "sudo" :installed? true}]}
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
@@ -255,7 +147,6 @@
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
                    :usage-type :desktop-ide}
-   :serverspec-domain {:file '()}
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
@@ -304,7 +195,6 @@
    :dda-vm-domain {:user {:name "test", :password "pwd"},
                    :target-type :virtualbox,
                    :usage-type :desktop-ide}
-   :serverspec-domain {:file '()}
    :infra {:dda-managed-ide {:ide-user :test,
                              :ide-settings #{:install-idea-inodes
                                              :install-basics
@@ -317,19 +207,19 @@
                                              :install-pgtools
                                              :install-ami-cleaner}
                              :basics
-                                   {:argo-uml {:version "0.34"},
-                                    :yed
-                                    {:download-url
-                                     "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip",}}
+                             {:argo-uml {:version "0.34"},
+                              :yed
+                              {:download-url
+                               "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip",}}
                              :db {:dbvis {:version "10.0.16"}}
                              :devops {:terraform
-                                        {:version "0.12.6",
-                                         :sha256-hash
-                                         "6544eb55b3e916affeea0a46fe785329c36de1ba1bdb51ca5239d3567101876f"}
+                                      {:version "0.12.6",
+                                       :sha256-hash
+                                       "6544eb55b3e916affeea0a46fe785329c36de1ba1bdb51ca5239d3567101876f"}
                                       :packer
-                                        {:version "1.4.2"
-                                         :sha256-hash
-                                         "2fcbd1662ac76dc4dec381bdc7b5e6316d5b9d48e0774a32fe6ef9ec19f47213"}
+                                      {:version "1.4.2"
+                                       :sha256-hash
+                                       "2fcbd1662ac76dc4dec381bdc7b5e6316d5b9d48e0774a32fe6ef9ec19f47213"}
                                       :docker {:bip "192.168.1.1/24"}
                                       :aws {:simple {:id "ACCESS_KEY"
                                                      :secret "SECRET_KEY"}}}
@@ -362,7 +252,6 @@
                   :target-type :virtualbox
                   :java {}
                   :ide-platform #{:atom}}
-   :serverspec-domain {:file '()}
    :infra {:dda-managed-ide
            {:ide-user :test,
             :ide-settings
@@ -405,7 +294,6 @@
                   :target-type :virtualbox
                   :java-script {:nodejs-use "11.x"}
                   :ide-platform #{:atom}}
-   :serverspec-domain {:file '()}
    :infra {:dda-managed-ide
            {:ide-user :test,
             :java-script
@@ -443,30 +331,22 @@
               "language-diff"
               "split-diff"]},}}})
 
-(deftest test-git-config
-  (testing
-    "test the git config creation"
-    (is (thrown? Exception (sut/ide-git-config {})))
-    (is (= (:git-domain config-repo)
-           (sut/ide-git-config (:domain-input config-repo))))))
+(deftest should-throw-exception-on-invalid-input
+  (is (thrown? Exception (sut/ide-git-config {})))
+  (is (thrown? Exception (sut/ide-serverspec-config {})))
+  (is (thrown? Exception (sut/dda-vm-domain-configuration {}))))
 
-(deftest test-serverspec-config
-  (testing
-    "test the serverspec config creation"
-    (is (thrown? Exception (sut/ide-serverspec-config {})))
-    (is (= (:serverspec-domain config-repo)
-           (serverspec/serverspec-prerequisits)))
-    (is (= (:serverspec-domain config-set-clojure)
-           (serverspec/serverspec-prerequisits)))))
+(defdatatest should-generate-git-domain-config [input expected]
+  (is (= expected
+         (sut/ide-git-config input))))
 
-(deftest test-dda-vm-domain-config
-  (testing
-    "test the serverspec config creation"
-    (is (thrown? Exception (sut/ide-serverspec-config {})))
-    (is (= (:dda-vm-domain config-repo)
-           (sut/dda-vm-domain-configuration (:domain-input config-repo))))
-    (is (= (:dda-vm-domain config-set-clojure)
-           (sut/dda-vm-domain-configuration (:domain-input config-set-clojure))))))
+(defdatatest should-generate-serverspec-domain-config [input expected]
+  (is (= expected
+         (serverspec/serverspec-prerequisits))))
+
+(defdatatest should-generate-vm-domain-config [input expected]
+  (is (= expected
+         (sut/dda-vm-domain-configuration input))))
 
 (deftest test-infra-configuration
   (testing

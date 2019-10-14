@@ -1,0 +1,11 @@
+{:input  {:user {:name  "test"
+                 :password "pwd"}
+          :target-type :virtualbox
+          :ide-platform #{:atom}
+          :clojure {:lein-auth [{:repo "maven.my-repo.com"
+                                 :username "mvn-account"
+                                 :password "mvn-password"}]}}
+ :expected {:user {:name "test", :password "pwd"}
+            :target-type :virtualbox
+            :usage-type :desktop-ide}
+ :meta {:name "config-set-clojure"}}

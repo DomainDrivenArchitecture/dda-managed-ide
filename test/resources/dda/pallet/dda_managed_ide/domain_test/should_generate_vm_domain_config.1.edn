@@ -1,0 +1,22 @@
+{:input {:user {:name "test"
+                :password "pwd"
+                :email "test-user@mydomain.org"
+                :credential-store []
+                :desktop-wiki []}
+         :target-type :remote-aws
+         :ide-platform #{:atom}
+         :git   {:test
+                 {:user-email "email"
+                  :repo {:mytest [{:host "github.com"
+                                   :protocol :https
+                                   :orga-path "my"
+                                   :repo-name "test"
+                                   :server-type :github}]}}}}
+ :expected {:user {:name "test"
+                   :password "pwd"
+                   :email "test-user@mydomain.org"
+                   :credential-store []
+                   :desktop-wiki []}
+            :target-type :remote-aws
+            :usage-type :desktop-ide}
+ :meta {:name "default"}}

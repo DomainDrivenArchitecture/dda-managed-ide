@@ -1,0 +1,6 @@
+{:input nil
+ :expected {:package
+            [{:name "apt-utils" :installed? true}
+             {:name "curl" :installed? true}
+             {:name "gnupg2" :installed? true}
+             {:name "sudo" :installed? true}]}}
