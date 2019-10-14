@@ -143,12 +143,7 @@
                     :protocol :https,
                     :server-type :github}]}
                  :synced-repo
-                 {:credential-store
-                  [{:host "github.com",
-                    :orga-path "DomainDrivenArchitecture",
-                    :repo-name "password-store-for-teams",
-                    :protocol :https,
-                    :server-type :github}],
+                 {:credential-store [],
                   :desktop-wiki []}}}
    :serverspec-domain {:package
                        [{:name "apt-utils" :installed? true}

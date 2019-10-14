@@ -4,7 +4,7 @@
   :license {:name "Apache License, Version 2.0"
             :url "https://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [[dda/dda-pallet "3.0.0"]
-                 [dda/dda-managed-vm "2.5.4"]]
+                 [dda/dda-managed-vm "2.6.1"]]
   :target-path "target/%s/"
   :source-paths ["main/src"]
   :resource-paths ["main/resources"]
@@ -18,10 +18,10 @@
                    :resource-paths ["integration/resources"
                                     "test/resources"]
                    :dependencies
-                   [[org.clojure/test.check "0.10.0-alpha4"]
+                   [[org.clojure/test.check "0.10.0"]
                     [dda/pallet "0.9.1" :classifier "tests"]
                     [ch.qos.logback/logback-classic "1.3.0-alpha4"]
-                    [org.slf4j/jcl-over-slf4j "1.8.0-beta4"]]
+                    [org.slf4j/jcl-over-slf4j "2.0.0-alpha1"]]
                    :plugins
                    [[lein-sub "0.3.0"]]
                    :leiningen/reply
@@ -39,7 +39,7 @@
                        :dependencies [[org.clojure/tools.cli "0.4.2"]
                                       [ch.qos.logback/logback-classic "1.3.0-alpha4"
                                        :exclusions [com.sun.mail/javax.mail]]
-                                      [org.slf4j/jcl-over-slf4j "1.8.0-beta4"]]}}
+                                      [org.slf4j/jcl-over-slf4j "2.0.0-alpha1"]]}}
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]

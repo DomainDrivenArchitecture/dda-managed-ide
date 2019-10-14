@@ -41,7 +41,7 @@
   desktop-wiki :- Repositories
   credential-store :- Repositories]
  (let [email (if (some? email) email (str name "@mydomain"))
-       protocol-type (git-repo/github-protocol-type git-credentials)]
+       protocol-type (git-repo/protocol-type git-credentials "github.com")]
    {(keyword name)
     (merge
       {:user-email email}
@@ -63,7 +63,7 @@
                           :server-type :github})))}}
       {:synced-repo
        (merge
-         {:credential-store (git-repo/credential-store-setup credential-store protocol-type)}
+         {:credential-store []}
          (when (some? desktop-wiki)
           {:desktop-wiki desktop-wiki}))}
       {})}))
