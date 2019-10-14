@@ -43,9 +43,15 @@
   (actions/as-action
     (logging/info (str facility "-install system: install-pybuilder")))
   (actions/exec-checked-script
-    "install pybuilder"
-    ("pip3" "install" "pybuilder")
-    ("pip3" "install" "pip" "--upgrade")))
+   "install pybuilder"
+   ("pip3" "install" "pybuilder")
+   ("pip3" "install" "ddadevops")
+   ("pip3" "install" "pypandoc")
+   ("pip3" "install" "mockito")
+   ("pip3" "install" "coverage")
+   ("pip3" "install" "unittest-xml-reporting")
+   ("pip3" "install" "unittest-xml-reporting")
+   ("pip3" "install" "pip" "--upgrade")))
 
 (defn install-rest-client
   [facility]
