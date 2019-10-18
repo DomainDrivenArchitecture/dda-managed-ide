@@ -107,8 +107,8 @@
                        :install-pgtools}
        :basics {:argo-uml {:version "0.34"}
                 :yed {:download-url
-                      "https://www.yworks.com/resources/yed/demo/yEd-3.19.zip"}}
-       :db {:dbvis {:version "10.0.16"}}}
+                      "https://www.yworks.com/resources/yed/demo/yEd-3.19.1.zip"}}
+       :db {:dbvis {:version "10.0.22"}}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
       (when (contains? ide-platform :idea)
@@ -126,10 +126,10 @@
          {:ide-settings #{:install-npm :install-asciinema}})
       (when contains-devops?
          (mu/deep-merge
-           {:devops {:terraform {:version "0.12.6"
-                                 :sha256-hash "6544eb55b3e916affeea0a46fe785329c36de1ba1bdb51ca5239d3567101876f"}
-                     :packer {:version "1.4.2"
-                              :sha256-hash "2fcbd1662ac76dc4dec381bdc7b5e6316d5b9d48e0774a32fe6ef9ec19f47213"}
+           {:devops {:terraform {:version "0.12.11"
+                                 :sha256-hash "d61f8758a25bc079bb0833b81f998fbc4cf03bb0f41b995e08204cf5978f700e"}
+                     :packer {:version "1.4.4"
+                              :sha256-hash "b4dc37877a0fd00fc72ebda98977c2133be9ba6b26bcdd13b1b14a369e508948"}
                      :docker {:bip "192.168.1.1/24"}
                      :aws {}}
             :ide-settings #{:install-pip3
