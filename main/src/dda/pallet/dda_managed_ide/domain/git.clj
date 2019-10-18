@@ -29,10 +29,13 @@
 (def GitCredentials git-domain/GitCredentials)
 (def GitCredentialsResolved git-domain/GitCredentialsResolved)
 
-(def repo-names
+(def dda-pallet-repo-names
   ["dda-config-commons", "dda-pallet-commons" ,"dda-pallet","dda-user-crate", "dda-backup-crate" ,"dda-git-crate",
    "dda-hardening-crate", "httpd-crate", "dda-httpd-crate", "dda-liferay-crate", "dda-managed-vm", "dda-managed-ide",
-   "dda-mariadb-crate", "dda-serverspec-crate", "dda-tomcat-crate", "dda-cloudspec"])
+   "dda-mariadb-crate", "dda-serverspec-crate", "dda-tomcat-crate", "dda-k8s-crate", "dda-smeagol-crate"])
+
+(def dda-repo-names
+  ["smeagol", "data-test", "dda-devops-build"])
 
 (s/defn ide-git-config
  [name :- s/Str
@@ -55,12 +58,20 @@
                 :server-type :github}]
               :dda-pallet
               (into []
-               (for [repo-name repo-names]
-                 (merge {:repo-name repo-name}
-                        {:host "github.com"
-                          :orga-path "DomainDrivenArchitecture"
-                          :protocol protocol-type
-                          :server-type :github})))}}
+                    (for [repo-name dda-pallet-repo-names]
+                      (merge {:repo-name repo-name}
+                             {:host "github.com"
+                              :orga-path "DomainDrivenArchitecture"
+                              :protocol protocol-type
+                              :server-type :github})))
+              :dda
+              (into []
+                    (for [repo-name dda-repo-names]
+                      (merge {:repo-name repo-name}
+                             {:host "github.com"
+                              :orga-path "DomainDrivenArchitecture"
+                              :protocol protocol-type
+                              :server-type :github})))}}
       {:synced-repo
        (merge
          {:credential-store []}
