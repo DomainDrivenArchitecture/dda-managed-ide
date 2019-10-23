@@ -16,7 +16,6 @@
 
 (ns dda.pallet.dda-managed-ide.infra
   (:require
-    [clojure.tools.logging :as logging]
     [schema.core :as s]
     [pallet.actions :as actions]
     [dda.pallet.core.infra :as core-infra]
@@ -122,7 +121,7 @@
     (pallet.action/with-action-options
       {:sudo-user "root"}
       (java/configure-system facility contains-java? java)
-      (devops/configure-system facility contains-devops? devops (name ide-user)))))
+      (devops/configure-system facility (name ide-user) contains-devops? devops))))
 
 (s/defn configure-user
   [config :- DdaIdeConfig]
@@ -136,7 +135,8 @@
        :script-dir (str "/home/" os-user-name "/")
        :script-env {:HOME (str "/home/" os-user-name "/")}}
       (clojure/configure-user facility os-user-name contains-clojure? clojure)
-      (atom/configure-user facility os-user-name contains-atom? atom))))
+      (atom/configure-user facility os-user-name contains-atom? atom)
+      (devops/configure-user facility (name ide-user) contains-devops? devops))))
 
 (s/defmethod core-infra/dda-init facility
   [dda-crate config]

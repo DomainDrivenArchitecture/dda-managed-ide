@@ -148,11 +148,6 @@
   (actions/packages
     :aptitude ["awscli"]))
 
-(s/defn aws-credentials-configuration
-  [aws :- Aws]
-  (when (contains? aws :simple)
-    (selmer/render-file "aws_simple_credentials.template" aws)))
-
 (s/defn configure-user-aws
   [facility :- s/Keyword
    os-user-name :- s/Str
@@ -173,7 +168,7 @@
         :mode "600"
         :literal true
         :content
-        (aws-credentials-configuration aws)))))
+        (selmer/render-file "aws_simple_credentials.template" aws)))))
 
 (s/defn install-terraform
   [facility
@@ -221,9 +216,9 @@
 
 (s/defn configure-system
   [facility :- s/Keyword
+   os-user-name :- s/Str
    contains-devops? :- s/Bool
-   devops :- Devops
-   os-user-name :- s/Str]
+   devops :- Devops]
   (let [{:keys [docker]} devops]
     (when contains-devops?
       (when (contains? devops :docker)
