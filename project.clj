@@ -1,10 +1,10 @@
-(defproject dda/dda-managed-ide "3.2.1-SNAPSHOT"
+(defproject dda/dda-managed-ide "3.2.1"
   :description "module to install and configure ide based on ubuntu vm."
   :url "https://www.domaindrivenarchitecture.org"
   :license {:name "Apache License, Version 2.0"
             :url "https://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [[dda/dda-pallet "3.0.0"]
-                 [dda/dda-managed-vm "2.6.1"]]
+                 [dda/dda-managed-vm "2.6.2"]]
   :target-path "target/%s/"
   :source-paths ["main/src"]
   :resource-paths ["main/resources"]
@@ -21,7 +21,7 @@
                    [[org.clojure/test.check "0.10.0"]
                     [dda/data-test "0.1.1"]
                     [dda/pallet "0.9.1" :classifier "tests"]
-                    [ch.qos.logback/logback-classic "1.3.0-alpha4"]
+                    [ch.qos.logback/logback-classic "1.3.0-alpha5"]
                     [org.slf4j/jcl-over-slf4j "2.0.0-alpha1"]]
                    :plugins
                    [[lein-sub "0.3.0"]]
@@ -38,7 +38,7 @@
                        :main dda.pallet.dda-managed-ide.main
                        :uberjar-name "dda-managed-ide-standalone.jar"
                        :dependencies [[org.clojure/tools.cli "0.4.2"]
-                                      [ch.qos.logback/logback-classic "1.3.0-alpha4"
+                                      [ch.qos.logback/logback-classic "1.3.0-alpha5"
                                        :exclusions [com.sun.mail/javax.mail]]
                                       [org.slf4j/jcl-over-slf4j "2.0.0-alpha1"]]}}
   :release-tasks [["vcs" "assert-committed"]
