@@ -39,3 +39,11 @@
 ; code --install-extension cospaia.clojure4vscode martinklepsch.clojure-joker-linter DavidAnson.vscode-markdownlint
 
 ; # Settings can be found at $HOME/.config/Code/User/settings.json
+
+; ; Plugins Jan
+; Calva 
+; Clojure 
+; GitLens
+; Python 
+; "TODO Highlight"
+; Todo Tree
