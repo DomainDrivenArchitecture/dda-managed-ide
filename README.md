@@ -9,7 +9,7 @@
 This crate works with:
 * pallet 0.9
 * clojure 1.9
-* xubuntu 18.04
+* xubuntu 18.04.3
 
 ## Features
 
