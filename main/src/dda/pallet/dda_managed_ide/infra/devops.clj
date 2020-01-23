@@ -19,7 +19,6 @@
     [clojure.tools.logging :as logging]
     [schema.core :as s]
     [selmer.parser :as selmer]
-    [pallet.action :as action]
     [pallet.actions :as actions]
     [dda.config.commons.user-home :as user-env]))
 
@@ -190,6 +189,33 @@
         "--version" ~version
         "--link-to-path"
         "terraform")))))
+
+(s/defn configure-user-terraform
+  [facility :- s/Keyword
+   os-user-name :- s/Str
+   config :- Terraform]
+  (let [user-home-dir (user-env/user-home-dir os-user-name)
+        path (str user-home-dir "/.terraform.d/" )]
+    (actions/as-action
+     (logging/info (str facility "-configure user: configure-user-terraform")))
+    (actions/directory
+     path
+     :owner os-user-name
+     :group os-user-name
+     :mode "755")
+    (actions/directory
+     (str path "/plugin-cache")
+     :owner os-user-name
+     :group os-user-name
+     :mode "755")
+    (actions/remote-file
+     (str user-home-dir ".bashrc.d/terraform")
+     :owner os-user-name
+     :group os-user-name
+     :mode "640"
+     :literal true
+     :content
+     (selmer/render-file "main/resources/terraform_config.template" {}))))
 
 (s/defn install-system
   [facility :- s/Keyword
