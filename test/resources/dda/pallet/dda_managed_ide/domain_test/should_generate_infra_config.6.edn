@@ -11,8 +11,8 @@
              #{:install-basics :install-tmate :install-idea-inodes :install-asciinema :install-nvm
                :install-pgtools}
              :basics {:argo-uml {:version "0.34"}
-                      :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.19.1.zip"}}
-             :db {:dbvis {:version "10.0.22"}}
+                      :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.19.1.1.zip"}}
+             :db {:dbvis {:version "10.0.25"}}
              :atom
              {:plugins
               ["ink"
