@@ -1,4 +1,3 @@
 {:file [{:path "/home/test-user/repo"}
         {:path "/home/test-user/.lein/profiles.clj"}
-        {:path "/home/test-user/.aws"}
-        {:path "/home/test-user/.password-store/.gpg-id"}]}
+        {:path "/home/test-user/.aws"}]}
