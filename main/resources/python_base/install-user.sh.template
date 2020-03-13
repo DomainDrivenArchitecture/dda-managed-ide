@@ -1,0 +1,5 @@
+virtualenv {{user-home}}/dev -p python3
+
+source {{user-home}}/dev/bin/activate 
+
+pip install pip --upgrade

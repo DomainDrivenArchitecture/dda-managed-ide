@@ -1,0 +1,6 @@
+pip install pybuilder
+pip install ddadevops
+pip install pypandoc
+pip install mockito
+pip install coverage
+pip install unittest-xml-reporting
