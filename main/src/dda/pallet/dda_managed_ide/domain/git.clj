@@ -29,13 +29,13 @@
 (def GitCredentials git-domain/GitCredentials)
 (def GitCredentialsResolved git-domain/GitCredentialsResolved)
 
-(def dda-pallet-repo-names
-  ["dda-config-commons", "dda-pallet-commons" ,"dda-pallet","dda-user-crate", "dda-backup-crate" ,"dda-git-crate",
-   "dda-hardening-crate", "httpd-crate", "dda-httpd-crate", "dda-liferay-crate", "dda-managed-vm", "dda-managed-ide",
-   "dda-mariadb-crate", "dda-serverspec-crate", "dda-tomcat-crate", "dda-k8s-crate", "dda-smeagol-crate"])
 
 (def dda-repo-names
-  ["smeagol", "data-test", "dda-devops-build"])
+  ["dda-config-commons", "dda-provision" ,"dda-devops-build", "data-test"])
+
+(def dda-pallet-repo-names
+  ["dda-pallet-commons" ,"dda-pallet","dda-user-crate", "dda-backup-crate" ,"dda-git-crate",
+   "dda-managed-vm", "dda-managed-ide", "dda-serverspec-crate", "dda-k8s-crate", "dda-smeagol-crate"])
 
 (s/defn ide-git-config
  [name :- s/Str
