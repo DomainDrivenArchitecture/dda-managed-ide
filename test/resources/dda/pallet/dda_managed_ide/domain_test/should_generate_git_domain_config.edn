@@ -12,30 +12,24 @@
                                    :orga-path "my"
                                    :repo-name "test"
                                    :server-type :github}]}}}}
- :expected {:test 
-            {:user-email "test-user@mydomain.org", 
+ :expected {:test
+            {:user-email "test-user@mydomain.org",
              :repo {
-                    :mytest [{:host "github.com", :protocol :https, :orga-path "my", :repo-name "test", :server-type :github}], 
-                    :books [{:host "github.com", :orga-path "DomainDrivenArchitecture", :repo-name "ddaArchitecture", :protocol :https, :server-type :github}], 
-                    :dda-pallet [{:repo-name "dda-config-commons", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-pallet-commons", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-pallet", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-user-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-backup-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-git-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-hardening-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "httpd-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-httpd-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-liferay-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-managed-vm", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-managed-ide", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-mariadb-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-serverspec-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-tomcat-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-k8s-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                                 {:repo-name "dda-smeagol-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}], 
-                    :dda [{:repo-name "smeagol", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                          {:repo-name "data-test", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github} 
-                          {:repo-name "dda-devops-build", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}]}, 
-:synced-repo {:credential-store [], 
-              :desktop-wiki []}}}}
+                    :mytest [{:host "github.com", :protocol :https, :orga-path "my", :repo-name "test", :server-type :github}],
+                    :books [{:host "github.com", :orga-path "DomainDrivenArchitecture", :repo-name "ddaArchitecture", :protocol :https, :server-type :github}],
+                    :dda-pallet [{:repo-name "dda-pallet-commons", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                                 {:repo-name "dda-pallet", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                                 {:repo-name "dda-user-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                                 {:repo-name "dda-backup-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                                 {:repo-name "dda-git-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                                 {:repo-name "dda-managed-vm", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                                 {:repo-name "dda-managed-ide", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                                 {:repo-name "dda-serverspec-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                                 {:repo-name "dda-k8s-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                                 {:repo-name "dda-smeagol-crate", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}],
+                    :dda [{:repo-name "dda-config-commons", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                          {:repo-name "dda-provision", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                          {:repo-name "dda-devops-build", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}
+                          {:repo-name "data-test", :host "github.com", :orga-path "DomainDrivenArchitecture", :protocol :https, :server-type :github}]},
+             :synced-repo {:credential-store [],
+                           :desktop-wiki []}}}}
