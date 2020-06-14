@@ -46,7 +46,7 @@
     (actions/package-source (str "nodejs_" nodejs-use)
       :aptitude
       {:url (str "https://deb.nodesource.com/node_" nodejs-use)
-       :release "bionic"
+       :release "focal"
        :scopes ["main"]
        :key-url "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"})))
 

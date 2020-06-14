@@ -3,7 +3,7 @@
                         :username {:plain "mvn-account"}
                         :password {:plain "mvn-password"}}]}
  :java {}
- :java-script {:nodejs-use "11.x"}
+ :java-script {:nodejs-use "14.x"}
  :bigdata {}
  :devops {:aws {:simple {:id {:plain "ACCESS_KEY"}
                          :secret {:plain "SECRET_KEY"}}}}
@@ -18,6 +18,7 @@
                  :gpg {:gpg-public-key
                        {:plain "-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1
+
 mI0EWbJf3wEEALq5GqjqzlYRLLXa3oz0Ow/nPnzurAPr1+yn2UZinSMk6wgB6ayf
 9DySPvUW9+VLrlLvCSLEo/tX2NwSdn6ZWR454inlmJrzm+G5JPWc4ANhCE61JVME
 l6pPXTQ+CgsPLQspq6leD7+WrBEIKQuXZpcQv2HnirvbNKeYn9eT1xibABEBAAG0
@@ -37,6 +38,7 @@ tszJa3+UaMuSzvG+Tlv8woAv8w==
                        :gpg-private-key
                        {:plain "-----BEGIN PGP PRIVATE KEY BLOCK-----
 Version: GnuPG v1
+
 lQH+BFmyX98BBAC6uRqo6s5WESy12t6M9DsP5z587qwD69fsp9lGYp0jJOsIAems
 n/Q8kj71FvflS65S7wkixKP7V9jcEnZ+mVkeOeIp5Zia85vhuST1nOADYQhOtSVT
 BJeqT100PgoLDy0LKaupXg+/lqwRCCkLl2aXEL9h54q72zSnmJ/Xk9cYmwARAQAB
