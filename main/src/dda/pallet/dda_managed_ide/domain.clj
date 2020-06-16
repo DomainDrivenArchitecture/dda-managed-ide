@@ -107,7 +107,7 @@
                        :install-pgtools}
        :basics {:argo-uml {:version "0.34"}
                 :yed {:download-url
-                      "https://www.yworks.com/resources/yed/demo/yEd-3.19.1.1.zip"}}
+                      "https://www.yworks.com/resources/yed/demo/yEd-3.20.zip"}}
        :db {:dbvis {:version "10.0.25"}}}
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
