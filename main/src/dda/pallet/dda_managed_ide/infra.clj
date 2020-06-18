@@ -27,7 +27,8 @@
     [dda.pallet.dda-managed-ide.infra.devops :as devops]
     [dda.pallet.dda-managed-ide.infra.python :as py]
     [dda.pallet.dda-managed-ide.infra.atom :as atom]
-    [dda.pallet.dda-managed-ide.infra.idea :as idea]))
+    [dda.pallet.dda-managed-ide.infra.idea :as idea]
+    [dda.pallet.dda-managed-ide.infra.vscode :as vscode]))
 
 (def facility :dda-managed-ide)
 
@@ -90,11 +91,12 @@
        :script-dir "/root/"
        :script-env {:HOME (str "/root")}})
     (actions/package-manager :update)
+    (vscode/testcommand facility)
     (basics/install-system facility ide-settings contains-basics? basics)
     (db/install-system facility ide-settings contains-db? db)
     (clojure/install-system facility contains-clojure? clojure)
     (java/install-system facility contains-java? java)
-    (js/install-system facility contains-java-script? java-script ide-settings)
+    ;(js/install-system facility contains-java-script? java-script ide-settings)
     (py/install-system facility ide-settings)
     (devops/install-system facility ide-settings contains-devops? devops)
     (atom/install-system facility ide-settings contains-atom? atom)
