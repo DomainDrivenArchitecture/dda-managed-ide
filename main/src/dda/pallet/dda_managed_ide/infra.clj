@@ -91,7 +91,6 @@
        :script-dir "/root/"
        :script-env {:HOME (str "/root")}})
     (actions/package-manager :update)
-    (vscode/testcommand facility)
     (basics/install-system facility ide-settings contains-basics? basics)
     (db/install-system facility ide-settings contains-db? db)
     (clojure/install-system facility contains-clojure? clojure)
