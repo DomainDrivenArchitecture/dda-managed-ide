@@ -95,7 +95,7 @@
     (db/install-system facility ide-settings contains-db? db)
     (clojure/install-system facility contains-clojure? clojure)
     (java/install-system facility contains-java? java)
-    ;(js/install-system facility contains-java-script? java-script ide-settings)
+    (js/install-system facility contains-java-script? java-script ide-settings)
     (py/install-system facility ide-settings)
     (devops/install-system facility ide-settings contains-devops? devops)
     (atom/install-system facility ide-settings contains-atom? atom)
