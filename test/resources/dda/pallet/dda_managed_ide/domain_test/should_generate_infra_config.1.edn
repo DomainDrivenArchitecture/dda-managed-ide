@@ -14,10 +14,9 @@
                                    :server-type :github}]}}}}
  :expected {:dda-managed-ide 
             {:ide-user :test, 
-             :ide-settings #{:install-tmate :install-basics :install-npm 
-                             :install-idea-inodes :install-asciinema :install-pgtools}, 
+             :ide-settings #{:install-tmate :install-basics :install-npm :install-asciinema :install-pgtools}, 
              :basics {:argo-uml {:version "0.34"}, 
-                      :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.19.1.1.zip"}}, 
+                      :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.20.zip"}}, 
              :db {:dbvis {:version "10.0.25"}}, 
              :atom 
              {:plugins ["ink" "minimap" "busy-signal" "atom-toolbar" "atom-meld" 

@@ -6,14 +6,13 @@
                                 :username "mvn-account"
                                 :password "mvn-password"}]}}
  :expected {:dda-managed-ide {:ide-user :test
-                              :ide-settings #{:install-idea-inodes
-                                              :install-basics
+                              :ide-settings #{:install-basics
                                               :install-tmate
                                               :install-npm
                                               :install-pgtools
                                               :install-asciinema}
                               :basics {:argo-uml {:version "0.34"}
-                                       :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.19.1.1.zip"}}
+                                       :yed {:download-url "https://www.yworks.com/resources/yed/demo/yEd-3.20.zip"}}
                               :db {:dbvis {:version "10.0.25"}}
                               :java {:java-default-to
                                      "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"}
