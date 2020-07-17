@@ -108,7 +108,8 @@
     (when (contains? ide-settings :install-tmate)
       (install-tmate facility))
     (when contains-basics?
-      (when (contains? basics :argo-uml)
-        (install-argouml facility argo-uml))
+      ; ArgoUML Website times out
+      ;(when (contains? basics :argo-uml)
+      ;  (install-argouml facility argo-uml))
       (when (contains? basics :yed)
         (install-yed facility yed)))))
