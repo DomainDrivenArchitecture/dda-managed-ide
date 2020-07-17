@@ -100,8 +100,7 @@
     {infra/facility
      (mu/deep-merge
       {:ide-user (keyword (:name user))
-       :ide-settings #{:install-idea-inodes
-                       :install-basics
+       :ide-settings #{:install-basics
                        :install-tmate
                        :install-asciinema
                        :install-pgtools}
@@ -112,7 +111,8 @@
       (when (contains? ide-platform :atom)
         {:atom (atom/atom-config vm-type contains-clojure? contains-devops?)})
       (when (contains? ide-platform :idea)
-        {:idea (idea/idea-config vm-type contains-clojure? contains-devops?)})
+        {:idea (idea/idea-config vm-type contains-clojure? contains-devops?)
+         :ide-settings #{:install-idea-inodes}})
       (when (contains? ide-platform :pycharm)
         {:pycharm (idea/pycharm-config)})
       (when contains-clojure?

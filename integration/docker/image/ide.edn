@@ -1,4 +1,4 @@
-{:target-type :virtualbox
+{:target-type :plain
  :clojure {:lein-auth [{:repo "maven.my-repo.com"
                         :username {:plain "mvn-account"}
                         :password {:plain "mvn-password"}}]}
