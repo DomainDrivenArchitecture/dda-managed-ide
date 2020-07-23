@@ -4,7 +4,7 @@
   :license {:name "Apache License, Version 2.0"
             :url "https://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [[dda/dda-pallet "3.1.2"]
-                 [dda/dda-managed-vm "2.6.6-SNAPSHOT"]
+                 [dda/dda-managed-vm "2.6.6"]
                  [dda/dda-provision "0.2.0"]
                  [dda/dda-pallet-commons "1.6.4"]]
   :target-path "target/%s/"
@@ -20,7 +20,7 @@
                    :resource-paths ["integration/resources"
                                     "test/resources"]
                    :dependencies
-                   [[org.clojure/test.check "0.10.0"]
+                   [[org.clojure/test.check "1.1.0"]
                     [dda/data-test "0.1.1"]
                     [dda/pallet "0.9.1" :classifier "tests"]
                     [org.slf4j/jcl-over-slf4j "2.0.0-alpha1"]
@@ -39,7 +39,7 @@
                        :aot :all
                        :main dda.pallet.dda-managed-ide.main
                        :uberjar-name "dda-managed-ide-standalone.jar"
-                       :dependencies [[org.clojure/tools.cli "0.4.2"]
+                       :dependencies [[org.clojure/tools.cli "1.0.194"]
                                       [ch.qos.logback/logback-classic "1.3.0-alpha5"
                                        :exclusions [com.sun.mail/javax.mail]]
                                       [org.slf4j/jcl-over-slf4j "2.0.0-alpha1"]]}}
