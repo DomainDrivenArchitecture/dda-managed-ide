@@ -6,7 +6,7 @@
   :dependencies [[dda/dda-pallet "3.1.2"]
                  [dda/dda-managed-vm "2.6.6"]
                  [dda/dda-provision "0.2.0"]
-                 [dda/dda-pallet-commons "1.6.4"]]
+                 [dda/dda-pallet-commons "1.6.5-SNAPSHOT"]]
   :target-path "target/%s/"
   :source-paths ["main/src"]
   :resource-paths ["main/resources"]

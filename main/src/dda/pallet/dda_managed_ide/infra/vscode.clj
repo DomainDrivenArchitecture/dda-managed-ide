@@ -24,16 +24,15 @@
 
 (def provisioner :dda.provision.pallet/pallet)
 
-(defn command-test []
-  (p/exec-command-as-user provisioner "initial" "mkdir test12345"))
-
 (defn copy-file-test []
-  p/copy-resources-to-user provisioner "initial" "vsc" "" [{:filename "test"}])
+  (p/copy-resources-to-tmp provisioner "" "vsc" [{:filename "install-vsc.sh"}
+                                                 {:filename "install-vsc-extensions.sh"}]))
 
-(defn file-test []
-  (p/exec-command-as-user provisioner "initial" "mkdir test12345"))
+(defn install-vsc []
+  (p/exec-file-on-target-as-root provisioner "" "vsc" "install-vsc.sh")
+  (p/exec-file-on-target-as-user provisioner "initial" "" "vsc" "install-vsc-extensions.sh"))
 
-(defn provisiontest []
-  (command-test)
-  (copy-file-test))
+(defn install-system []
+  (copy-file-test)
+  (install-vsc))
 

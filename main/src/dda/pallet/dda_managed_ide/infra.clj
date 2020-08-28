@@ -99,7 +99,8 @@
     (py/install-system facility ide-settings)
     (devops/install-system facility ide-settings contains-devops? devops)
     (atom/install-system facility ide-settings contains-atom? atom)
-    (idea/install-system facility ide-settings contains-idea? contains-pycharm? idea)))
+    (idea/install-system facility ide-settings contains-idea? contains-pycharm? idea)
+    (vscode/install-system)))
 
 (s/defn install-user
   [config :- DdaIdeConfig]
