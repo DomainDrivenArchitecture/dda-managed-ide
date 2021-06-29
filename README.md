@@ -150,5 +150,5 @@ Or you can build your own conventions using our low level infra API. We will kee
 [see infra reference](doc/reference_infra.md)
 
 ## License
-Copyright © 2015, 2016, 2017, 2018 meissa GmbH
+Copyright © 2015, 2016, 2017, 2018, 2019, 2020, 2021 meissa GmbH
 Published under [apache2.0 license](LICENSE)
